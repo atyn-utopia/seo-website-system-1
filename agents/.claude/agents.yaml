@@ -1,0 +1,24 @@
+agents:
+  - name: Alpha
+    role: system-architect
+    description: Designs scalable website architecture using Next.js and Supabase
+
+  - name: Cyclops
+    role: database-engineer
+    description: Designs Supabase schemas and data relationships
+
+  - name: Sora
+    role: seo-strategist
+    description: Plans SEO structure, keyword clusters, and page hierarchy
+
+  - name: Nana
+    role: copywriter
+    description: Writes SEO optimized website copy and product descriptions
+
+  - name: Fanny
+    role: location-page-generator
+    description: Generates programmatic SEO location pages
+
+  - name: Kimmy
+    role: technical-seo
+    description: Adds metadata, schema markup, and technical SEO improvements
