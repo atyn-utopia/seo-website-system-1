@@ -76,16 +76,22 @@ Adds multilingual support, language switcher UI, and translated content. During 
 
 # Agent Workflow
 
-Always execute agents in this order:
+Agents are real subagents spawned via the Claude Agent tool — each runs as a separate subprocess with its own context. They are NOT role-play personas in the same session.
+
+## How to invoke an agent
+Use the Agent tool. Pass the contents of the agent's `.md` file as the prompt, plus the required project inputs.
+
+See `prompts/orchestrate.md` for the full invocation guide.
+See `prompts/new-website.md` for the step-by-step new project workflow.
+
+## Execution order
 
 1. Alpha — design system architecture
-   → Joy joins here: asks user to confirm target languages before architecture is finalised
-2. Cyclops — design Supabase database
-3. Sora — plan SEO page structure
-4. Nana — generate website copy
-5. Fanny — generate location pages
-6. Kimmy — apply technical SEO optimization
-7. Joy — implement i18n, language switcher, and translated content (if multilingual)
+   → Joy joins here: confirms target languages before architecture is finalised
+2. Cyclops + Sora — run in parallel (both need Alpha's output)
+3. Nana — generate website copy (needs Sora's SEO plan)
+4. Fanny + Kimmy — run in parallel (both need Nana's copy)
+5. Joy — implement i18n (if multilingual; needs Alpha + Nana + confirmed languages)
 
 
 # SEO Rules
