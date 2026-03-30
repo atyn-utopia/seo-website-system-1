@@ -44,6 +44,8 @@ export function CountdownStrip({ waLink, label }: { waLink: string; label: strin
 
       <a
         href={waLink}
+        target="_blank"
+        rel="noopener noreferrer"
         className="ml-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-opacity hover:opacity-90"
         style={{ background: WA_GREEN, color: 'white' }}
       >

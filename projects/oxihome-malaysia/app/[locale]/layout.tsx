@@ -8,6 +8,7 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { OrganizationSchema } from '@/components/schema/OrganizationSchema'
 import { siteConfig } from '@/config/site'
 import { footerLocations } from '@/config/locations'
+import { getPhoneNumber, waLink } from '@/lib/getPhoneNumber'
 import '../globals.css'
 
 const inter = Inter({
@@ -17,7 +18,6 @@ const inter = Inter({
   display: 'swap',
 })
 
-const WA_LINK  = `https://wa.me/${siteConfig.fallbackPhone}`
 const WA_GREEN = '#25D366'
 
 const OxiIcon = () => (
@@ -63,6 +63,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       languages: { en: '/en', ms: '/ms', zh: '/zh' },
     },
     robots: { index: true, follow: true },
+    icons: { icon: '/icon.svg', shortcut: '/icon.svg', apple: '/icon.svg' },
   }
 }
 
@@ -84,6 +85,8 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages()
   const t  = await getTranslations({ locale, namespace: 'nav' })
   const tf = await getTranslations({ locale, namespace: 'footer' })
+  const phone = await getPhoneNumber('all')
+  const WA_LINK = waLink(phone)
 
   const navLinks = [
     { label: t('products'),  href: `/${locale}#products` },
@@ -137,7 +140,9 @@ export default async function LocaleLayout({ children, params }: Props) {
               <div className="flex items-center gap-3 shrink-0">
                 <LanguageSwitcher currentLocale={locale} />
                 <a
-                  href={WA_LINK}
+                  href={`/${locale}/redirect-whatsapp-1`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hidden sm:inline-flex items-center gap-2 font-semibold px-4 py-2 rounded-full text-sm text-white focus:outline-none focus:ring-2 focus:ring-green-400 transition-opacity hover:opacity-90 active:opacity-80"
                   style={{ background: WA_GREEN }}
                 >
@@ -169,7 +174,9 @@ export default async function LocaleLayout({ children, params }: Props) {
                     {tf('tagline')}
                   </p>
                   <a
-                    href={WA_LINK}
+                    href={`/${locale}/redirect-whatsapp-1`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 mt-5 text-sm font-semibold transition-opacity hover:opacity-80"
                     style={{ color: WA_GREEN }}
                   >

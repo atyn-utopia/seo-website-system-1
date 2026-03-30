@@ -1,0 +1,3 @@
+[submodule "projects/admin"]
+	path = projects/admin
+	url = https://github.com/designutco/utopia-webcore.git
