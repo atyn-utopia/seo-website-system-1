@@ -6,18 +6,32 @@ export async function GET(request: NextRequest) {
   const slug = request.nextUrl.searchParams.get('slug')
 
   if (!slug) {
-    return NextResponse.json({ url: null })
+    return NextResponse.json({ deployUrl: null, localUrl: null })
   }
 
-  // Layla writes the deploy URL to projects/{slug}/deploy-url.txt after deployment
   const repoRoot = path.resolve(process.cwd(), '..')
-  const urlFile = path.join(repoRoot, 'projects', slug, 'deploy-url.txt')
+  const projectDir = path.join(repoRoot, 'projects', slug)
 
+  // Check for Vercel deploy URL (written by Layla after deployment)
+  let deployUrl: string | null = null
   try {
-    const url = (await readFile(urlFile, 'utf-8')).trim()
-    return NextResponse.json({ url })
+    deployUrl = (await readFile(path.join(projectDir, 'deploy-url.txt'), 'utf-8')).trim()
   } catch {
-    // File doesn't exist yet — website not deployed
-    return NextResponse.json({ url: null })
+    // Not deployed yet
   }
+
+  // Check for localhost URL (written by dev server or agent during build)
+  let localUrl: string | null = null
+  try {
+    localUrl = (await readFile(path.join(projectDir, 'local-url.txt'), 'utf-8')).trim()
+    // Verify localhost is actually reachable
+    const res = await fetch(localUrl, { method: 'HEAD', signal: AbortSignal.timeout(2000) }).catch(() => null)
+    if (!res || !res.ok) {
+      localUrl = null // Server not running, ignore stale file
+    }
+  } catch {
+    // No local URL file
+  }
+
+  return NextResponse.json({ deployUrl, localUrl })
 }

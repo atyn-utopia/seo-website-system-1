@@ -1,19 +1,19 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import FileUpload from './FileUpload'
-import MagicLoader from './MagicLoader'
 
-type FormState = 'idle' | 'submitting' | 'success' | 'error'
+type FormState = 'idle' | 'submitting' | 'error'
 
 export default function GenieForm() {
   const [prompt, setPrompt] = useState('')
   const [slug, setSlug] = useState('')
   const [files, setFiles] = useState<File[]>([])
   const [state, setState] = useState<FormState>('idle')
-  const [projectPath, setProjectPath] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const router = useRouter()
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -31,17 +31,17 @@ export default function GenieForm() {
     setState('submitting')
     setErrorMsg('')
 
+    const formattedSlug = formatSlug(slug)
     const formData = new FormData()
     formData.append('prompt', prompt)
-    formData.append('slug', formatSlug(slug))
+    formData.append('slug', formattedSlug)
     files.forEach((file) => formData.append('files', file))
 
     try {
       const res = await fetch('/api/create-project', { method: 'POST', body: formData })
       const data = await res.json()
       if (data.success) {
-        setState('success')
-        setProjectPath(data.projectPath)
+        router.push(`/wish/${formattedSlug}`)
       } else {
         setState('error')
         setErrorMsg(data.error || 'Something went wrong')
@@ -52,29 +52,10 @@ export default function GenieForm() {
     }
   }
 
-  const reset = () => {
-    setPrompt('')
-    setSlug('')
-    setFiles([])
-    setState('idle')
-    setProjectPath('')
-    setErrorMsg('')
-  }
-
-  const isDisabled = state === 'submitting' || state === 'success'
   const canSubmit = prompt.trim() && slug.trim() && state !== 'submitting'
 
-  // Show magical loading screen after successful submission
-  if (state === 'success') {
-    return (
-      <div style={{ width: '100%', maxWidth: 560 }}>
-        <MagicLoader projectPath={projectPath} slug={slug} prompt={prompt} onReset={reset} />
-      </div>
-    )
-  }
-
   return (
-    <div style={{ width: '100%', maxWidth: 560, display: 'flex', flexDirection: 'column', gap: 14 }}>
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 14 }}>
       <textarea
         ref={textareaRef}
         className="fairy-input"
@@ -100,7 +81,7 @@ export default function GenieForm() {
         placeholder="I want to create a website for renting wheelchairs in Malaysia. The brand is WheelCare, domain wheelcare.my. Target cities: KL, PJ, Shah Alam..."
         rows={4}
         style={{ minHeight: 120, resize: 'none' }}
-        disabled={isDisabled}
+        disabled={state === 'submitting'}
       />
 
       <input
@@ -110,7 +91,7 @@ export default function GenieForm() {
         onChange={(e) => setSlug(formatSlug(e.target.value))}
         placeholder="Project name (slug), e.g. wheelchair-malaysia"
         style={{ padding: '10px 16px', fontSize: 14, borderRadius: 10 }}
-        disabled={isDisabled}
+        disabled={state === 'submitting'}
       />
 
       <FileUpload files={files} onFilesChange={setFiles} />

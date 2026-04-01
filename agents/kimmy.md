@@ -108,12 +108,31 @@ Write complete JSON-LD schema for each page type:
 }
 ```
 
-#### 4. Image alt text guidelines
-For every image in the codebase, provide the correct descriptive alt text:
-- Hero image: `{Primary keyword} — {brand name}`
-- Product images: `{Product name} — {key feature}`
-- Location map/photo: `{Product} delivery in {City}, Malaysia`
-- Decorative images: `alt=""` (empty, intentionally)
+#### 4. Image & SVG alt text audit (MANDATORY — run on every project)
+After all pages are built, Kimmy must audit every `<img>` tag and meaningful `<svg>` icon across all pages and components. This is a mandatory final step before handoff.
+
+**Rules:**
+- Every `<img>` must have a descriptive `alt` attribute — never leave it empty unless purely decorative
+- Every meaningful `<svg>` icon (service icons, logo, social icons) must have either `aria-label` on the parent element or a `<title>` inside the SVG
+- Purely decorative SVGs must have `aria-hidden="true"`
+- Alt text must be locale-aware — use translated alt text via `t('key')` when the page is multilingual
+
+**Alt text formulas:**
+- Hero image: `{Primary keyword} — {brand name}` (translated per locale)
+- Product/service images: `{Service name} — {key feature}`
+- Customer gallery images: `Customer {service} job {n}` or similar descriptive text
+- Location hero: `{Service} in {City} — {brand name}`
+- Logo icon: parent `<a>` should have `aria-label="{brand name} homepage"`
+- SVG service icons (wrench, drill, bolt, etc.): `aria-hidden="true"` (decorative, title provides context)
+- WhatsApp icon: `aria-hidden="true"` (text label provides context)
+- Google logo/stars: `aria-hidden="true"` (text label "Google Reviews" provides context)
+- Chevron/arrow icons: `aria-hidden="true"` (decorative)
+
+**Audit checklist:**
+1. Scan all `.tsx` files for `<img` tags — verify every one has `alt`
+2. Scan all `.tsx` files for `<svg` tags — verify meaningful ones have `aria-label` or `<title>`, decorative ones have `aria-hidden="true"`
+3. Verify alt text is translated on multilingual pages (uses `t()` not hardcoded English)
+4. List all findings and fixes in the output document
 
 #### 5. Sitemap
 Write or review `app/sitemap.ts`:

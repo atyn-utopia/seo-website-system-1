@@ -1,32 +1,17 @@
-import GenieForm from '@/components/GenieForm'
+import WishStatus from './WishStatus'
 
-export default function Home() {
+export default async function WishPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+
   return (
     <main style={{
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'stretch',
-      textAlign: 'center',
+      alignItems: 'center',
       gap: 6,
       width: '100%',
-      maxWidth: 560,
-      margin: '0 auto',
+      maxWidth: 600,
     }}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
-        <div className="fairy-container fade-in">
-          <div className="fairy-glow" />
-          <img
-            src="/fairy.gif"
-            alt="Utopia Fairy"
-            style={{
-              width: 80,
-              height: 80,
-              objectFit: 'contain',
-              filter: 'drop-shadow(0 0 15px rgba(79, 195, 247, 0.4))',
-            }}
-          />
-        </div>
-      </div>
       <h1
         className="fade-in"
         style={{
@@ -53,10 +38,10 @@ export default function Home() {
           animationDelay: '0.15s',
         }}
       >
-        Your wish is my command — what website shall I create today?
+        Your wish is being granted...
       </p>
-      <div className="fade-in" style={{ animationDelay: '0.3s' }}>
-        <GenieForm />
+      <div className="fade-in" style={{ width: '100%', animationDelay: '0.3s' }}>
+        <WishStatus slug={slug} />
       </div>
     </main>
   )
