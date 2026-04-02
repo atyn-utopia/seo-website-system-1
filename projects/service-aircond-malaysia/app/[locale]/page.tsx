@@ -80,8 +80,14 @@ const brands = [
 ]
 
 const galleryImages = Array.from({ length: 15 }, (_, i) => `/images/gallery-${i + 1}.png`)
-const WA_NUMBER = '60123456789'
-const WA_LINK = `https://wa.me/${WA_NUMBER}?text=Hi%2C%20I%20need%20aircond%20service`
+/* ── WhatsApp redirect helpers ── */
+function waRedirect(locale: string, message?: string, location?: string) {
+  const params = new URLSearchParams()
+  if (message) params.set('message', message)
+  if (location) params.set('location', location)
+  const qs = params.toString()
+  return `/${locale}/redirect-whatsapp-1${qs ? `?${qs}` : ''}`
+}
 
 /* ── FOMO countdown ── */
 function FomoBanner() {
@@ -174,6 +180,9 @@ export default function HomePage() {
   const t = useTranslations('home')
   const nav = useTranslations('nav')
   const footer = useTranslations('footer')
+
+  const WA_LINK = waRedirect(locale)
+  const waServiceLink = (waKey: string) => waRedirect(locale, t(`services.${waKey}`))
 
   const regionData = regionConfig.map(r => {
     const locs = getLocationsByRegion(r.name)
@@ -332,7 +341,7 @@ export default function HomePage() {
                         <div className="text-sm font-extrabold" style={{ color: 'var(--brand-navy)' }}>{svc.cassettePrice}</div>
                       </div>
                     </div>
-                    <a href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t(`services.${svc.waKey}`))}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white hover:opacity-90 w-full" style={{ background: 'var(--wa-green)' }}><WAIcon />{t('services.bookNow')}</a>
+                    <a href={waServiceLink(svc.waKey)} className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white hover:opacity-90 w-full" style={{ background: 'var(--wa-green)' }}><WAIcon />{t('services.bookNow')}</a>
                   </div>
                 </FadeSection>
               ))}

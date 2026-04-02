@@ -32,7 +32,13 @@ const ChevronIcon = ({ open }: { open: boolean }) => (
   </svg>
 )
 
-const WA_NUMBER = '60123456789'
+function waRedirect(locale: string, message?: string, location?: string) {
+  const params = new URLSearchParams()
+  if (message) params.set('message', message)
+  if (location) params.set('location', location)
+  const qs = params.toString()
+  return `/${locale}/redirect-whatsapp-1${qs ? `?${qs}` : ''}`
+}
 
 function useFadeUp() {
   const ref = useRef<HTMLDivElement>(null)
@@ -72,7 +78,7 @@ export default function LocationPageClient({ locale, locationSlug, cityName, nea
   const footer = useTranslations('footer')
   const homeServices = useTranslations('home.services')
 
-  const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Hi, I need aircond service in ${cityName}`)}`
+  const waLink = waRedirect(locale, `Hi, I need aircond service in ${cityName}`, locationSlug)
 
   const serviceItems = [
     { key: 'servicing', icon: '🔧' },
