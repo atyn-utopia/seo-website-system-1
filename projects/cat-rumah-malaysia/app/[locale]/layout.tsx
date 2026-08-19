@@ -81,7 +81,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${jakarta.variable} ${inter.variable} ${notoSC.variable}`}
     >
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <script defer src="https://webcore.utopiaai.my/t.js" data-website={siteConfig.domain}></script>
       </head>
       <body>
