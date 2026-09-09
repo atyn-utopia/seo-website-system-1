@@ -14,7 +14,7 @@ and integrations. Every agent that puts content into a site goes through this.
 - **Base URL**: `https://webcore.utopiaai.my` (`$WEBCORE_BASE_URL`)
 - **Header**: `X-API-Key: $WEBCORE_API_KEY` on every write. Server-only.
 - **Scopes on the current key**: `products:write`, `blog:write`, `phones:write`,
-  `seo:write`, `integrations:write`, `read`, `sites:write`.
+  `seo:write`, `integrations:write`, `read`, `sites:write`, `ads:write`.
 - **Reads** (`GET /api/public/*`) are CORS-open and need **no** key.
 - `website` must be the **exact registered domain**. Writes against an
   unregistered value orphan silently — they return 2xx and never appear.
@@ -61,6 +61,21 @@ curl -X POST "$WEBCORE_BASE_URL/api/public/sites" \
 
 Idempotent: `200 { alreadyLinked: true }` when already linked to this company,
 `409` when linked to a different one. Returns the site id + tracking snippet.
+
+**Look the company up first — never guess `company_name`.** A near-miss creates a
+second company rather than linking to the existing one, and the site then sits
+outside the company the rest of its sites belong to. `read` scope answers it
+without dashboard access:
+
+```bash
+curl -s "$WEBCORE_BASE_URL/api/public/companies?q=Ibnu" -H "x-api-key: $WEBCORE_API_KEY"
+# → { "companies": [ { "id": "...", "name": "...", "domains": ["..."] } ] }
+```
+
+Params: `q` (name substring, case-insensitive), `website` (which company owns
+this domain), `limit` (default 50, max 200). Only companies behind this token's
+sites are visible; no match is an empty list, not a 404. Feed the returned `id`
+straight in as `company_id`.
 
 ## 2. Products — `products:write`
 
@@ -215,6 +230,52 @@ OAuth connect stays in the admin UI (needs human consent); these run after.
 PUT  /api/website-settings                { website, revalidate_url }   # offering_type is admin-only
 POST /api/integrations/gsc/submit-sitemap { domain }                    # site must be GSC-connected
 POST /api/integrations/marketing/mark-key-event { domain, eventName }   # event must have fired once
+```
+
+**Read back what webcore actually sees** (`read` scope) instead of asking
+someone to open the Integrations page. Every field is verified live on the call,
+Google API round trips included — so use it once after a setup run, not as a
+poll:
+
+```bash
+curl -s "$WEBCORE_BASE_URL/api/public/integrations?website=<d>" -H "x-api-key: $WEBCORE_API_KEY"
+# → { ga4: { property_id, measurement_id, connected_at },
+#     gtm: { container_id, detected }, ads: { detected, source, customer_id },
+#     readiness: { signals, counting_one, metrics_imported, ready },
+#     checks: { … why a live check could not answer … } }
+```
+
+## 8. Ads readiness — `ads:write`
+
+Three Google settings gate a site running ads. Two are re-verified live on every
+read; the third has no API that exposes it, so a human confirms it once.
+
+```
+google_signals       GA4 → Google Signals ON          — auto-verified
+conversion_counting  Ads → conversion Count = One     — auto-verified
+ga4_metrics_import   Ads → Data manager → GA4 import  — manual, no API exposes it
+```
+
+```bash
+curl -s "$WEBCORE_BASE_URL/api/ads-readiness?website=<d>" -H "x-api-key: $WEBCORE_API_KEY"
+
+curl -X PATCH "$WEBCORE_BASE_URL/api/ads-readiness" \
+  -H "x-api-key: $WEBCORE_API_KEY" -H "Content-Type: application/json" \
+  -d '{ "website": "<d>", "item": "ga4_metrics_import", "done": true }'
+```
+
+Ticking an auto-verified item **pins** it, so the live re-check stops overriding
+the answer. **Completing the last item notifies the performance marketers,
+once** — send `done: true` because the step is really done, not to tidy the card.
+
+When the Ads account can't be resolved from the site's `AW-` tag, or conversions
+live on a manager account, pin the customer id once and the counting check stops
+guessing:
+
+```bash
+curl -X PUT "$WEBCORE_BASE_URL/api/ads-readiness" \
+  -H "x-api-key: $WEBCORE_API_KEY" -H "Content-Type: application/json" \
+  -d '{ "website": "<d>", "customerId": "123-456-7890" }'
 ```
 
 ---
