@@ -1211,7 +1211,7 @@ This sets up the site's **Google/Ads** layer — GA4 + GTM + Google Search Conso
 - [ ] Sitemap reachable at `https://www.<domain>/sitemap.xml`
 
 ### Run it
-Spawn **Gloo** with the contents of `agents/gloo.md` + the paid domain, project dir, and supported locales. Gloo reads `scripts/google-automation/`'s own `SKILL.md` / `MANUAL-STEPS.md` (source of truth for flags) and runs the 5 phases:
+Spawn **Gloo** with the contents of `agents/gloo.md` + the paid domain, project dir, and supported locales. Gloo reads `scripts/google-automation/`'s own `SKILL.md` / `MANUAL-STEPS.md` (source of truth for flags) and runs the 5 phases, then closes the readiness card (Phase 6):
 
 1. **Phase 1 — GSC Domain property** (no deploy)
 2. **Phase 2 — GA4 property** (no deploy) → captures Measurement ID `G-XXXX` + numeric property id
@@ -1231,8 +1231,22 @@ Screenshots: https://websitebuilder.utopiaai.my/google (§04).
 
 > 🔒 The files at `~/.google-credentials/` are LIVE Google keys — never commit, print, or forward them. If exposed, rotate immediately.
 
+### Phase 6 — tick the ads readiness in webcore (REQUIRED, last)
+The three required toggles above are the three gates webcore's ads-readiness card tracks, and that card is how the performance marketers learn the site is ready for them. Handing the toggles back and stopping leaves a finished site looking unfinished to the people who act on it.
+
+Run **after the user confirms each toggle is really ON** in the Google UI:
+
+```bash
+cd scripts/google-automation
+set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
+node ads-readiness.mjs --domain <paid-domain>                    # read state, writes nothing
+node ads-readiness.mjs --domain <paid-domain> --tick all --yes   # confirm all three
+```
+
+`signals` + `counting` are re-verified live by webcore; ticking **pins** them, which is the fix when a probe reports `refused` / `needs_reconsent` while the toggle is genuinely on. `metrics` has no API and only ever goes true by hand. Completing the card **notifies the performance marketers once** — hence the explicit `--yes`. Tick because the toggle is on, never to tidy the card.
+
 ### End state
-GA4 property + GTM container + GSC properties (1 Domain + 1 URL-prefix per locale) + 1 Ads conversion action. Per-site config written to `scripts/google-automation/configs/<domain>.json`.
+GA4 property + GTM container + GSC properties (1 Domain + 1 URL-prefix per locale) + 1 Ads conversion action. Per-site config written to `scripts/google-automation/configs/<domain>.json`. Webcore's ads-readiness card for the domain reads `ready: true`.
 
 ---
 
