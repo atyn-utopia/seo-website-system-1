@@ -90,3 +90,68 @@ export function pushKeywords(website, { rows, primary_keywords, secondary_keywor
 export function getApiKey() {
   return process.env.WEBCORE_API_KEY || null;
 }
+// ─── Ads readiness ────────────────────────────────────────────────
+//
+// Three Google settings gate a site running ads. Two are re-verified live by
+// webcore on every read; the third has no API that exposes it, so a human
+// confirms it once. Ticking an auto-verified item PINS it, so the live
+// re-check stops overriding the answer.
+//
+//   google_signals       GA4 → Google Signals ON          (auto-verified)
+//   conversion_counting  Ads → conversion Count = One     (auto-verified)
+//   ga4_metrics_import   Ads → Data manager → GA4 import  (manual only)
+
+/** The canonical item ids, in the order the Google UI presents them. */
+export const ADS_READINESS_ITEMS = [
+  'google_signals',
+  'conversion_counting',
+  'ga4_metrics_import',
+];
+
+/**
+ * Current readiness, with both automatic checks re-run live against Google.
+ * Needs `read`/`ads:write` scope — unlike the other `/api/public/*` reads.
+ * @returns {{ readiness: object, ready: boolean, adsLink: object,
+ *             signalsProbe: object, countingProbe: object }}
+ */
+export function getAdsReadiness(website, apiKey) {
+  if (!apiKey) throw new Error('WEBCORE_API_KEY is not set — the readiness endpoint needs it.');
+  return request(`/api/ads-readiness?website=${encodeURIComponent(website)}`, { apiKey });
+}
+
+/**
+ * Confirm (or un-confirm) one readiness item.
+ *
+ * ⚠️ Completing the LAST item notifies the performance marketers, once. Send
+ * `done: true` because the step is really done — never to tidy the card.
+ */
+export function tickAdsReadiness(website, item, done, apiKey) {
+  if (!apiKey) throw new Error('WEBCORE_API_KEY is not set — refusing to attempt a write.');
+  if (!ADS_READINESS_ITEMS.includes(item)) {
+    throw new Error(`unknown readiness item "${item}" — expected one of ${ADS_READINESS_ITEMS.join(', ')}`);
+  }
+  return request('/api/ads-readiness', {
+    method: 'PATCH', apiKey, body: { website, item, done },
+  });
+}
+
+/**
+ * Pin the Ads customer id when it cannot be resolved from the site's `AW-` tag
+ * (or when conversions live on a manager account), so the counting check stops
+ * guessing.
+ */
+export function pinAdsCustomerId(website, customerId, apiKey) {
+  if (!apiKey) throw new Error('WEBCORE_API_KEY is not set — refusing to attempt a write.');
+  return request('/api/ads-readiness', {
+    method: 'PUT', apiKey, body: { website, customerId },
+  });
+}
+
+/**
+ * What webcore actually sees for this site's Google setup — GA4, GTM, Ads and
+ * the readiness block. Every field is verified live on the call (Google API
+ * round trips included), so call it once after a setup run, never as a poll.
+ */
+export function getIntegrations(website, apiKey) {
+  return request(`/api/public/integrations?website=${encodeURIComponent(website)}`, { apiKey });
+}

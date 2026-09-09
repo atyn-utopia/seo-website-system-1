@@ -1,6 +1,6 @@
 ---
 name: google-integration
-description: Set up a live Utopia site's Google footprint — GA4 + GTM + Google Search Console + Google Ads conversion import — via the internal automation bundle. Use AFTER the site's PAID domain is live on Vercel (post-deploy Step 14). Runs the 5-phase sequence and hands off the ~3–4 min of residual manual Google toggles. Internal Utopia only; wired to the shared automation account with credentials on this machine.
+description: Set up a live Utopia site's Google footprint — GA4 + GTM + Google Search Console + Google Ads conversion import — via the internal automation bundle. Use AFTER the site's PAID domain is live on Vercel (post-deploy Step 14). Runs the 5-phase sequence, hands off the ~3–4 min of residual manual Google toggles, then ticks the site’s ads-readiness card in webcore. Internal Utopia only; wired to the shared automation account with credentials on this machine.
 ---
 
 # Google Integration (post-deploy)
@@ -67,6 +67,26 @@ Hand these back to the user; the setup isn't done until they're on:
 4. *(optional)* GTM → Container Settings → Consent Overview (BETA).
 
 Screenshots: https://websitebuilder.utopiaai.my/google (§04).
+
+## Phase 6 — tick the ads readiness in webcore (REQUIRED, last)
+
+The three required toggles above are the three gates webcore's ads-readiness
+card tracks. The setup is not finished until they are ticked there — that card
+is how the performance marketers learn the site is ready for them.
+
+Run it **after the user confirms the toggles are actually on**, never before:
+
+```bash
+cd scripts/google-automation
+set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
+node ads-readiness.mjs --domain <domain>                    # read state, writes nothing
+node ads-readiness.mjs --domain <domain> --tick all --yes   # confirm all three
+```
+
+Ticking an auto-verified item (`signals`, `counting`) pins it, so a probe that
+reads `refused` / `needs_reconsent` stops overriding a toggle that is genuinely
+on. `metrics` has no API and can only ever be confirmed by hand. Completing the
+card notifies the performance marketers **once** — hence the explicit `--yes`.
 
 ## Deploy discipline
 Deploy Phases 3 and 4 **separately** (own checkpoint each). For extracted per-site repos with no

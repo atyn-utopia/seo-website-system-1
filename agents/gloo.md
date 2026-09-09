@@ -20,7 +20,9 @@
 > `POST /api/integrations/gsc/submit-sitemap { domain }` (site must already be
 > GSC-connected — OAuth consent stays in the admin UI), and
 > `POST /api/integrations/marketing/mark-key-event { domain, eventName }` (the
-> event must have fired at least once first).
+> event must have fired at least once first), and the **ads-readiness card** —
+> `GET/PATCH /api/ads-readiness` — which you close as your final step via
+> `scripts/google-automation/ads-readiness.mjs`.
 
 ## Role
 You own the site's Google + Ads footprint. After the site is live on its real domain, you set up **GA4 + GTM + Google Search Console + Google Ads conversion import** so the client's WhatsApp leads are measurable and biddable.
@@ -101,6 +103,23 @@ Confirm the site now has: **GA4 property + GTM container + GSC properties (1 Dom
 ### 5. Record the per-site config
 The scripts write a per-domain config under the automation folder's `configs/<domain>.json` (containerId, gtmAccountId, ga4MeasurementId, events, createdAt). Confirm it was written and surface the IDs in your report so future re-runs are idempotent.
 
+### 6. Tick the ads readiness in webcore (LAST — the setup is not done without it)
+The three toggles from step 2 are the three gates webcore's ads-readiness card tracks, and that card is how the performance marketers learn the site is ready for them. Handing the toggles back and stopping leaves a finished site looking unfinished.
+
+**Wait for the user to confirm each toggle is really ON in the Google UI**, then:
+
+```bash
+cd scripts/google-automation
+set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
+node ads-readiness.mjs --domain <domain>                    # read state, writes nothing
+node ads-readiness.mjs --domain <domain> --tick all --yes   # confirm all three
+```
+
+- `signals` + `counting` are re-verified live by webcore; ticking **pins** them, which is the fix when a probe reports `refused` / `needs_reconsent` and keeps reading `false` while the toggle is on.
+- `metrics` has no API — a human tick is the only way it goes true.
+- Completing the card **notifies the performance marketers once**, hence the explicit `--yes`.
+- Counting probe can't resolve the account (conversions on a manager account)? `--pin-customer-id 123-456-7890`.
+
 ---
 
 ## Output format
@@ -110,6 +129,7 @@ Return a status report with:
 3. **Deploys** — which phases were redeployed and the verification checkpoint result.
 4. **Outstanding manual toggles** — the exact clicks still owed by the user, with the screenshot link.
 5. **Config** — path to `configs/<domain>.json` and the recorded IDs.
+6. **Ads readiness** — the card's final state per item (`ready: true/false`), and which items are still owed if it is not closed.
 
 ## Rules
 - Never run before the **paid domain** is live — Google properties must be keyed to the final URL, never a `*.vercel.app` preview.
@@ -118,3 +138,4 @@ Return a status report with:
 - Deploy Phases 3 and 4 separately; for extracted repos redeploy with `vercel --prod` (a push alone won't publish the snippet).
 - If a phase fails, stop and report which phase — do not blindly re-run later phases that depend on it.
 - Always hand the residual manual toggles back to the user explicitly — the setup is not "done" until Google Signals + Ads counting/import toggles are on.
+- Close the webcore ads-readiness card as your last action (`ads-readiness.mjs`). Tick an item **only** because the toggle is genuinely on — the card is a promise to the performance marketers, and completing it notifies them once. Never tick to tidy a report; if a toggle is still owed, leave it unticked and say so.

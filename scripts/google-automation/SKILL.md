@@ -55,6 +55,30 @@ Tell the user upfront, then do each after the phase noted:
 
 Screenshots for these: https://websitebuilder.utopiaai.my/google (§04).
 
+## Phase 6 — close the readiness card in webcore (REQUIRED, last)
+
+Toggles 1–3 above are exactly the three gates webcore tracks. Until they are
+ticked there, the performance marketers have no signal the site is ready, so a
+finished setup still looks unfinished to them.
+
+**Only after the user confirms each toggle is really ON in the Google UI:**
+
+```bash
+set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
+node ads-readiness.mjs --domain <domain>                    # read state, writes nothing
+node ads-readiness.mjs --domain <domain> --tick all --yes   # confirm all three
+```
+
+- `signals` and `counting` are re-verified live by webcore; ticking them **pins**
+  the answer, which is what you want when a probe reports `refused` /
+  `needs_reconsent` and keeps reading `false` while the toggle is on.
+- `metrics` has no API at all — a human tick is the only way it ever goes true.
+- **Completing the card notifies the performance marketers once**, which is why
+  the completing tick demands `--yes`. Tick because the toggle is on, never to
+  tidy the card.
+- Counting probe can't resolve the account (conversions on a manager account)?
+  `node ads-readiness.mjs --domain <d> --pin-customer-id 123-456-7890`
+
 ## Full docs
 - `MANUAL-STEPS.md` — canonical per-site runbook
 - `README.md` — human quick-start

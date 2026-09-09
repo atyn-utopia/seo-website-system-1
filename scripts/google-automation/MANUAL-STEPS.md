@@ -244,6 +244,13 @@ node ads-import-conversion.mjs --no-mcc \
   --customer-id 1933757591 --domain katilhospital.com.my \
   --ga4-property-id <numeric-id> --event whatsapp_click
 #    → then 2 UI-only follow-ups: counting Every→One, "Import app and web metrics" ON
+
+# 9. Tick the ads readiness card in webcore — LAST, after the user confirms
+#    the toggles above are really ON. This is what tells the performance
+#    marketers the site is ready; completing it notifies them once.
+set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
+node ads-readiness.mjs --domain <domain>                    # read state, writes nothing
+node ads-readiness.mjs --domain <domain> --tick all --yes   # confirm all three
 ```
 
 ---
