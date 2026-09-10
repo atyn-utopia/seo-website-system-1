@@ -423,7 +423,7 @@ interface PhoneRow {
 `phone_numbers?select=phone_number,whatsapp_text,percentage,label,location_slug,page_slug,is_display`
 
 // 3. and near the top of the file
-const WEBCORE_PUBLIC_BASE = 'https://webcore.utopiaai.my';
+const WEBCORE_PUBLIC_BASE = 'https://webcore.utopiagroup.com.my';
 ```
 
 ### Translation keys — every locale
@@ -493,7 +493,7 @@ Without one the footer falls back to `siteConfig.fallbackPhone` — which must a
 be the client's own number, never a shared operator line.
 
 ```bash
-curl -s "https://webcore.utopiaai.my/api/public/phone-numbers/display?website=<domain>&page=/"
+curl -s "https://webcore.utopiagroup.com.my/api/public/phone-numbers/display?website=<domain>&page=/"
 
 # {"phone_number":"6011...","source":"all"}          -> good
 # {"error":"No display phone number configured..."}  -> seed a row first

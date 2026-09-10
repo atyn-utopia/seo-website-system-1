@@ -11,13 +11,27 @@ and integrations. Every agent that puts content into a site goes through this.
 
 ## Auth & conventions
 
-- **Base URL**: `https://webcore.utopiaai.my` (`$WEBCORE_BASE_URL`)
+- **Base URL**: `https://webcore.utopiagroup.com.my` (`$WEBCORE_BASE_URL`)
 - **Header**: `X-API-Key: $WEBCORE_API_KEY` on every write. Server-only.
 - **Scopes on the current key**: `products:write`, `blog:write`, `phones:write`,
   `seo:write`, `integrations:write`, `read`, `sites:write`, `ads:write`.
 - **Reads** (`GET /api/public/*`) are CORS-open and need **no** key.
 - `website` must be the **exact registered domain**. Writes against an
   unregistered value orphan silently — they return 2xx and never appear.
+
+> **Host moved (2026-09-10).** The old `webcore.utopiaai.my` now 307s to
+> `webcore.utopiagroup.com.my` for the whole host, `/t.js` included, and the new host does not redirect
+> further. 307 preserves method and body and both `fetch()` and `curl -L` follow
+> it, so nothing breaks today — which is exactly why this is easy to miss.
+>
+> **The fleet still points at the old host.** 37 live sites under `projects/`
+> carry a `webcore.utopiaai.my/t.js` tag, 7 `lib/webcore.ts` files hardcode it as
+> `WEBCORE_PUBLIC_BASE`, and `utopia-wizard/lib/checklist.ts`'s `tracking-script`
+> check asserts the old host **by name**. Those move together or not at all —
+> changing the sites while the guardrail still names the old host fails every
+> site's check. Moving them also means 37 redeploys, so it needs a decision on
+> whether the old host is actually being retired. Until then they ride the
+> redirect. Do not migrate a site's tag piecemeal.
 
 ### The vercel.app trap
 
