@@ -96,7 +96,7 @@ export default async function LocationPage({ params }: { params: Promise<Params>
           type, the work photo in a card. Previously a navy gradient over a hero
           background file that was never present in public/, so the photograph
           never loaded on any of the 165 location pages. */}
-      <section style={{ background: 'var(--paper-2)' }}>
+      <section className="hero-sec" style={{ background: 'var(--paper-2)' }}>
         <div className="max-w-6xl mx-auto px-6 pt-10 pb-14 md:pt-14 md:pb-16">
           <div className="hero-grid">
             <div className="hero-copy">

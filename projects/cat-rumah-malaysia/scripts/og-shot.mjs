@@ -45,10 +45,11 @@ const LOCALES = [
   ['zh', '/zh'],
 ];
 const PORT = 3010;
-// This hero is a Tailwind-classed section (relative overflow-hidden) with no
-// `hero` class, so the template's default selector matches nothing here. It
-// does uniquely contain .hero-bg, so key off that instead.
-const HERO = 'section:has(> .hero-bg)';
+// The hero carries an explicit .hero-sec class. It used to be keyed off
+// `section:has(> .hero-bg)`, which broke silently when the hero was rebuilt
+// without that child — the reviews band has one too, so every share card was a
+// screenshot of the reviews section instead of the hero.
+const HERO = 'section.hero-sec';
 const HIDE = [
   '.fomo-bar', '.site-header', 'header',   // canonical chrome
   '.hero-stats', '.ops-ticker',            // hero-foot elements a crop would slice

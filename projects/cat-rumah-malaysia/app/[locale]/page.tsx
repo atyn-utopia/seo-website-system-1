@@ -79,7 +79,7 @@ export default async function HomePage({ params }: Props) {
           audits four neighbouring fleet sites and marks both treatments HIGH
           duplicate risk. The headline is one colour throughout — colouring a
           single phrase inside it is the commonest generated-page tell. */}
-      <section style={{ background: 'var(--paper-2)' }}>
+      <section className="hero-sec" style={{ background: 'var(--paper-2)' }}>
         <div className="max-w-6xl mx-auto px-6 pt-10 pb-14 md:pt-14 md:pb-16">
           <div className="hero-grid">
             <div className="hero-copy">
@@ -117,7 +117,7 @@ export default async function HomePage({ params }: Props) {
 
                 <span className="hero-price">
                   <span className="hero-price-label">{tProducts('fromLabel')}</span>
-                  <b>{tProducts('priceFromSqft', { price: '3.50' }).replace(/^Dari\s+|^From\s+/i, '')}</b>
+                  <b>{tProducts('priceFromSqft', { price: '3.50' }).replace(/^(?:Dari|From)\s+/i, '').replace(/\s*起$/, '')}</b>
                 </span>
               </div>
 
