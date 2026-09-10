@@ -121,18 +121,19 @@ const ReasonIcon = ({ name }: { name: typeof reasonItems[number]['icon'] }) => {
 const faqIndexes = [1, 2, 3, 4, 5, 6, 7, 8]
 const reviewIndexes = [1, 2, 3, 4, 5, 6]
 
-// Before/After pairs — stable Unsplash photo IDs that resolve reliably on
-// the CDN. Each pair is the SAME room type (interior, exterior, accent
-// wall) shown pre- and post-paint so the slider reads as a real
-// transformation.
-const UNSPLASH = (id: string) => `https://images.unsplash.com/${id}?w=900&h=900&q=80&auto=format&fit=crop&crop=center`
+// Before/After pairs — the client's own watermarked job photos from
+// public/images/gallery. Each pair is a mid-paint or prep shot on the
+// "before" side and a finished handover shot on the "after" side. The
+// watermark sits at the identical spot in every file, so the two halves
+// meet cleanly at the divider instead of showing two clipped logos.
+const JOB = (name: string) => `/images/gallery/${name}.jpg`
 const beforeAfterPairs = [
-  // Interior — empty/raw room → freshly painted modern interior
-  { before: UNSPLASH('photo-1513694203232-719a280e022f'), after: UNSPLASH('photo-1505691938895-1758d7feb511'), captionKey: 'pair2Caption' },
-  // Exterior — weathered/older house → freshly painted exterior
-  { before: UNSPLASH('photo-1506744038136-46273834b3fb'), after: UNSPLASH('photo-1518780664697-55e3ad937233'), captionKey: 'pair1Caption' },
-  // Living/accent wall — older dim wall → fresh painted living room
-  { before: UNSPLASH('photo-1502672260266-1c1ef2d93688'), after: UNSPLASH('photo-1493809842364-78817add7ffb'), captionKey: 'pair3Caption' },
+  // Interior — beige walls mid-roller, drop sheets down → finished white room
+  { before: JOB('job-96'), after: JOB('job-88'), captionKey: 'pair2Caption' },
+  // Exterior — bare render being coated off the ladder → finished white facade
+  { before: JOB('job-84'), after: JOB('job-86'), captionKey: 'pair1Caption' },
+  // Ceiling + walls — pole roller on the ceiling → bright, evenly finished room
+  { before: JOB('job-92'), after: JOB('job-87'), captionKey: 'pair3Caption' },
 ] as const
 
 // Draggable before/after comparison slider. Pointer events handle both mouse
@@ -178,10 +179,13 @@ function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: { before:
       <img src={after} alt={afterLabel} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
       <span className="absolute bottom-3 right-3 z-20 text-[10px] font-medium uppercase tracking-wider px-2.5 py-1 rounded-full" style={{ background: 'var(--brand-yellow)', color: 'var(--brand-ink)' }}>{afterLabel}</span>
 
-      {/* Before (top layer, clipped) */}
-      <div className="absolute inset-0 overflow-hidden" style={{ width: `${pos}%` }}>
+      {/* Before (top layer, clipped). clip-path keeps the image at full
+          container width, so it stays pixel-aligned with the after layer at
+          the divider — sizing the wrapper to `pos`% instead re-scaled the
+          image and knocked the two halves of the watermark out of register. */}
+      <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={before} alt={beforeLabel} className="absolute inset-0 h-full object-cover" style={{ width: ref.current?.clientWidth ? `${ref.current.clientWidth}px` : '100%' }} draggable={false} />
+        <img src={before} alt={beforeLabel} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
         <span className="absolute bottom-3 left-3 text-[10px] font-medium uppercase tracking-wider px-2.5 py-1 rounded-full" style={{ background: 'var(--brand-ink)', color: '#fff' }}>{beforeLabel}</span>
       </div>
 
