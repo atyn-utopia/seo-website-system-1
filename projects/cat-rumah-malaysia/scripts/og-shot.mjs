@@ -53,6 +53,8 @@ const HERO = 'section.hero-sec';
 const HIDE = [
   '.fomo-bar', '.site-header', 'header',   // canonical chrome
   '.hero-stats', '.ops-ticker',            // hero-foot elements a crop would slice
+  '.usp-wrap',                             // USP strip lives inside the hero section
+                                           // now, which pushed the CTA below the crop
 ];
 // ─────────────────────────────────────────────────────────────────────────
 
@@ -70,7 +72,7 @@ for (const [code, prefix] of LOCALES) {
   await page.addStyleTag({
     content: `
       ${HIDE.join(', ')} { display: none !important; }
-      ${HERO} { padding-top: 0 !important; padding-bottom: 0 !important; }
+      ${HERO}, ${HERO} .hero-copy { padding-top: 0 !important; padding-bottom: 0 !important; }
     `,
   });
   await new Promise((r) => setTimeout(r, 300));
