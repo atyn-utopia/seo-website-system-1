@@ -93,9 +93,9 @@ export default async function LocationPage({ params }: { params: Promise<Params>
       <SiteHeader />
 
       {/* HERO — same treatment as the homepage: magnolia paper, left-aligned
-          type, the work photo in a card. Previously a navy gradient over
-          /images/hero-bg.jpg, a file that does not exist in public/, so the
-          photograph never loaded on any of the 165 location pages. */}
+          type, the work photo in a card. Previously a navy gradient over a hero
+          background file that was never present in public/, so the photograph
+          never loaded on any of the 165 location pages. */}
       <section style={{ background: 'var(--paper-2)' }}>
         <div className="max-w-6xl mx-auto px-6 pt-10 pb-14 md:pt-14 md:pb-16">
           <div className="hero-grid">
