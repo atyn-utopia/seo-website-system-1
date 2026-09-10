@@ -1,56 +1,96 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand palette — Cat Rumah Express
-     Headings + body text on light surfaces use near-black; brand blue
-     (#023d93) is reserved for dark-section gradients, accent borders, and
-     the language-switcher active pill. Yellow is the primary visual
-     accent, pink is the secondary highlight, cream is the warm off-white
-     section background. */
-  --brand-ink:            #111111;
-  --brand-ink-deep:       #0a0a0a;
-  --brand-blue:           #023d93;
-  --brand-blue-deep:      #022a66;
-  --brand-yellow:         #FFD23F;
-  --brand-yellow-deep:    #F0B900;
-  --brand-pink:           #E91E63;
-  --brand-pink-soft:      #FCE7EE;
-  --brand-sky:            #4FC3F7;
-  --brand-sky-soft:       #E5F4FB;
-  --brand-green:          #7CB342;
-  --brand-cream:          #FFF8EA;
-  --brand-cream-deep:     #FEEFC8;
-  --brand-charcoal:       #111111;
+  /* ── Colour is a code, not decoration ──────────────────────────────────
+     Every hue below is lifted from the Cat Rumah Express logo, and each one
+     is given exactly one job. A reader who learns the key in the hero can
+     use it for the rest of the page — which is the point of a colour key on
+     a painting company's site.
 
-  --ink:                  #111111;
-  --muted:                #5F6470;
-  --line:                 rgba(17, 17, 17, 0.10);
-  --line-strong:          rgba(17, 17, 17, 0.18);
+       deep blue   every heading, and the ink of the page
+       pink        the Dalaman service family (interior walls, bedroom,
+                   kitchen, bathroom)
+       sky         the Luar family (exterior, weathershield)
+       green       the Khas family (marble, texture, 3D relief)
+       yellow      the "cepat" promise and urgency only — never decoration
+       WhatsApp    #25D366, the CTA affordance, nothing else
 
-  --brand-accent:         #FFD23F;
-  --brand-accent-deep:    #F0B900;
+     Papers are three real off-whites, which is the question the trade
+     actually argues about: white, magnolia, cool white.
+     ─────────────────────────────────────────────────────────────────── */
+
+  /* ink */
+  --brand-ink:            #002E8A;
+  --brand-ink-deep:       #001F5E;
+  --brand-blue:           #002E8A;
+  --brand-blue-deep:      #001F5E;
+  --brand-charcoal:       #1A2233;
+  --ink:                  #1A2233;
+  --ink-muted:            #55606E;
+  --muted:                #55606E;
+
+  /* service families */
+  /* --fam is re-pointed per service group inline; this is its fallback. */
+  --fam:                  #DB3E77;
+  --fam-dalam:            #DB3E77;
+  --fam-luar:             #1E96DC;
+  --fam-khas:             #6BAF23;
+  --brand-pink:           #DB3E77;
+  --brand-pink-soft:      #FBE7EE;
+  --brand-sky:            #1E96DC;
+  --brand-sky-soft:       #E4F2FB;
+  --brand-green:          #6BAF23;
+  --brand-green-soft:     #EDF5E2;
+
+  /* promise + urgency */
+  --brand-yellow:         #F5C518;
+  --brand-yellow-deep:    #DDAE06;
+  --brand-accent:         #F5C518;
+  --brand-accent-deep:    #DDAE06;
+
+  /* papers */
+  --paper-1:              #FFFFFF;
+  --paper-2:              #F7F4E8;
+  --paper-3:              #EEF1F4;
+  --brand-cream:          #F7F4E8;
+  --brand-cream-deep:     #F0EBD8;
+
+  --line:                 rgba(0, 46, 138, 0.12);
+  --line-strong:          rgba(0, 46, 138, 0.22);
 
   --wa-green:             #25D366;
-  --wa-green-dark:        #1EAD53;
+  --wa-green-dark:        #1EBE57;
 
   --gut:                  20px;
   --dur:                  0.18s;
   --ease-out:             cubic-bezier(0.22, 1, 0.36, 1);
-  --font:                 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+
+  /* Archivo carries every heading, Figtree the body. --font stays defined
+     because older rules in this file still reference it. */
+  --font-display:         var(--font-archivo), 'Archivo', system-ui, sans-serif;
+  --font-heading:         var(--font-archivo), 'Archivo', system-ui, sans-serif;
+  --font-body:            var(--font-figtree), 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+  --font:                 var(--font-figtree), 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: var(--font);
+  font-family: var(--font-body);
   color: var(--ink);
-  background: #ffffff;
+  background: var(--paper-1);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
+  line-height: 1.4;
   margin: 0;
 }
+
+/* CLAUDE.md text-spacing defaults: tight for display type, comfortable for
+   reading. Set here so every component inherits them. */
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); line-height: 1.2; }
+p, li, blockquote,
+.blog-content p, .blog-content li, .blog-content blockquote { line-height: 1.4; }
 
 /* Heading weight scale:
    - h1: 700 (bold) — main page title
@@ -73,8 +113,8 @@ a { color: inherit; text-decoration: none; }
    ──────────────────────────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 12px 18px;
-  border-radius: 12px;
+  padding: 12px 20px;
+  border-radius: 999px;
   font-weight: 700; font-size: 14px;
   cursor: pointer;
   transition: transform var(--dur) var(--ease-out), background var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
@@ -158,7 +198,28 @@ a { color: inherit; text-decoration: none; }
 /* ────────────────────────────────────────────────────────────
    USP panel (single container, three cells — checklist rule)
    ──────────────────────────────────────────────────────────── */
-.usp-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.usp-panel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--paper-1);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.usp-cell {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 18px 22px;
+  border-right: 1px solid var(--line);
+}
+.usp-cell:last-child { border-right: 0; }
+.usp-tick { width: 4px; align-self: stretch; border-radius: 2px; flex: none; }
+.usp-cell h5 { font-size: 15px; font-weight: 700; color: var(--brand-ink); margin: 0 0 3px; }
+.usp-cell h5.usp-sub { font-size: 13px; font-weight: 400; color: var(--muted); margin: 0; line-height: 1.4; }
+@media (max-width: 860px) {
+  .usp-panel { grid-template-columns: 1fr; }
+  .usp-cell { border-right: 0; border-bottom: 1px solid var(--line); }
+  .usp-cell:last-child { border-bottom: 0; }
+}
 .usp-cell { display: flex; align-items: center; }
 
 /* ────────────────────────────────────────────────────────────
@@ -286,3 +347,103 @@ a { color: inherit; text-decoration: none; }
 }
 .utopia-credit:hover { transform: translateY(-1px); opacity: 0.85; }
 .utopia-credit__mark { flex: none; }
+
+
+/* ────────────────────────────────────────────────────────────
+   Hero — "Kad Warna"
+   Left-aligned on desktop; centred on mobile, which is the
+   primary viewport for this business.
+   ──────────────────────────────────────────────────────────── */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 52px;
+  align-items: center;
+}
+.hero-logo { display: block; margin-bottom: 22px; }
+.hero-h1 {
+  font-size: clamp(34px, 4.1vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.028em;
+  max-width: 13ch;
+  margin: 0;
+}
+.hero-sub {
+  font-family: var(--font-body);
+  font-size: 17.5px;
+  font-weight: 400;
+  line-height: 1.4;
+  max-width: 34ch;
+  margin: 18px 0 0;
+}
+.hero-acts { display: flex; align-items: center; gap: 22px; margin-top: 28px; flex-wrap: wrap; }
+.btn-lg { font-size: 15px; padding: 15px 24px; }
+.hero-price { display: block; font-weight: 700; color: var(--brand-ink); line-height: 1.2; }
+.hero-price-label { display: block; font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--muted); }
+.hero-price b { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--fam-dalam); }
+.hero-fine { margin: 14px 0 0; font-size: 13px; color: var(--muted); }
+.hero-trust {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  margin: 18px 0 0; font-size: 13px; color: var(--muted);
+}
+.hero-trust-rule { width: 1px; height: 13px; background: var(--line-strong); display: block; }
+
+.hero-shot {
+  aspect-ratio: 4 / 3;
+  max-width: 100%;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 26px 50px -22px rgba(0, 46, 138, 0.42), 0 6px 14px -8px rgba(0, 46, 138, 0.16);
+}
+.hero-key {
+  display: flex; gap: 18px; flex-wrap: wrap;
+  margin: 16px 0 0; padding: 0; list-style: none;
+}
+.hero-key li {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12.5px; font-weight: 600; color: var(--brand-ink);
+}
+.hero-key i { width: 11px; height: 11px; border-radius: 3px; flex: none; display: block; }
+
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 26px; text-align: center; }
+  .hero-logo { margin-left: auto; margin-right: auto; }
+  .hero-h1, .hero-sub { margin-left: auto; margin-right: auto; }
+  .hero-acts { flex-direction: column; align-items: center; gap: 16px; }
+  .hero-trust, .hero-key { justify-content: center; }
+}
+
+/* ────────────────────────────────────────────────────────────
+   Service swatch grid — nine services in three colour families.
+   The family colour is the tile's own band, so the colour key
+   learned in the hero keeps working down the page.
+   ──────────────────────────────────────────────────────────── */
+.fam-group + .fam-group { margin-top: 40px; }
+.fam-head {
+  display: flex; align-items: baseline; gap: 12px;
+  padding-bottom: 12px; margin-bottom: 18px;
+  border-bottom: 2px solid var(--fam);
+}
+.fam-head h4 { font-size: 19px; font-weight: 700; color: var(--brand-ink); margin: 0; }
+.fam-head span { font-family: var(--font-body); font-size: 13px; color: var(--muted); }
+.swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: 18px; }
+.swatch {
+  display: flex; flex-direction: column;
+  background: var(--paper-1);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.swatch-band { height: 6px; background: var(--fam); }
+.swatch-shot { aspect-ratio: 4 / 3; width: 100%; object-fit: cover; display: block; }
+.swatch-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.swatch-body h5 { font-size: 16px; font-weight: 700; color: var(--brand-ink); margin: 0; }
+.swatch-body p { font-family: var(--font-body); font-size: 13.5px; color: var(--muted); margin: 0; }
+.swatch-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-top: auto; padding-top: 14px;
+}
+.swatch-price { display: block; line-height: 1.2; }
+.swatch-price span { display: block; font-family: var(--font-body); font-size: 11px; font-weight: 500; color: var(--muted); }
+.swatch-price b { font-family: var(--font-display); font-size: 19px; font-weight: 800; color: var(--fam); }

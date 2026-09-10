@@ -138,7 +138,11 @@
       "fromLabel": "From",
       "priceFromSqft": "From RM {price}/sqft",
       "priceFromFlat": "From RM {price}",
-      "disclaimer": "Final pricing depends on site inspection and surface area. Pressure wash + crack filling already included."
+      "disclaimer": "Final pricing depends on site inspection and surface area. Pressure wash + crack filling already included.",
+      "famDalam": "Interior",
+      "famLuar": "Exterior",
+      "famKhas": "Specialty Finishes",
+      "serviceUnit": "services"
     },
     "calculator": {
       "tag": "PRICE CALCULATOR",

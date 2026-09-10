@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import { locations as locationConfig } from '@/config/locations'
 import WhatsAppClickTracker from '@/components/tracking/WhatsAppClickTracker'
@@ -42,18 +42,28 @@ function waRedirect(locale: string, message?: string, location?: string) {
   return `/${locale}/redirect-whatsapp-1${qs ? `?${qs}` : ''}`
 }
 
-// 8 products — slug aligns with key in messages, image points to the brand
-// photo in /public/images/products.
-const productKeys: { key: string; slug: string; img: string; unit: 'sqft' | 'flat' }[] = [
-  { key: 'interior', slug: 'interior', img: '/images/products/interior-1.jpg', unit: 'sqft' },
-  { key: 'bedroom', slug: 'bedroom', img: '/images/products/bedroom-1.jpg', unit: 'sqft' },
-  { key: 'kitchen', slug: 'kitchen', img: '/images/products/kitchen-1.jpg', unit: 'sqft' },
-  { key: 'bathroom', slug: 'bathroom', img: '/images/products/bathroom-1.jpg', unit: 'sqft' },
-  { key: 'exterior', slug: 'exterior', img: '/images/products/exterior-1.jpg', unit: 'sqft' },
-  { key: 'weathershield', slug: 'weathershield', img: '/images/products/exterior-2.jpg', unit: 'sqft' },
-  { key: 'marble', slug: 'marble', img: '/images/products/marble-1.jpg', unit: 'flat' },
-  { key: 'texture', slug: 'texture', img: '/images/products/texture-1.jpg', unit: 'flat' },
-  { key: 'decor3d', slug: 'decor3d', img: '/images/products/decor3d-1.jpg', unit: 'flat' },
+// Nine services, each filed under one of three families. The family owns a
+// colour, and that colour is the only thing it owns — the key shown in the
+// hero has to keep meaning the same thing this far down the page, otherwise
+// it was decoration after all.
+type Family = 'dalam' | 'luar' | 'khas'
+
+const productKeys: { key: string; slug: string; img: string; unit: 'sqft' | 'flat'; family: Family }[] = [
+  { key: 'interior', slug: 'interior', img: '/images/products/interior-1.jpg', unit: 'sqft', family: 'dalam' },
+  { key: 'bedroom', slug: 'bedroom', img: '/images/products/bedroom-1.jpg', unit: 'sqft', family: 'dalam' },
+  { key: 'kitchen', slug: 'kitchen', img: '/images/products/kitchen-1.jpg', unit: 'sqft', family: 'dalam' },
+  { key: 'bathroom', slug: 'bathroom', img: '/images/products/bathroom-1.jpg', unit: 'sqft', family: 'dalam' },
+  { key: 'exterior', slug: 'exterior', img: '/images/products/exterior-1.jpg', unit: 'sqft', family: 'luar' },
+  { key: 'weathershield', slug: 'weathershield', img: '/images/products/exterior-2.jpg', unit: 'sqft', family: 'luar' },
+  { key: 'marble', slug: 'marble', img: '/images/products/marble-1.jpg', unit: 'flat', family: 'khas' },
+  { key: 'texture', slug: 'texture', img: '/images/products/texture-1.jpg', unit: 'flat', family: 'khas' },
+  { key: 'decor3d', slug: 'decor3d', img: '/images/products/decor3d-1.jpg', unit: 'flat', family: 'khas' },
+]
+
+const familyOrder: { id: Family; token: string; labelKey: string }[] = [
+  { id: 'dalam', token: 'var(--fam-dalam)', labelKey: 'famDalam' },
+  { id: 'luar', token: 'var(--fam-luar)', labelKey: 'famLuar' },
+  { id: 'khas', token: 'var(--fam-khas)', labelKey: 'famKhas' },
 ]
 
 // Drop the leading/trailing "from" word (Dari / From / 起) from a localized
@@ -201,7 +211,7 @@ function CostCalculator({ locale, phoneNumber }: { locale: string; phoneNumber: 
       {/* Inputs */}
       <div className="flex flex-col gap-4">
         <div>
-          <label htmlFor="calc-service" className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--muted)' }}>
+          <label htmlFor="calc-service" className="block text-[13px] font-semibold mb-2" style={{ color: 'var(--muted)' }}>
             {t('serviceLabel')}
           </label>
           <select
@@ -225,7 +235,7 @@ function CostCalculator({ locale, phoneNumber }: { locale: string; phoneNumber: 
 
         {service.mode === 'sqft' ? (
           <div>
-            <label htmlFor="calc-area" className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--muted)' }}>
+            <label htmlFor="calc-area" className="block text-[13px] font-semibold mb-2" style={{ color: 'var(--muted)' }}>
               {t('areaLabel')}
             </label>
             <input
@@ -252,7 +262,7 @@ function CostCalculator({ locale, phoneNumber }: { locale: string; phoneNumber: 
           </div>
         ) : (
           <div>
-            <span className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--muted)' }}>
+            <span className="block text-[13px] font-semibold mb-2" style={{ color: 'var(--muted)' }}>
               {t('packageLabel')}
             </span>
             <div className="grid grid-cols-3 gap-2">
@@ -279,7 +289,7 @@ function CostCalculator({ locale, phoneNumber }: { locale: string; phoneNumber: 
       {/* Estimate output — blue dark panel per the palette rule (blue = bg) */}
       <div className="rounded-2xl p-6 flex flex-col justify-between" style={{ background: 'linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-blue-deep) 100%)', color: '#fff' }}>
         <div>
-          <span className="block text-[10px] font-medium uppercase tracking-[0.18em]" style={{ color: 'var(--brand-yellow)' }}>{t('estimateLabel')}</span>
+          <span className="block text-[11px] font-semibold" style={{ color: 'var(--brand-yellow)' }}>{t('estimateLabel')}</span>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="text-2xl font-bold" style={{ color: 'rgba(255,255,255,0.7)' }}>RM</span>
             <span className="text-5xl font-bold tabular-nums" style={{ color: '#fff', letterSpacing: '-0.02em' }}>{formatRM(estimate)}</span>
@@ -316,7 +326,7 @@ function StateCard({ stateName, cities, citiesLabel, locale }: { stateName: stri
     <article className="rounded-2xl p-5 flex flex-col" style={{ background: '#fff', border: '1px solid var(--line)', boxShadow: '0 4px 14px rgba(2, 61, 147, 0.04)', height: '100%' }}>
       <header className="flex items-baseline justify-between gap-2 pb-3 mb-3" style={{ borderBottom: '1px solid var(--line)' }}>
         <h4 className="text-sm font-bold m-0" style={{ color: 'var(--brand-ink)', letterSpacing: '-0.005em' }}>{stateName}</h4>
-        <span className="text-[10px] font-medium uppercase tracking-[0.14em]" style={{ color: 'var(--brand-pink)' }}>{cities.length} {citiesLabel}</span>
+        <span className="text-[11px] font-semibold" style={{ color: 'var(--brand-pink)' }}>{cities.length} {citiesLabel}</span>
       </header>
       <div className="flex flex-wrap gap-1.5">
         {cities.map((city) => (
@@ -334,23 +344,14 @@ function StateCard({ stateName, cities, citiesLabel, locale }: { stateName: stri
   )
 }
 
-function useFadeUp() {
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { el.classList.add('visible'); obs.disconnect() }
-    }, { threshold: 0.12 })
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
-  return ref
-}
-
-function FadeSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const ref = useFadeUp()
-  return <div ref={ref} className={`fade-up ${className}`} style={{ transitionDelay: `${delay}ms` }}>{children}</div>
+// Was a scroll-triggered fade-and-slide-up on every section. That pattern is
+// the generic default and it parks content at opacity 0 until an observer
+// fires, so the first frame of the page is half empty. The wrapper stays
+// because the layout uses it as a grid/flex child; the motion is gone. The
+// only movement left on the page is the FOMO countdown, which is movement
+// that means something.
+function FadeSection({ children, className = '' }: { children: React.ReactNode; className?: string; delay?: number }) {
+  return <div className={className}>{children}</div>
 }
 
 type Props = { phoneNumber: string }
@@ -394,109 +395,62 @@ export default function HomePageClient({ phoneNumber }: Props) {
 
   return (
     <main>
-      {/* PRODUCTS */}
-      <section id="products" className="py-16 px-6" style={{ background: 'var(--brand-cream)' }} aria-labelledby="products-heading">
+      {/* SERVICES — grouped into the three colour families rather than nine
+          interchangeable cards. The family band is the only decoration on a
+          tile, and it is carrying information. */}
+      <section id="products" className="py-16 px-6" style={{ background: 'var(--paper-2)' }} aria-labelledby="products-heading">
         <div className="max-w-6xl mx-auto">
-          <FadeSection>
-            <div className="text-center mb-10">
-              <h5 className="text-[11px] font-medium uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{t('products.tag')}</h5>
-              <h3 id="products-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{t('products.heading')}</h3>
-              <h5 className="text-sm font-normal mt-2 max-w-2xl mx-auto" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>{t('products.subheading')}</h5>
-            </div>
-          </FadeSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" style={{ gridAutoRows: '1fr' }}>
-            {productKeys.map((p, i) => (
-              <ProductImpressionTracker key={p.key} slug={p.slug}>
-                <FadeSection delay={i * 40}>
-                  <div
-                    className="product-card bg-white rounded-2xl overflow-hidden flex flex-col"
-                    style={{
-                      border: '1px solid var(--line)',
-                      boxShadow: '0 6px 20px rgba(17, 17, 17, 0.04)',
-                      height: '100%',
-                    }}
-                  >
-                    {/* Photo */}
-                    <div className="relative w-full overflow-hidden" style={{ aspectRatio: '4 / 3', background: 'var(--brand-cream)' }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={p.img} alt={t(`products.${p.key}.title`)} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-                    </div>
-
-                    {/* Body — title + description are both height-locked to
-                        2 lines, so every card has identical total height
-                        without needing flex spacers. */}
-                    <div className="px-5 pt-5 pb-5 flex flex-col">
-                      <h3
-                        className="text-[17px] m-0"
-                        style={{
-                          color: 'var(--brand-ink)',
-                          fontWeight: 700,
-                          lineHeight: 1.3,
-                          letterSpacing: '-0.01em',
-                          minHeight: 'calc(1.3em * 2)',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {t(`products.${p.key}.title`)}
-                      </h3>
-
-                      <p
-                        className="m-0 mt-3"
-                        style={{
-                          color: 'var(--muted)',
-                          fontSize: 13.5,
-                          lineHeight: 1.6,
-                          // Lock to exactly 2 lines so every card in the row
-                          // has identical vertical spacing — shorter
-                          // descriptions don't leave ghost whitespace and
-                          // longer ones truncate cleanly with an ellipsis.
-                          height: 'calc(1.6em * 2)',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {t(`products.${p.key}.description`)}
-                      </p>
-
-                      {/* Footer: price (left) + CTA (right). No mt-auto —
-                          cards already match height naturally because every
-                          row above is height-locked. */}
-                      <div
-                        className="mt-5 pt-4 flex items-center justify-between gap-3"
-                        style={{ borderTop: '1px solid var(--line)' }}
-                      >
-                        <div className="flex flex-col leading-tight">
-                          <span className="text-[10px] uppercase tracking-[0.16em]" style={{ color: 'var(--muted)', fontWeight: 500 }}>
-                            {t('products.fromLabel')}
-                          </span>
-                          <span className="text-[20px]" style={{ color: 'var(--brand-pink)', fontWeight: 700, letterSpacing: '-0.01em' }}>
-                            {stripFromWord(t(p.unit === 'sqft' ? 'products.priceFromSqft' : 'products.priceFromFlat', { price: t(`products.${p.key}.price`) }))}
-                          </span>
-                        </div>
-                        <WhatsAppClickTracker
-                          phoneNumber={phoneNumber}
-                          href={WA_LINK}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={t('products.bookNow')}
-                          className="shrink-0 inline-flex items-center justify-center rounded-full"
-                          style={{ background: '#25D366', color: '#fff', width: 44, height: 44, boxShadow: '0 6px 16px rgba(37, 211, 102, 0.30)' }}
-                        >
-                          <WAIcon />
-                        </WhatsAppClickTracker>
-                      </div>
-                    </div>
-                  </div>
-                </FadeSection>
-              </ProductImpressionTracker>
-            ))}
+          <div className="mb-10 max-w-2xl mx-auto text-center">
+            <h3 id="products-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{t('products.heading')}</h3>
+            <p className="mt-3" style={{ color: 'var(--muted)', fontSize: 15.5 }}>{t('products.subheading')}</p>
           </div>
-          <h5 className="text-center text-xs font-normal mt-6 max-w-2xl mx-auto" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>{t('products.disclaimer')}</h5>
+
+          {familyOrder.map((fam) => {
+            const items = productKeys.filter((p) => p.family === fam.id)
+            return (
+              <div key={fam.id} className="fam-group" style={{ ['--fam' as string]: fam.token }}>
+                <header className="fam-head">
+                  <h4>{t(`products.${fam.labelKey}`)}</h4>
+                  <span>{items.length} {t('products.serviceUnit')}</span>
+                </header>
+
+                <div className="swatch-grid">
+                  {items.map((p) => (
+                    <ProductImpressionTracker key={p.key} slug={p.slug}>
+                      <article className="swatch">
+                        <div className="swatch-band" aria-hidden="true" />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img className="swatch-shot" src={p.img} alt={t(`products.${p.key}.title`)} loading="lazy" />
+                        <div className="swatch-body">
+                          <h5>{t(`products.${p.key}.title`)}</h5>
+                          <p className="product-desc">{t(`products.${p.key}.description`)}</p>
+                          <div className="swatch-foot">
+                            <span className="swatch-price">
+                              <span>{t('products.fromLabel')}</span>
+                              <b>{stripFromWord(t(p.unit === 'sqft' ? 'products.priceFromSqft' : 'products.priceFromFlat', { price: t(`products.${p.key}.price`) }))}</b>
+                            </span>
+                            <WhatsAppClickTracker
+                              phoneNumber={phoneNumber}
+                              href={WA_LINK}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={t('products.bookNow')}
+                              className="shrink-0 inline-flex items-center justify-center rounded-full"
+                              style={{ background: '#25D366', color: '#fff', width: 42, height: 42 }}
+                            >
+                              <WAIcon />
+                            </WhatsAppClickTracker>
+                          </div>
+                        </div>
+                      </article>
+                    </ProductImpressionTracker>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
+
+          <p className="mt-10 text-xs max-w-2xl mx-auto text-center" style={{ color: 'var(--muted)' }}>{t('products.disclaimer')}</p>
         </div>
       </section>
 
@@ -505,7 +459,6 @@ export default function HomePageClient({ phoneNumber }: Props) {
         <div className="max-w-5xl mx-auto">
           <FadeSection>
             <div className="text-center mb-8">
-              <h5 className="text-[11px] font-medium uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{tCalc('tag')}</h5>
               <h3 id="calc-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{tCalc('heading')}</h3>
               <h5 className="text-sm font-normal mt-2 max-w-2xl mx-auto" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>{tCalc('subheading')}</h5>
             </div>
@@ -521,7 +474,6 @@ export default function HomePageClient({ phoneNumber }: Props) {
         <div className="max-w-6xl mx-auto">
           <FadeSection>
             <div className="text-center mb-10">
-              <h5 className="text-[11px] font-medium uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{t('whyChoose.tag')}</h5>
               <h3 id="why-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{t('whyChoose.heading')}</h3>
             </div>
           </FadeSection>
@@ -552,7 +504,6 @@ export default function HomePageClient({ phoneNumber }: Props) {
         <div className="max-w-6xl mx-auto">
           <FadeSection>
             <div className="text-center mb-10">
-              <h5 className="text-[11px] font-medium uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{t('howItWorks.tag')}</h5>
               <h3 id="how-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{t('howItWorks.heading')}</h3>
             </div>
           </FadeSection>
@@ -634,7 +585,6 @@ export default function HomePageClient({ phoneNumber }: Props) {
         <div className="max-w-6xl mx-auto">
           <FadeSection>
             <div className="text-center mb-10">
-              <h5 className="text-[11px] font-medium uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{t('gallery.tag')}</h5>
               <h3 className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{t('gallery.heading')}</h3>
             </div>
           </FadeSection>
@@ -654,7 +604,6 @@ export default function HomePageClient({ phoneNumber }: Props) {
         <div className="max-w-6xl mx-auto">
           <FadeSection>
             <div className="text-center mb-10">
-              <h5 className="text-[11px] font-medium uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{t('faq.tag')}</h5>
               <h3 id="faq-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{t('faq.heading')}</h3>
             </div>
           </FadeSection>
@@ -673,7 +622,6 @@ export default function HomePageClient({ phoneNumber }: Props) {
         <div className="max-w-6xl mx-auto">
           <FadeSection>
             <div className="text-center mb-10">
-              <h5 className="text-[11px] font-medium uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{t('locations.tag')}</h5>
               <h3 id="locations-heading" className="text-2xl md:text-3xl font-bold mb-2" style={{ color: 'var(--brand-ink)' }}>{t('locations.heading')}</h3>
               <h5 className="text-sm font-normal" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>{t('locations.subheading')}</h5>
             </div>
