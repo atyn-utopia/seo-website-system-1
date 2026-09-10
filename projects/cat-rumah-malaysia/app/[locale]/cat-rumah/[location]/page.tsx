@@ -5,7 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { locations, locationBySlug, cityDisplay } from '@/config/locations'
 import { routing, type Locale } from '@/i18n/routing'
 import { siteConfig } from '@/config/site'
-import { getPhoneNumber } from '@/lib/webcore'
+import { getPhoneNumber, getProducts } from '@/lib/webcore'
 import { LocalBusinessSchema } from '@/components/schema/LocalBusinessSchema'
 import { BreadcrumbSchema } from '@/components/schema/BreadcrumbSchema'
 import { ProductSchema } from '@/components/schema/ProductSchema'
@@ -67,6 +67,7 @@ export default async function LocationPage({ params }: { params: Promise<Params>
   const imageAlt = tRoot('imageAlt')
 
   const { phone } = await getPhoneNumber(location)
+  const products = await getProducts()
   const waHref = `/${locale}/redirect-whatsapp-1?loc=${encodeURIComponent(location)}`
 
   const nearby = loc.nearby
@@ -148,6 +149,7 @@ export default async function LocationPage({ params }: { params: Promise<Params>
         cityName={city}
         phoneNumber={phone}
         nearby={nearby}
+        products={products}
       />
 
       <SiteFooter locale={locale} />

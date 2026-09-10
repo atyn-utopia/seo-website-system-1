@@ -220,6 +220,7 @@ export function waLink(phone: string, message?: string): string {
 
 export interface ProductPhoto {
   url: string
+  sort_order?: number | null
 }
 
 export interface PriceLine {
@@ -255,13 +256,19 @@ interface ProductRow {
 
 export async function getProducts(): Promise<Product[]> {
   const path =
-    `products?select=id,slug,name,description,sale_price,rental_price,sort_order,product_photos(url),prices` +
+    `products?select=id,slug,name,description,sale_price,rental_price,sort_order,product_photos(url,sort_order),prices` +
     `&website=eq.${encodeURIComponent(siteConfig.domain)}` +
     `&is_active=eq.true` +
     `&order=sort_order.asc`
   const data = await webcoreFetch<ProductRow[]>(path, 'webcore-products')
   if (!data) return []
-  return data.map((p) => ({ ...p, prices: p.prices ?? [] }))
+  // An embed returns product_photos in no particular order; the first one is
+  // the card image, so sort before anything reads it.
+  return data.map((p) => ({
+    ...p,
+    prices: p.prices ?? [],
+    product_photos: [...(p.product_photos ?? [])].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)),
+  }))
 }
 
 /* ============================================================

@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import { locations as locationConfig } from '@/config/locations'
 import WhatsAppClickTracker from '@/components/tracking/WhatsAppClickTracker'
-import ProductImpressionTracker from '@/components/tracking/ProductImpressionTracker'
+import ServicesGrid from '@/components/ServicesGrid'
+import type { Product } from '@/lib/webcore'
 
 const WAIcon = () => (
   <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current shrink-0" aria-hidden="true">
@@ -42,33 +43,7 @@ function waRedirect(locale: string, message?: string, location?: string) {
   return `/${locale}/redirect-whatsapp-1${qs ? `?${qs}` : ''}`
 }
 
-// Nine services, each filed under one of three families. The family owns a
-// colour, and that colour is the only thing it owns — the key shown in the
-// hero has to keep meaning the same thing this far down the page, otherwise
-// it was decoration after all.
-type Family = 'dalam' | 'luar' | 'khas'
 
-const productKeys: { key: string; slug: string; img: string; unit: 'sqft' | 'flat'; family: Family }[] = [
-  { key: 'interior', slug: 'interior', img: '/images/products/interior-1.jpg', unit: 'sqft', family: 'dalam' },
-  { key: 'bedroom', slug: 'bedroom', img: '/images/products/bedroom-1.jpg', unit: 'sqft', family: 'dalam' },
-  { key: 'kitchen', slug: 'kitchen', img: '/images/products/kitchen-1.jpg', unit: 'sqft', family: 'dalam' },
-  { key: 'bathroom', slug: 'bathroom', img: '/images/products/bathroom-1.jpg', unit: 'sqft', family: 'dalam' },
-  { key: 'exterior', slug: 'exterior', img: '/images/products/exterior-1.jpg', unit: 'sqft', family: 'luar' },
-  { key: 'weathershield', slug: 'weathershield', img: '/images/products/exterior-2.jpg', unit: 'sqft', family: 'luar' },
-  { key: 'marble', slug: 'marble', img: '/images/products/marble-1.jpg', unit: 'flat', family: 'khas' },
-  { key: 'texture', slug: 'texture', img: '/images/products/texture-1.jpg', unit: 'flat', family: 'khas' },
-  { key: 'decor3d', slug: 'decor3d', img: '/images/products/decor3d-1.jpg', unit: 'flat', family: 'khas' },
-]
-
-const familyOrder: { id: Family; token: string; labelKey: string }[] = [
-  { id: 'dalam', token: 'var(--fam-dalam)', labelKey: 'famDalam' },
-  { id: 'luar', token: 'var(--fam-luar)', labelKey: 'famLuar' },
-  { id: 'khas', token: 'var(--fam-khas)', labelKey: 'famKhas' },
-]
-
-// Drop the leading/trailing "from" word (Dari / From / 起) from a localized
-// price line — the fromLabel above already shows it.
-const stripFromWord = (s: string) => s.replace(/^(?:Dari|From)\s+/i, '').replace(/\s*起$/, '')
 
 // Why-choose reasons — each has a matching SVG icon name.
 const reasonItems: { key: string; icon: 'paint' | 'bolt' | 'shield' | 'tag' | 'badge' | 'pin' }[] = [
@@ -354,9 +329,9 @@ function FadeSection({ children, className = '' }: { children: React.ReactNode; 
   return <div className={className}>{children}</div>
 }
 
-type Props = { phoneNumber: string }
+type Props = { phoneNumber: string; products: Product[] }
 
-export default function HomePageClient({ phoneNumber }: Props) {
+export default function HomePageClient({ phoneNumber, products }: Props) {
   const locale = useLocale()
   const t = useTranslations('home')
   const tCalc = useTranslations('home.calculator')
@@ -395,64 +370,7 @@ export default function HomePageClient({ phoneNumber }: Props) {
 
   return (
     <main>
-      {/* SERVICES — grouped into the three colour families rather than nine
-          interchangeable cards. The family band is the only decoration on a
-          tile, and it is carrying information. */}
-      <section id="products" className="py-16 px-6" style={{ background: 'var(--paper-2)' }} aria-labelledby="products-heading">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-10 max-w-2xl mx-auto text-center">
-            <h3 id="products-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{t('products.heading')}</h3>
-            <p className="mt-3" style={{ color: 'var(--muted)', fontSize: 15.5 }}>{t('products.subheading')}</p>
-          </div>
-
-          {familyOrder.map((fam) => {
-            const items = productKeys.filter((p) => p.family === fam.id)
-            return (
-              <div key={fam.id} className="fam-group" style={{ ['--fam' as string]: fam.token }}>
-                <header className="fam-head">
-                  <h4>{t(`products.${fam.labelKey}`)}</h4>
-                  <span>{items.length} {t('products.serviceUnit')}</span>
-                </header>
-
-                <div className="swatch-grid">
-                  {items.map((p) => (
-                    <ProductImpressionTracker key={p.key} slug={p.slug}>
-                      <article className="swatch">
-                        <div className="swatch-band" aria-hidden="true" />
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img className="swatch-shot" src={p.img} alt={t(`products.${p.key}.title`)} loading="lazy" />
-                        <div className="swatch-body">
-                          <h5>{t(`products.${p.key}.title`)}</h5>
-                          <p className="product-desc">{t(`products.${p.key}.description`)}</p>
-                          <div className="swatch-foot">
-                            <span className="swatch-price">
-                              <span>{t('products.fromLabel')}</span>
-                              <b>{stripFromWord(t(p.unit === 'sqft' ? 'products.priceFromSqft' : 'products.priceFromFlat', { price: t(`products.${p.key}.price`) }))}</b>
-                            </span>
-                            <WhatsAppClickTracker
-                              phoneNumber={phoneNumber}
-                              href={WA_LINK}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              aria-label={t('products.bookNow')}
-                              className="shrink-0 inline-flex items-center justify-center rounded-full"
-                              style={{ background: '#25D366', color: '#fff', width: 42, height: 42 }}
-                            >
-                              <WAIcon />
-                            </WhatsAppClickTracker>
-                          </div>
-                        </div>
-                      </article>
-                    </ProductImpressionTracker>
-                  ))}
-                </div>
-              </div>
-            )
-          })}
-
-          <p className="mt-10 text-xs max-w-2xl mx-auto text-center" style={{ color: 'var(--muted)' }}>{t('products.disclaimer')}</p>
-        </div>
-      </section>
+      <ServicesGrid products={products} phoneNumber={phoneNumber} waHref={WA_LINK} headingId="products-heading" />
 
       {/* CALCULATOR */}
       <section id="calculator" className="py-16 px-6" style={{ background: '#fff', borderTop: '1px solid var(--line)' }} aria-labelledby="calc-heading">
