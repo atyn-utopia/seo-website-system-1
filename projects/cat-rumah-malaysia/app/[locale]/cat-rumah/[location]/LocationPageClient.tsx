@@ -168,21 +168,14 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
 
   return (
     <main>
-      {/* 3-POINT USP BAR — same single panel as the homepage. */}
-      <section className="px-6 py-8 md:py-10" style={{ background: 'var(--paper-1)', borderBottom: '1px solid var(--line)' }} aria-label={tUsp('usp1Title')}>
-        <div className="max-w-6xl mx-auto">
+      {/* 3-POINT USP BAR — same three rule-divided columns as the homepage. */}
+      <section style={{ background: 'var(--paper-1)' }} aria-label={tUsp('usp1Title')}>
+        <div className="usp-wrap">
           <div className="usp-panel">
-            {uspItems.map((item, i) => (
+            {uspItems.map((item) => (
               <div key={item.icon} className="usp-cell">
-                <i
-                  className="usp-tick"
-                  style={{ background: ['var(--fam-dalam)', 'var(--fam-luar)', 'var(--fam-khas)'][i] }}
-                  aria-hidden="true"
-                />
-                <div>
-                  <h5>{item.title}</h5>
-                  <h5 className="usp-sub">{item.sub}</h5>
-                </div>
+                <h5>{item.title}</h5>
+                <h5 className="usp-sub">{item.sub}</h5>
               </div>
             ))}
           </div>

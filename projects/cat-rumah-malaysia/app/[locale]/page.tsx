@@ -74,31 +74,24 @@ export default async function HomePage({ params }: Props) {
       <FomoBanner locale={locale as Locale} />
       <SiteHeader />
 
-      {/* HERO — magnolia paper, left-aligned type, the work photo held in a
-          card. Deliberately neither dark nor centred: design-direction.md
-          audits four neighbouring fleet sites and marks both treatments HIGH
-          duplicate risk. The headline is one colour throughout — colouring a
-          single phrase inside it is the commonest generated-page tell. */}
-      <section className="hero-sec" style={{ background: 'var(--paper-2)' }}>
-        <div className="max-w-6xl mx-auto px-6 pt-10 pb-14 md:pt-14 md:pb-16">
-          <div className="hero-grid">
+      {/* HERO — clean, one accent. The h1 is capped at 38px deliberately:
+          presence comes from proportion, the blue rail on the price and a
+          photo that runs to the edge, not from scale. */}
+      <section className="hero-sec" style={{ background: 'var(--paper-1)' }}>
+        <div className="hero-grid">
             <div className="hero-copy">
               {/* The header chrome carries no logo, so the mark lives here. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/brand/logo-dark.png"
-                alt={tHero('logoAlt')}
-                className="hero-logo"
-                style={{ width: 150, height: 'auto' }}
-              />
+              <img src="/images/brand/logo-dark.png" alt={tHero('logoAlt')} className="hero-logo" />
 
-              <h1 className="hero-h1" style={{ color: 'var(--brand-ink)' }}>
-                {tHero('headline')} {tHero('headlineHighlight')}
-              </h1>
+              <h1 className="hero-h1">{tHero('headline')} {tHero('headlineHighlight')}</h1>
+              <h2 className="hero-sub">{tHero('subheadline')}</h2>
 
-              <h2 className="hero-sub" style={{ color: 'var(--muted)' }}>
-                {tHero('subheadline')}
-              </h2>
+              <div className="hero-rail">
+                <span className="hero-lbl">{tProducts('fromLabel')}</span>
+                <b>{tProducts('priceFromSqft', { price: '3.50' }).replace(/^(?:Dari|From)\s+/i, '').replace(/\s*起$/, '')}</b>
+                <em>{tHero('priceNote')}</em>
+              </div>
 
               <div className="hero-acts">
                 <WhatsAppClickTracker
@@ -106,7 +99,7 @@ export default async function HomePage({ params }: Props) {
                   href={waHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-wa btn-lg"
+                  className="btn btn-wa"
                 >
                   <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current shrink-0" aria-hidden="true">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
@@ -115,63 +108,33 @@ export default async function HomePage({ params }: Props) {
                   {tHero('cta')}
                 </WhatsAppClickTracker>
 
-                <span className="hero-price">
-                  <span className="hero-price-label">{tProducts('fromLabel')}</span>
-                  <b>{tProducts('priceFromSqft', { price: '3.50' }).replace(/^(?:Dari|From)\s+/i, '').replace(/\s*起$/, '')}</b>
-                </span>
+                <a href="#gallery" className="btn-ghost">{tHero('seeWork')}</a>
               </div>
-
-              <p className="hero-support hero-fine">{tHero('ctaSubtext')}</p>
-
-              <p className="hero-trust">
-                <span>{tHero('badgeCertified')}</span>
-                <span className="hero-trust-rule" aria-hidden="true" />
-                <span>{tHero('badgeCities')}</span>
-              </p>
             </div>
 
             <div className="hero-media">
-              {/* CSS background rather than an <img> so the announced element
-                  is the one the fleet convention expects: role=img + label. */}
               <div
                 className="hero-shot"
                 role="img"
                 aria-label={imageAlt}
-                style={{ backgroundImage: 'url(/images/painters/painter-bg.jpg)' }}
+                style={{ backgroundImage: 'url(/images/hero/hero-card.jpg)' }}
               />
-              {/* The colour key. Every service on this page is filed under one
-                  of these three, and the same colour marks it wherever it
-                  appears — so the key is read once and reused. */}
-              <ul className="hero-key">
+              <ul className="hero-chips">
                 <li><i style={{ background: 'var(--fam-dalam)' }} aria-hidden="true" />{tProducts('famDalam')}</li>
                 <li><i style={{ background: 'var(--fam-luar)' }} aria-hidden="true" />{tProducts('famLuar')}</li>
                 <li><i style={{ background: 'var(--fam-khas)' }} aria-hidden="true" />{tProducts('famKhas')}</li>
               </ul>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* 3-POINT USP BAR — one panel, three cells, divided by rules rather
-          than by giving each cell its own card fill and border. */}
-      <section
-        className="px-6 py-10 md:py-12"
-        style={{ background: 'var(--paper-1)', borderBottom: '1px solid var(--line)' }}
-        aria-label={tUsp('usp1Title')}
-      >
-        <div className="max-w-6xl mx-auto">
+        {/* 3-POINT USP BAR — three rule-divided columns directly under the
+            hero, not a panel of inset cards. */}
+        <div className="usp-wrap">
           <div className="usp-panel">
-            {uspItems.map((item, i) => (
+            {uspItems.map((item) => (
               <div key={item.icon} className="usp-cell">
-                <i
-                  className="usp-tick"
-                  style={{ background: [ 'var(--fam-dalam)', 'var(--fam-luar)', 'var(--fam-khas)' ][i] }}
-                  aria-hidden="true"
-                />
-                <div>
-                  <h5>{item.title}</h5>
-                  <h5 className="usp-sub">{item.sub}</h5>
-                </div>
+                <h5>{item.title}</h5>
+                <h5 className="usp-sub">{item.sub}</h5>
               </div>
             ))}
           </div>

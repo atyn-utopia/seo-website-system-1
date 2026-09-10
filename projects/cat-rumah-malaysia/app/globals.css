@@ -65,12 +65,12 @@
   --dur:                  0.18s;
   --ease-out:             cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Archivo carries every heading, Figtree the body. --font stays defined
-     because older rules in this file still reference it. */
-  --font-display:         var(--font-archivo), 'Archivo', system-ui, sans-serif;
-  --font-heading:         var(--font-archivo), 'Archivo', system-ui, sans-serif;
-  --font-body:            var(--font-figtree), 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
-  --font:                 var(--font-figtree), 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+  /* Plus Jakarta Sans carries every heading, Inter the body. --font stays
+     defined because older rules in this file still reference it. */
+  --font-display:         var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-heading:         var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body:            var(--font-inter), 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+  --font:                 var(--font-inter), 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -89,8 +89,7 @@ body {
 /* CLAUDE.md text-spacing defaults: tight for display type, comfortable for
    reading. Set here so every component inherits them. */
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); line-height: 1.2; }
-p, li, blockquote,
-.blog-content p, .blog-content li, .blog-content blockquote { line-height: 1.4; }
+p, li, blockquote { line-height: 1.4; }
 
 /* Heading weight scale:
    - h1: 700 (bold) — main page title
@@ -198,44 +197,185 @@ a { color: inherit; text-decoration: none; }
 /* ────────────────────────────────────────────────────────────
    USP panel (single container, three cells — checklist rule)
    ──────────────────────────────────────────────────────────── */
+/* Pull the panel 24px left of the content edge so the cell padding lands the
+   text on the same line as the hero copy — measured, not guessed. */
+.usp-wrap { padding-inline: max(0px, calc((100vw - 1152px) / 2 - 24px)); }
+
 .usp-panel {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background: var(--paper-1);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  overflow: hidden;
+  border-top: 1px solid var(--line);
 }
 .usp-cell {
-  display: flex; gap: 12px; align-items: flex-start;
-  padding: 18px 22px;
+  padding: 18px 24px;
   border-right: 1px solid var(--line);
 }
 .usp-cell:last-child { border-right: 0; }
-.usp-tick { width: 4px; align-self: stretch; border-radius: 2px; flex: none; }
-.usp-cell h5 { font-size: 15px; font-weight: 700; color: var(--brand-ink); margin: 0 0 3px; }
-.usp-cell h5.usp-sub { font-size: 13px; font-weight: 400; color: var(--muted); margin: 0; line-height: 1.4; }
+.usp-cell h5 {
+  font-size: 14px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--brand-ink); margin: 0;
+}
+.usp-cell h5.usp-sub {
+  font-family: var(--font-body);
+  font-size: 12.5px; font-weight: 400; line-height: 1.4;
+  color: var(--muted); margin: 3px 0 0;
+}
 @media (max-width: 860px) {
   .usp-panel { grid-template-columns: 1fr; }
   .usp-cell { border-right: 0; border-bottom: 1px solid var(--line); }
   .usp-cell:last-child { border-bottom: 0; }
 }
-.usp-cell { display: flex; align-items: center; }
 
 /* ────────────────────────────────────────────────────────────
-   Fade-in animation used by FadeSection
+   Hero — clean, one accent
+   The h1 is capped at 38px on purpose. Presence is meant to come
+   from proportion, the blue rail on the price, and a photo that
+   runs to the edge — not from scale. Left-aligned on desktop,
+   centred on mobile, which is the primary viewport here.
    ──────────────────────────────────────────────────────────── */
-.fade-up { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.fade-up.visible { opacity: 1; transform: translateY(0); }
-
-/* ────────────────────────────────────────────────────────────
-   Mobile nav-cta safety: header's own styled-jsx already hides
-   .nav-cta below 880px, but a globals.css rule guards against
-   any future component that emits the class.
-   ──────────────────────────────────────────────────────────── */
-@media (max-width: 879px) {
-  .nav-cta { display: none !important; }
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+  align-items: stretch;
 }
+.hero-copy { padding: 60px 52px 56px max(20px, calc((100vw - 1152px) / 2)); }
+.hero-logo { display: block; width: 112px; height: auto; margin-bottom: 30px; }
+.hero-h1 {
+  font-size: clamp(27px, 2.9vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  color: var(--brand-ink);
+  max-width: 16ch;
+  margin: 0;
+}
+.hero-sub {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: 0;
+  color: var(--muted);
+  max-width: 42ch;
+  margin: 15px 0 0;
+}
+
+/* the one accent in the hero */
+.hero-rail {
+  margin-top: 28px;
+  border-left: 3px solid var(--brand-blue);
+  padding: 4px 0 4px 18px;
+}
+.hero-rail .hero-lbl {
+  display: block;
+  font: 600 11.5px/1 var(--font-body);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #98a1b0;
+}
+.hero-rail b {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  color: var(--brand-blue);
+  margin-top: 4px;
+}
+.hero-rail em {
+  display: block;
+  font: 500 13px/1.4 var(--font-body);
+  font-style: normal;
+  color: #8b94a3;
+  margin-top: 6px;
+}
+
+.hero-acts { display: flex; align-items: center; gap: 16px; margin-top: 28px; flex-wrap: wrap; }
+.btn-ghost {
+  display: inline-flex; align-items: center;
+  font: 600 14px/1 var(--font-body);
+  color: var(--brand-ink);
+  border: 1px solid #d9dee6;
+  padding: 14px 20px;
+  border-radius: 999px;
+}
+.btn-ghost:hover { border-color: var(--brand-blue); }
+
+.hero-media { position: relative; min-height: 430px; background: var(--paper-3); }
+.hero-shot {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+.hero-chips {
+  position: absolute; left: 22px; bottom: 22px;
+  display: flex; gap: 7px; flex-wrap: wrap;
+  margin: 0; padding: 0; list-style: none;
+}
+.hero-chips li {
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(6px);
+  font: 600 12px/1 var(--font-body);
+  color: var(--brand-ink);
+  padding: 9px 13px;
+  border-radius: 7px;
+}
+.hero-chips i { width: 9px; height: 9px; border-radius: 2px; flex: none; display: block; }
+
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-copy { padding: 32px 20px 34px; order: 2; text-align: center; }
+  .hero-media { order: 1; min-height: 250px; }
+  .hero-logo { margin-left: auto; margin-right: auto; }
+  .hero-h1, .hero-sub { margin-left: auto; margin-right: auto; }
+  .hero-rail {
+    border-left: 0;
+    border-top: 3px solid var(--brand-blue);
+    padding: 16px 0 0;
+    display: inline-block;
+    margin-left: auto; margin-right: auto;
+  }
+  .hero-acts { justify-content: center; }
+}
+
+/* ────────────────────────────────────────────────────────────
+   Service swatch grid — nine services in three colour families.
+   The family colour is the tile's own band, so the colour key
+   learned in the hero keeps working down the page.
+   ──────────────────────────────────────────────────────────── */
+.fam-group + .fam-group { margin-top: 40px; }
+.fam-head {
+  display: flex; align-items: baseline; gap: 12px;
+  padding-bottom: 12px; margin-bottom: 18px;
+  border-bottom: 2px solid var(--fam);
+}
+.fam-head h4 { font-size: 19px; font-weight: 700; color: var(--brand-ink); margin: 0; }
+.fam-head span { font-family: var(--font-body); font-size: 13px; color: var(--muted); }
+.swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: 18px; }
+/* The tracking wrapper sits between the grid and the tile, so hand the
+   stretch down to the tile itself. */
+.swatch-grid > * { display: flex; }
+.swatch {
+  display: flex; flex-direction: column;
+  flex: 1 1 auto; width: 100%;
+  background: var(--paper-1);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.swatch-band { height: 6px; background: var(--fam); }
+.swatch-shot { aspect-ratio: 4 / 3; width: 100%; object-fit: cover; display: block; }
+.swatch-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.swatch-body h5 { font-size: 16px; font-weight: 700; color: var(--brand-ink); margin: 0; }
+.swatch-body p { font-family: var(--font-body); font-size: 13.5px; color: var(--muted); margin: 0; }
+.swatch-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-top: auto; padding-top: 14px;
+}
+.swatch-price { display: block; line-height: 1.2; }
+.swatch-price span { display: block; font-family: var(--font-body); font-size: 11px; font-weight: 500; color: var(--muted); }
+.swatch-price b { font-family: var(--font-display); font-size: 19px; font-weight: 800; color: var(--fam); }
 
 /* ────────────────────────────────────────────────────────────
    Blog article styles — h2/h3/h4, paragraphs, lists, TOC
@@ -451,3 +591,13 @@ a { color: inherit; text-decoration: none; }
 .swatch-price { display: block; line-height: 1.2; }
 .swatch-price span { display: block; font-family: var(--font-body); font-size: 11px; font-weight: 500; color: var(--muted); }
 .swatch-price b { font-family: var(--font-display); font-size: 19px; font-weight: 800; color: var(--fam); }
+
+/* ────────────────────────────────────────────────────────────
+   Mobile nav-cta safety: the header's own styled-jsx already
+   hides .nav-cta below 880px, but this guards against any future
+   component that emits the class. Restored — it sat inside the
+   span an earlier edit in this branch cut out.
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 879px) {
+  .nav-cta { display: none !important; }
+}
