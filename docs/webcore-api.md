@@ -97,7 +97,7 @@ straight in as `company_id`.
 GET    /api/public/products?website=<d>              # nested main+sub
 GET    /api/public/products?website=<d>&slug=<slug>  # single
 GET    /api/public/products?website=<d>&type=all     # flat
-POST   /api/public/products   { website, name, slug, description?, sale_price?, rental_price?, prices?, parent_id?, photos? }
+POST   /api/public/products   { website, name, slug, description?, sale_price?, rental_price?, prices?, parent_id?, photos?: [{ url }] }
 PATCH  /api/public/products?id=<id>   { ...fields }
 DELETE /api/public/products?id=<id>
 ```
@@ -111,6 +111,16 @@ For anything with more than one rate send `prices` instead of the single
   { "label": "Bulanan", "amount": 32000, "unit": "month" },
   { "label": "Deposit", "amount": 5000 }
 ]
+```
+
+`photos` is an array of `{ url }` objects — a bare string array is rejected with
+`400 photos[0].url is required`. `PATCH` accepts it too, and **replaces** the
+product's photos rather than appending, so send the full set you want to keep.
+That is how to change a live product's photos: DELETE + re-POST would give it a
+new id and orphan anything that referenced the old one.
+
+```jsonc
+"photos": [{ "url": "/images/fleet/motor.jpg" }]
 ```
 
 ## 3. Phone numbers — `phones:write`
