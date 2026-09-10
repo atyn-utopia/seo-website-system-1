@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import WhatsAppClickTracker from '@/components/tracking/WhatsAppClickTracker'
 
@@ -89,7 +89,7 @@ const ReasonIcon = ({ name }: { name: typeof REASON_ITEMS[number]['icon'] }) => 
 const GALLERY_IMAGES = ['job-80','job-82','job-83','job-85','job-86','job-87','job-88','job-89','job-90','job-92','job-94','job-96'].map((n) => `/images/gallery/${n}.jpg`)
 
 const ChevronIcon = ({ open }: { open: boolean }) => (
-  <svg viewBox="0 0 20 20" className="w-5 h-5 shrink-0" style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s', color: '#142C50' }} fill="none" aria-hidden="true">
+  <svg viewBox="0 0 20 20" className="w-5 h-5 shrink-0" style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s', color: 'var(--brand-ink)' }} fill="none" aria-hidden="true">
     <path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
@@ -97,35 +97,21 @@ const ChevronIcon = ({ open }: { open: boolean }) => (
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false)
   return (
-    <div style={{ borderBottom: '1px solid rgba(20,28,48,0.10)' }}>
-      <button onClick={() => setOpen((o) => !o)} className="w-full flex items-center justify-between py-4 text-left cursor-pointer text-sm font-semibold" style={{ color: '#142C50' }} aria-expanded={open}>
+    <div style={{ borderBottom: '1px solid var(--line)' }}>
+      <button onClick={() => setOpen((o) => !o)} className="w-full flex items-center justify-between py-4 text-left cursor-pointer text-sm font-semibold" style={{ color: 'var(--brand-ink)' }} aria-expanded={open}>
         <span className="pr-4">{q}</span>
         <ChevronIcon open={open} />
       </button>
       <div style={{ maxHeight: open ? '300px' : '0px', overflow: 'hidden', transition: 'max-height 0.35s ease' }}>
-        <h5 className="pb-4 text-sm font-normal" style={{ color: '#5B6478', lineHeight: 1.6 }}>{a}</h5>
+        <h5 className="pb-4 text-sm font-normal" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>{a}</h5>
       </div>
     </div>
   )
 }
 
-function useFadeUp() {
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { el.classList.add('visible'); obs.disconnect() }
-    }, { threshold: 0.12 })
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
-  return ref
-}
-
+// Motion stripped for the same reason as the homepage — see HomePageClient.
 function FadeSection({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  const ref = useFadeUp()
-  return <div ref={ref} className={`fade-up ${className}`}>{children}</div>
+  return <div className={className}>{children}</div>
 }
 
 function waRedirect(locale: string, message?: string, location?: string) {
@@ -182,27 +168,20 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
 
   return (
     <main>
-      {/* 3-POINT USP BAR */}
-      <section className="px-6 py-8 md:py-10" style={{ background: '#fff', borderBottom: '1px solid rgba(20,28,48,0.10)' }} aria-label="Why choose us">
+      {/* 3-POINT USP BAR — same single panel as the homepage. */}
+      <section className="px-6 py-8 md:py-10" style={{ background: 'var(--paper-1)', borderBottom: '1px solid var(--line)' }} aria-label={tUsp('usp1Title')}>
         <div className="max-w-6xl mx-auto">
-          <div
-            className="usp-panel rounded-2xl"
-            style={{ background: '#FAF7F2', border: '1px solid rgba(20,28,48,0.10)', padding: '20px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}
-          >
-            {uspItems.map((item) => (
-              <div
-                key={item.icon}
-                className="usp-cell flex flex-col md:flex-row md:items-center items-center text-center md:text-left gap-3 md:gap-4 p-3 md:p-4 rounded-xl"
-                style={{ background: '#fff', border: '1px solid rgba(20,28,48,0.06)' }}
-              >
-                <span className="shrink-0 inline-flex items-center justify-center w-12 h-12 rounded-xl" style={{ background: 'rgba(20,28,48,0.06)', color: '#142C50' }} aria-hidden="true">
-                  {item.icon === 'clock' && (<svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>)}
-                  {item.icon === 'paint' && (<svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V3H5v8h14V7zM12 11v4M9 21h6v-6H9v6z"/></svg>)}
-                  {item.icon === 'shield' && (<svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>)}
-                </span>
+          <div className="usp-panel">
+            {uspItems.map((item, i) => (
+              <div key={item.icon} className="usp-cell">
+                <i
+                  className="usp-tick"
+                  style={{ background: ['var(--fam-dalam)', 'var(--fam-luar)', 'var(--fam-khas)'][i] }}
+                  aria-hidden="true"
+                />
                 <div>
-                  <h5 className="text-sm font-bold" style={{ color: '#142C50' }}>{item.title}</h5>
-                  <h5 className="text-xs font-normal mt-0.5" style={{ color: '#5B6478', lineHeight: 1.6 }}>{item.sub}</h5>
+                  <h5>{item.title}</h5>
+                  <h5 className="usp-sub">{item.sub}</h5>
                 </div>
               </div>
             ))}
@@ -211,16 +190,16 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
       </section>
 
       {/* SERVICES IN CITY */}
-      <section className="py-16 px-6" style={{ background: '#FAF7F2' }}>
+      <section className="py-16 px-6" style={{ background: 'var(--paper-2)' }}>
         <div className="max-w-6xl mx-auto">
           <FadeSection>
-            <h3 className="text-2xl md:text-3xl font-bold text-center mb-10" style={{ color: '#142C50' }}>{t('services.heading', { city: cityName })}</h3>
+            <h3 className="text-2xl md:text-3xl font-bold text-center mb-10" style={{ color: 'var(--brand-ink)' }}>{t('services.heading', { city: cityName })}</h3>
           </FadeSection>
           <div className="grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
             {(['interior', 'exterior', 'ceiling', 'fence'] as const).map((k) => (
               <FadeSection key={k}>
-                <div className="bg-white p-5 rounded-xl" style={{ border: '1px solid rgba(20,28,48,0.10)' }}>
-                  <h5 className="text-sm font-normal" style={{ color: '#142C50', lineHeight: 1.6 }}>
+                <div className="bg-white p-5 rounded-xl" style={{ border: '1px solid var(--line)' }}>
+                  <h5 className="text-sm font-normal" style={{ color: 'var(--brand-ink)', lineHeight: 1.6 }}>
                     {t(`services.${k}`, { city: cityName })}
                   </h5>
                 </div>
@@ -235,7 +214,6 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
         <div className="max-w-6xl mx-auto">
           <FadeSection>
             <div className="text-center mb-10">
-              <h5 className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{tHomeWhy('tag')}</h5>
               <h3 id="loc-why-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{t('why.heading', { city: cityName })}</h3>
             </div>
           </FadeSection>
@@ -262,7 +240,6 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
         <div className="max-w-6xl mx-auto">
           <FadeSection>
             <div className="text-center mb-10">
-              <h5 className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{tHomeGallery('tag')}</h5>
               <h3 id="loc-gallery-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{tHomeGallery('heading')}</h3>
             </div>
           </FadeSection>
@@ -282,7 +259,6 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
         <div className="max-w-6xl mx-auto">
           <FadeSection>
             <div className="text-center mb-10">
-              <h5 className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{tHomeProducts('tag')}</h5>
               <h3 id="loc-products-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{tHomeProducts('heading')}</h3>
               <h5 className="text-sm font-normal mt-2 max-w-2xl mx-auto" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>{tHomeProducts('subheading')}</h5>
             </div>
@@ -304,7 +280,7 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
                     </p>
                     <div className="mt-5 pt-4 flex items-center justify-between gap-3" style={{ borderTop: '1px solid var(--line)' }}>
                       <div className="flex flex-col leading-tight">
-                        <span className="text-[10px] uppercase tracking-[0.16em]" style={{ color: 'var(--muted)', fontWeight: 500 }}>{tHomeProducts('fromLabel')}</span>
+                        <span className="text-[11px]" style={{ color: 'var(--muted)', fontWeight: 500 }}>{tHomeProducts('fromLabel')}</span>
                         <span className="text-[20px]" style={{ color: 'var(--brand-pink)', fontWeight: 700, letterSpacing: '-0.01em' }}>{stripFromWord(tHomeProducts(p.unit === 'sqft' ? 'priceFromSqft' : 'priceFromFlat', { price: tHomeProducts(`${p.key}.price`) }))}</span>
                       </div>
                       <WhatsAppClickTracker phoneNumber={phoneNumber} href={waLink} target="_blank" rel="noopener noreferrer" aria-label={tHomeProducts('bookNow')} className="shrink-0 inline-flex items-center justify-center rounded-full" style={{ background: '#25D366', color: '#fff', width: 44, height: 44, boxShadow: '0 6px 16px rgba(37, 211, 102, 0.30)' }}>
@@ -324,7 +300,6 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
         <div className="max-w-5xl mx-auto">
           <FadeSection>
             <div className="text-center mb-8">
-              <h5 className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{tCalc('tag')}</h5>
               <h3 id="loc-calc-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{tCalc('heading')}</h3>
               <h5 className="text-sm font-normal mt-2 max-w-2xl mx-auto" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>{tCalc('subheading')}</h5>
             </div>
@@ -333,7 +308,7 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
             <div className="rounded-2xl p-6 md:p-8 grid md:grid-cols-2 gap-6 md:gap-8" style={{ background: '#fff', border: '1px solid var(--line)', boxShadow: '0 20px 50px rgba(17, 17, 17, 0.06)' }}>
               <div className="flex flex-col gap-4">
                 <div>
-                  <label htmlFor="loc-calc-service" className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--muted)' }}>{tCalc('serviceLabel')}</label>
+                  <label htmlFor="loc-calc-service" className="block text-[13px] font-semibold mb-2" style={{ color: 'var(--muted)' }}>{tCalc('serviceLabel')}</label>
                   <select id="loc-calc-service" value={calcServiceKey} onChange={(e) => setCalcServiceKey(e.target.value)} className="calc-select w-full px-4 py-3 rounded-xl text-sm font-semibold">
                     <optgroup label="Per sqft">
                       {sqftServices.map((s) => (
@@ -349,13 +324,13 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
                 </div>
                 {calcService.mode === 'sqft' ? (
                   <div>
-                    <label htmlFor="loc-calc-area" className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--muted)' }}>{tCalc('areaLabel')}</label>
+                    <label htmlFor="loc-calc-area" className="block text-[13px] font-semibold mb-2" style={{ color: 'var(--muted)' }}>{tCalc('areaLabel')}</label>
                     <input id="loc-calc-area" type="number" min={50} step={50} value={calcArea} onChange={(e) => setCalcArea(Math.max(50, Number(e.target.value) || 0))} placeholder={tCalc('areaPlaceholder')} className="w-full px-4 py-3 rounded-xl text-sm font-semibold" style={{ background: 'var(--brand-cream)', border: '1px solid var(--line-strong)', color: 'var(--brand-ink)' }} />
                     <input type="range" min={50} max={5000} step={50} value={Math.min(calcArea, 5000)} onChange={(e) => setCalcArea(Number(e.target.value))} className="w-full mt-3" style={{ accentColor: 'var(--brand-yellow)' }} />
                   </div>
                 ) : (
                   <div>
-                    <span className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--muted)' }}>{tCalc('packageLabel')}</span>
+                    <span className="block text-[13px] font-semibold mb-2" style={{ color: 'var(--muted)' }}>{tCalc('packageLabel')}</span>
                     <div className="grid grid-cols-3 gap-2">
                       {(['single', 'medium', 'large'] as const).map((id) => (
                         <button key={id} type="button" onClick={() => setCalcPkg(id)} className="px-3 py-2.5 rounded-xl text-[11px] font-bold text-center" style={{ background: calcPkg === id ? 'var(--brand-blue)' : 'var(--brand-cream)', color: calcPkg === id ? '#fff' : 'var(--brand-ink)', border: `1px solid ${calcPkg === id ? 'var(--brand-blue)' : 'var(--line-strong)'}` }}>
@@ -439,10 +414,10 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
       </section>
 
       {/* FAQ */}
-      <section className="py-16 px-6" style={{ background: '#FAF7F2' }}>
+      <section className="py-16 px-6" style={{ background: 'var(--paper-2)' }}>
         <div className="max-w-6xl mx-auto">
           <FadeSection>
-            <h3 className="text-2xl md:text-3xl font-bold text-center mb-10" style={{ color: '#142C50' }}>{t('faq.heading', { city: cityName })}</h3>
+            <h3 className="text-2xl md:text-3xl font-bold text-center mb-10" style={{ color: 'var(--brand-ink)' }}>{t('faq.heading', { city: cityName })}</h3>
           </FadeSection>
           <FadeSection>
             <div className="max-w-3xl mx-auto">
@@ -458,12 +433,12 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
         <section className="py-16 px-6" style={{ background: '#fff' }}>
           <div className="max-w-6xl mx-auto">
             <FadeSection>
-              <h3 className="text-2xl md:text-3xl font-bold text-center mb-10" style={{ color: '#142C50' }}>{t('nearby.heading')}</h3>
+              <h3 className="text-2xl md:text-3xl font-bold text-center mb-10" style={{ color: 'var(--brand-ink)' }}>{t('nearby.heading')}</h3>
             </FadeSection>
             <FadeSection>
               <div className="flex flex-wrap justify-center gap-3">
                 {nearby.map((n) => (
-                  <a key={n.slug} href={`/${locale}/cat-rumah/${n.slug}`} className="px-5 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-80" style={{ background: 'rgba(20,28,48,0.06)', color: '#142C50', border: '1px solid rgba(20,28,48,0.10)' }}>
+                  <a key={n.slug} href={`/${locale}/cat-rumah/${n.slug}`} className="px-5 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-80" style={{ background: 'var(--line)', color: 'var(--brand-ink)', border: '1px solid var(--line)' }}>
                     {t('nearby.viewService', { city: n.name })}
                   </a>
                 ))}
@@ -476,7 +451,7 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
       {/* FINAL CTA */}
       <section
         className="relative py-20 px-6 text-center text-white overflow-hidden"
-        style={{ backgroundImage: 'linear-gradient(rgba(20,28,48,0.88), rgba(20,28,48,0.88)), url(/images/bg-cta.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        style={{ backgroundImage: 'linear-gradient(rgba(0, 31, 94, 0.88), rgba(0, 31, 94, 0.88)), url(/images/gallery/job-86.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="absolute inset-0 hero-bg" role="img" aria-label={t('cta.heading', { city: cityName })} style={{ pointerEvents: 'none' }} />
         <div className="relative max-w-3xl mx-auto">

@@ -138,7 +138,11 @@
       "fromLabel": "起",
       "priceFromSqft": "RM {price}/sqft 起",
       "priceFromFlat": "RM {price} 起",
-      "disclaimer": "最终价格视乎现场检查与表面积。高压清洗与裂缝填补已含在内。"
+      "disclaimer": "最终价格视乎现场检查与表面积。高压清洗与裂缝填补已含在内。",
+      "famDalam": "室内",
+      "famLuar": "室外",
+      "famKhas": "特殊饰面",
+      "serviceUnit": "项服务"
     },
     "calculator": {
       "tag": "价格计算器",

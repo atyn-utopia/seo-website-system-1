@@ -138,7 +138,11 @@
       "fromLabel": "Dari",
       "priceFromSqft": "Dari RM {price}/sqft",
       "priceFromFlat": "Dari RM {price}",
-      "disclaimer": "Harga muktamad bergantung kepada lawatan tapak dan keluasan permukaan. Pressure-wash + pendempulan retak sudah termasuk dalam quote."
+      "disclaimer": "Harga muktamad bergantung kepada lawatan tapak dan keluasan permukaan. Pressure-wash + pendempulan retak sudah termasuk dalam quote.",
+      "famDalam": "Cat Dalaman",
+      "famLuar": "Cat Luar",
+      "famKhas": "Kemasan Khas",
+      "serviceUnit": "servis"
     },
     "calculator": {
       "tag": "KALKULATOR ANGGARAN",

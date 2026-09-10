@@ -1,3 +1,13 @@
+> **Status note (2026-09-10).** The site was never built to the "Fresh Coat"
+> spec below — the delivered homepage used a centred dark-blue gradient hero,
+> which is the treatment §2 of this document explicitly rejects. The site has
+> since been rebuilt to a different direction, **"Kad Warna"**: magnolia paper,
+> deep blue `#002E8A` as the ink for every heading, and the three logo colours
+> assigned one job each as a service-family code (pink Dalaman, sky Luar, green
+> Khas), with yellow reserved for the speed promise. Archivo/Figtree replace
+> Inter. §1 (the peer audit) and §2 (the duplicate-risk report) still hold and
+> still drove the rebuild; §4 onward describes a spec that was not built.
+
 # Cat Rumah Malaysia — Design Direction
 
 **Author:** Kagura (UI Design Specialist)
