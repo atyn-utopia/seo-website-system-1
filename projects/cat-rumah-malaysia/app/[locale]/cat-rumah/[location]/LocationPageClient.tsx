@@ -318,8 +318,8 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
                 {calcService.mode === 'sqft' ? (
                   <div>
                     <label htmlFor="loc-calc-area" className="block text-[13px] font-semibold mb-2" style={{ color: 'var(--muted)' }}>{tCalc('areaLabel')}</label>
-                    <input id="loc-calc-area" type="number" min={50} step={50} value={calcArea} onChange={(e) => setCalcArea(Math.max(50, Number(e.target.value) || 0))} placeholder={tCalc('areaPlaceholder')} className="w-full px-4 py-3 rounded-xl text-sm font-semibold" style={{ background: 'var(--brand-cream)', border: '1px solid var(--line-strong)', color: 'var(--brand-ink)' }} />
-                    <input type="range" min={50} max={5000} step={50} value={Math.min(calcArea, 5000)} onChange={(e) => setCalcArea(Number(e.target.value))} className="w-full mt-3" style={{ accentColor: 'var(--brand-yellow)' }} />
+                    <input id="loc-calc-area" type="number" min={50} step={50} value={calcArea} onChange={(e) => setCalcArea(Math.max(50, Number(e.target.value) || 0))} placeholder={tCalc('areaPlaceholder')} className="calc-input w-full px-4 py-3 rounded-xl text-sm font-semibold" />
+                    <input type="range" min={50} max={5000} step={50} value={Math.min(calcArea, 5000)} onChange={(e) => setCalcArea(Number(e.target.value))} aria-label={tCalc('areaLabel')} className="calc-range" style={{ ['--fill' as string]: `${Math.min(100, Math.max(0, ((Math.min(calcArea, 5000) - 50) / (5000 - 50)) * 100))}%` }} />
                   </div>
                 ) : (
                   <div>

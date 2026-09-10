@@ -195,6 +195,74 @@ a { color: inherit; text-decoration: none; }
 .calc-select option { background: #fff; color: var(--brand-ink); }
 
 /* ────────────────────────────────────────────────────────────
+   Calculator number input + area slider
+   Blue is the one accent in the clean redesign; yellow stays
+   reserved for urgency. The slider is drawn on the input itself:
+   a 20px hit area whose middle 4px is the track, with the filled
+   share coming from --fill, set inline from the current value.
+   ──────────────────────────────────────────────────────────── */
+.calc-input {
+  background: #fff;
+  border: 1.5px solid var(--line-strong);
+  color: var(--brand-ink);
+}
+.calc-input:hover { border-color: var(--brand-blue); }
+.calc-input:focus {
+  outline: none;
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 4px rgba(0, 46, 138, 0.14);
+}
+
+.calc-range {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 20px;
+  padding: 8px 0;
+  margin: 10px 0 0;
+  background: linear-gradient(to right, var(--brand-blue) 0 var(--fill, 0%), #E3E7EE var(--fill, 0%) 100%);
+  background-clip: content-box;
+  border-radius: 999px;
+  cursor: pointer;
+  outline: none;
+}
+/* Vendor pseudo-elements are written one per rule: an unknown one inside a
+   selector list invalidates the whole list in the other engine. */
+.calc-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--brand-blue);
+  box-shadow: 0 1px 2px rgba(0, 46, 138, 0.18), 0 4px 10px -2px rgba(0, 46, 138, 0.22);
+  transition: transform var(--dur) var(--ease-out);
+}
+.calc-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--brand-blue);
+  box-shadow: 0 1px 2px rgba(0, 46, 138, 0.18), 0 4px 10px -2px rgba(0, 46, 138, 0.22);
+  transition: transform var(--dur) var(--ease-out);
+}
+.calc-range::-moz-range-track { background: transparent; height: 4px; border: 0; }
+.calc-range::-moz-range-progress { background: transparent; }
+.calc-range:hover::-webkit-slider-thumb { transform: scale(1.08); }
+.calc-range:hover::-moz-range-thumb { transform: scale(1.08); }
+.calc-range:active::-webkit-slider-thumb { transform: scale(1.16); }
+.calc-range:active::-moz-range-thumb { transform: scale(1.16); }
+.calc-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(0, 46, 138, 0.18); }
+.calc-range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px rgba(0, 46, 138, 0.18); }
+@media (prefers-reduced-motion: reduce) {
+  .calc-range::-webkit-slider-thumb { transition: none; }
+  .calc-range::-moz-range-thumb { transition: none; }
+}
+
+/* ────────────────────────────────────────────────────────────
    USP panel (single container, three cells — checklist rule)
    ──────────────────────────────────────────────────────────── */
 /* Pull the panel 24px left of the content edge so the cell padding lands the

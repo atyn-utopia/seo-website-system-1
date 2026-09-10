@@ -246,8 +246,7 @@ function CostCalculator({ locale, phoneNumber }: { locale: string; phoneNumber: 
               value={area}
               onChange={(e) => setArea(Math.max(minArea, Number(e.target.value) || 0))}
               placeholder={t('areaPlaceholder')}
-              className="w-full px-4 py-3 rounded-xl text-sm font-semibold"
-              style={{ background: 'var(--brand-cream)', border: '1px solid var(--line-strong)', color: 'var(--brand-ink)' }}
+              className="calc-input w-full px-4 py-3 rounded-xl text-sm font-semibold"
             />
             <input
               type="range"
@@ -256,8 +255,9 @@ function CostCalculator({ locale, phoneNumber }: { locale: string; phoneNumber: 
               step={50}
               value={Math.min(area, 5000)}
               onChange={(e) => setArea(Number(e.target.value))}
-              className="w-full mt-3 accent-yellow-400"
-              style={{ accentColor: 'var(--brand-yellow)' }}
+              aria-label={t('areaLabel')}
+              className="calc-range"
+              style={{ ['--fill' as string]: `${Math.min(100, Math.max(0, ((Math.min(area, 5000) - minArea) / (5000 - minArea)) * 100))}%` }}
             />
           </div>
         ) : (
