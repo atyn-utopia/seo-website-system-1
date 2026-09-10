@@ -51,7 +51,7 @@ if (!DOMAIN) {
 if (/\.vercel\.app$/.test(DOMAIN)) {
   console.error(`⚠️  "${DOMAIN}" is a deploy host. Most fleet sites are registered on their`);
   console.error('   paid domain — writing against the wrong key returns 2xx and orphans the row.');
-  console.error('   Verify first: curl -s "https://webcore.utopiaai.my/api/public/phone-numbers?website=<candidate>"');
+  console.error('   Verify first: curl -s "https://webcore.utopiagroup.com.my/api/public/phone-numbers?website=<candidate>"');
 }
 
 const API_KEY = getApiKey();

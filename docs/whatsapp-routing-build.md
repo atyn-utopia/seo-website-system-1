@@ -316,10 +316,10 @@ Freezes one number for every page, ignores `leads_mode`, and skips click trackin
 
 ```bash
 # what the page will PRINT (deterministic)
-curl -s "https://webcore.utopiaai.my/api/public/phone-numbers/display?website=<domain>&page=/"
+curl -s "https://webcore.utopiagroup.com.my/api/public/phone-numbers/display?website=<domain>&page=/"
 
 # what a click will REACH (rotates — run it a few times)
-curl -s "https://webcore.utopiaai.my/api/public/phone-numbers/resolve?website=<domain>&page=/"
+curl -s "https://webcore.utopiagroup.com.my/api/public/phone-numbers/resolve?website=<domain>&page=/"
 
 # the site's own redirect, following to wa.me
 curl -sI "https://<domain>/ms/redirect-whatsapp-1" | head -20

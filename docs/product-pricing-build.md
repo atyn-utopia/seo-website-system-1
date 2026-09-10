@@ -203,7 +203,7 @@ Into `components/PageStyles.tsx`, inside its `<style>` block.
 
 ```bash
 # CREATE — prices[] goes in on POST
-curl -X POST https://webcore.utopiaai.my/api/public/products \
+curl -X POST https://webcore.utopiagroup.com.my/api/public/products \
   -H "x-api-key: $WEBCORE_API_KEY" -H "Content-Type: application/json" \
   -d '{
         "website": "<exact registered domain>",
@@ -217,12 +217,12 @@ curl -X POST https://webcore.utopiaai.my/api/public/products \
       }'
 
 # UPDATE — the id goes in the BODY, not the query string
-curl -X PATCH https://webcore.utopiaai.my/api/public/products \
+curl -X PATCH https://webcore.utopiagroup.com.my/api/public/products \
   -H "x-api-key: $WEBCORE_API_KEY" -H "Content-Type: application/json" \
   -d '{ "id": "<product-id>", "prices": [ … ] }'
 
 # VERIFY — the public GET is CDN-cached, so bust it
-curl -s "https://webcore.utopiaai.my/api/public/products?website=<domain>&type=all&_=$(date +%s)" \
+curl -s "https://webcore.utopiagroup.com.my/api/public/products?website=<domain>&type=all&_=$(date +%s)" \
   -H "Cache-Control: no-cache"
 
 # PURGE the site's own cache after any write

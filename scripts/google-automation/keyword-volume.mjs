@@ -378,7 +378,7 @@ if (args.push) {
       // The public GET is CDN-cached for 300s — verifying without a cache-buster
       // returns the pre-write state and looks like the push silently failed.
       console.log(`   Verify (cache-busted — the plain URL is cached 300s):`);
-      console.log(`     curl -s "https://webcore.utopiaai.my/api/public/keywords?website=${WEBSITE}&_cb=$RANDOM"`);
+      console.log(`     curl -s "https://webcore.utopiagroup.com.my/api/public/keywords?website=${WEBSITE}&_cb=$RANDOM"`);
     }
   }
 }

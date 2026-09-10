@@ -6,9 +6,9 @@
 //
 //   export WEBCORE_API_KEY=uwc_...
 //
-// Docs: https://webcore.utopiaai.my — "Webcore Token API" reference.
+// Docs: https://webcore.utopiagroup.com.my — "Webcore Token API" reference.
 
-const BASE = process.env.WEBCORE_BASE_URL ?? 'https://webcore.utopiaai.my';
+const BASE = process.env.WEBCORE_BASE_URL ?? 'https://webcore.utopiagroup.com.my';
 
 /** webcore stores keywords per language, and only understands `en` / `ms`. */
 export const WEBCORE_LANGUAGES = new Set(['en', 'ms']);
