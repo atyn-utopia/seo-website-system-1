@@ -158,18 +158,6 @@
       "areaPlaceholder": "e.g. 1000",
       "minArea": 50
     },
-    "beforeAfter": {
-      "tag": "TRANSFORMATION",
-      "heading": "Before & After",
-      "subheading": "See how our customers' homes transform in just one day.",
-      "before": "Before",
-      "after": "After",
-      "pair1Caption": "Exterior walls — pressure wash, primer, then two coats of Jotun weathershield.",
-      "pair2Caption": "Old living room → fresh clean white with neat finishing.",
-      "pair3Caption": "Ceiling and walls rolled fresh — even coverage, no roller marks left behind.",
-      "ctaButton": "See More",
-      "dragHint": "Drag the divider to reveal the transformation"
-    },
     "paintBrands": {
       "tag": "BRANDS WE USE",
       "heading": "Premium Paints Only",
