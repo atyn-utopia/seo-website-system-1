@@ -158,18 +158,6 @@
       "areaPlaceholder": "Contoh: 1000",
       "minArea": 50
     },
-    "beforeAfter": {
-      "tag": "TRANSFORMASI",
-      "heading": "Sebelum & Selepas",
-      "subheading": "Lihat sendiri bagaimana rumah pelanggan kami berubah dalam 1 hari sahaja.",
-      "before": "Sebelum",
-      "after": "Selepas",
-      "pair1Caption": "Dinding luar — pressure-wash, primer, kemudian dua lapisan weathershield Jotun.",
-      "pair2Caption": "Ruang tamu lama → cat baru putih bersih dengan kemasan rapi.",
-      "pair3Caption": "Siling dan dinding dicat semula — lapisan sekata, tiada kesan roller.",
-      "ctaButton": "Lihat Lagi",
-      "dragHint": "Tarik garis tengah untuk lihat perubahan"
-    },
     "paintBrands": {
       "tag": "JENAMA YANG KAMI GUNA",
       "heading": "Hanya Cat Premium Sahaja",

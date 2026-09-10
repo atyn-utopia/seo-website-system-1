@@ -121,87 +121,6 @@ const ReasonIcon = ({ name }: { name: typeof reasonItems[number]['icon'] }) => {
 const faqIndexes = [1, 2, 3, 4, 5, 6, 7, 8]
 const reviewIndexes = [1, 2, 3, 4, 5, 6]
 
-// Before/After pairs — the client's own watermarked job photos from
-// public/images/gallery. Each pair is a mid-paint or prep shot on the
-// "before" side and a finished handover shot on the "after" side. The
-// watermark sits at the identical spot in every file, so the two halves
-// meet cleanly at the divider instead of showing two clipped logos.
-const JOB = (name: string) => `/images/gallery/${name}.jpg`
-const beforeAfterPairs = [
-  // Interior — beige walls mid-roller, drop sheets down → finished white room
-  { before: JOB('job-96'), after: JOB('job-88'), captionKey: 'pair2Caption' },
-  // Exterior — bare render being coated off the ladder → finished white facade
-  { before: JOB('job-84'), after: JOB('job-86'), captionKey: 'pair1Caption' },
-  // Ceiling + walls — pole roller on the ceiling → bright, evenly finished room
-  { before: JOB('job-92'), after: JOB('job-87'), captionKey: 'pair3Caption' },
-] as const
-
-// Draggable before/after comparison slider. Pointer events handle both mouse
-// and touch in one path.
-function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: { before: string; after: string; beforeLabel: string; afterLabel: string }) {
-  const [pos, setPos] = useState(50)
-  const ref = useRef<HTMLDivElement>(null)
-  const dragging = useRef(false)
-
-  const update = (clientX: number) => {
-    const el = ref.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    const pct = ((clientX - rect.left) / rect.width) * 100
-    setPos(Math.max(0, Math.min(100, pct)))
-  }
-
-  const onDown = (e: React.PointerEvent) => {
-    dragging.current = true
-    ;(e.target as Element).setPointerCapture?.(e.pointerId)
-    update(e.clientX)
-  }
-  const onMove = (e: React.PointerEvent) => {
-    if (!dragging.current) return
-    update(e.clientX)
-  }
-  const onUp = () => { dragging.current = false }
-
-  return (
-    <div
-      ref={ref}
-      className="relative w-full select-none overflow-hidden rounded-2xl"
-      style={{ aspectRatio: '1 / 1', background: 'var(--brand-cream)', border: '1px solid var(--line)', cursor: 'ew-resize', touchAction: 'none' }}
-      onPointerDown={onDown}
-      onPointerMove={onMove}
-      onPointerUp={onUp}
-      onPointerCancel={onUp}
-      role="img"
-      aria-label={`${beforeLabel} / ${afterLabel}`}
-    >
-      {/* After (bottom layer) */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={after} alt={afterLabel} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
-      <span className="absolute bottom-3 right-3 z-20 text-[10px] font-medium uppercase tracking-wider px-2.5 py-1 rounded-full" style={{ background: 'var(--brand-yellow)', color: 'var(--brand-ink)' }}>{afterLabel}</span>
-
-      {/* Before (top layer, clipped). clip-path keeps the image at full
-          container width, so it stays pixel-aligned with the after layer at
-          the divider — sizing the wrapper to `pos`% instead re-scaled the
-          image and knocked the two halves of the watermark out of register. */}
-      <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={before} alt={beforeLabel} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
-        <span className="absolute bottom-3 left-3 text-[10px] font-medium uppercase tracking-wider px-2.5 py-1 rounded-full" style={{ background: 'var(--brand-ink)', color: '#fff' }}>{beforeLabel}</span>
-      </div>
-
-      {/* Divider + drag handle */}
-      <div className="absolute top-0 bottom-0 pointer-events-none z-10" style={{ left: `${pos}%`, transform: 'translateX(-50%)' }}>
-        <div style={{ width: 3, height: '100%', background: '#fff', boxShadow: '0 0 0 1px rgba(0,0,0,0.15)' }} />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center rounded-full" style={{ width: 40, height: 40, background: '#fff', boxShadow: '0 4px 12px rgba(0,0,0,0.25)' }}>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M7 5l-4 5 4 5M13 5l4 5-4 5" stroke="var(--brand-ink)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 // Real customer work photos — 12 cells exactly so the grid stays full at every
 // breakpoint (2/3/4 cols all divide 12).
 const galleryImages = [
@@ -439,7 +358,6 @@ type Props = { phoneNumber: string }
 export default function HomePageClient({ phoneNumber }: Props) {
   const locale = useLocale()
   const t = useTranslations('home')
-  const tBA = useTranslations('home.beforeAfter')
   const tCalc = useTranslations('home.calculator')
   const WA_LINK = waRedirect(locale)
 
@@ -594,43 +512,6 @@ export default function HomePageClient({ phoneNumber }: Props) {
           </FadeSection>
           <FadeSection>
             <CostCalculator locale={locale} phoneNumber={phoneNumber} />
-          </FadeSection>
-        </div>
-      </section>
-
-      {/* BEFORE & AFTER */}
-      <section className="py-16 px-6" style={{ background: '#fff' }} aria-labelledby="ba-heading">
-        <div className="max-w-6xl mx-auto">
-          <FadeSection>
-            <div className="text-center mb-10">
-              <h5 className="text-[11px] font-medium uppercase tracking-widest mb-2" style={{ color: 'var(--brand-pink)' }}>{tBA('tag')}</h5>
-              <h3 id="ba-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{tBA('heading')}</h3>
-              <h5 className="text-sm font-normal mt-2 max-w-2xl mx-auto" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>{tBA('subheading')}</h5>
-            </div>
-          </FadeSection>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {beforeAfterPairs.map((pair, i) => (
-              <FadeSection key={i} delay={i * 80}>
-                <figure className="rounded-2xl overflow-hidden flex flex-col h-full" style={{ background: '#fff', border: '1px solid var(--line)' }}>
-                  <BeforeAfterSlider
-                    before={pair.before}
-                    after={pair.after}
-                    beforeLabel={tBA('before')}
-                    afterLabel={tBA('after')}
-                  />
-                  <figcaption className="px-4 py-3 text-xs font-medium" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>
-                    {tBA(pair.captionKey)}
-                  </figcaption>
-                </figure>
-              </FadeSection>
-            ))}
-          </div>
-          <FadeSection>
-            <div className="text-center mt-8">
-              <WhatsAppClickTracker phoneNumber={phoneNumber} href={WA_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold" style={{ background: '#25D366', color: '#fff' }}>
-                <WAIcon /> {tBA('ctaButton')}
-              </WhatsAppClickTracker>
-            </div>
           </FadeSection>
         </div>
       </section>

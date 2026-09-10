@@ -158,18 +158,6 @@
       "areaPlaceholder": "例如：1000",
       "minArea": 50
     },
-    "beforeAfter": {
-      "tag": "焕新对比",
-      "heading": "前后对比",
-      "subheading": "看看客户的家如何在一天之内焕然一新。",
-      "before": "之前",
-      "after": "之后",
-      "pair1Caption": "外墙 — 高压清洗、底漆，再加两层 Jotun 耐候漆。",
-      "pair2Caption": "陈旧客厅 → 洁白如新的细致完工。",
-      "pair3Caption": "天花与墙身重新滚涂 — 上色均匀，不留滚痕。",
-      "ctaButton": "在 WhatsApp 查看更多",
-      "dragHint": "拖动中线查看变化"
-    },
     "paintBrands": {
       "tag": "我们使用的品牌",
       "heading": "只用高级油漆",
