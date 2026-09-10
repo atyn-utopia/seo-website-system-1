@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import WhatsAppClickTracker from '@/components/tracking/WhatsAppClickTracker'
+import ServicesGrid from '@/components/ServicesGrid'
+import type { Product } from '@/lib/webcore'
 
 const WAIcon = () => (
   <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current shrink-0" aria-hidden="true">
@@ -26,23 +28,6 @@ const GoogleLogo = () => (
   </svg>
 )
 
-// Product list mirrors HomePageClient so the location page shows the same
-// 9-card services grid as the homepage.
-const PRODUCT_KEYS: { key: string; img: string; unit: 'sqft' | 'flat' }[] = [
-  { key: 'interior', img: '/images/products/interior-1.jpg', unit: 'sqft' },
-  { key: 'bedroom', img: '/images/products/bedroom-1.jpg', unit: 'sqft' },
-  { key: 'kitchen', img: '/images/products/kitchen-1.jpg', unit: 'sqft' },
-  { key: 'bathroom', img: '/images/products/bathroom-1.jpg', unit: 'sqft' },
-  { key: 'exterior', img: '/images/products/exterior-1.jpg', unit: 'sqft' },
-  { key: 'weathershield', img: '/images/products/exterior-2.jpg', unit: 'sqft' },
-  { key: 'marble', img: '/images/products/marble-1.jpg', unit: 'flat' },
-  { key: 'texture', img: '/images/products/texture-1.jpg', unit: 'flat' },
-  { key: 'decor3d', img: '/images/products/decor3d-1.jpg', unit: 'flat' },
-]
-
-// Drop the leading/trailing "from" word (Dari / From / 起) from a localized
-// price line — the fromLabel above already shows it.
-const stripFromWord = (s: string) => s.replace(/^(?:Dari|From)\s+/i, '').replace(/\s*起$/, '')
 
 // Calculator service rates — mirror catrumah.com.my (also mirrors homepage).
 type CalcMode = 'sqft' | 'package'
@@ -128,9 +113,10 @@ type Props = {
   cityName: string
   phoneNumber: string
   nearby: { slug: string; name: string }[]
+  products: Product[]
 }
 
-export default function LocationPageClient({ locale, locationSlug, cityName, phoneNumber, nearby }: Props) {
+export default function LocationPageClient({ locale, locationSlug, cityName, phoneNumber, nearby, products }: Props) {
   const t = useTranslations('location')
   const tHomeReviews = useTranslations('home.reviews')
   const tHomeProducts = useTranslations('home.products')
@@ -247,46 +233,7 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
         </div>
       </section>
 
-      {/* PRODUCTS — mirrors the homepage 9-card services grid */}
-      <section id="products" className="py-16 px-6" style={{ background: 'var(--brand-cream)' }} aria-labelledby="loc-products-heading">
-        <div className="max-w-6xl mx-auto">
-          <FadeSection>
-            <div className="text-center mb-10">
-              <h3 id="loc-products-heading" className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--brand-ink)' }}>{tHomeProducts('heading')}</h3>
-              <h5 className="text-sm font-normal mt-2 max-w-2xl mx-auto" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>{tHomeProducts('subheading')}</h5>
-            </div>
-          </FadeSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" style={{ gridAutoRows: '1fr' }}>
-            {PRODUCT_KEYS.map((p) => (
-              <FadeSection key={p.key}>
-                <div className="bg-white rounded-2xl overflow-hidden flex flex-col" style={{ border: '1px solid var(--line)', boxShadow: '0 6px 20px rgba(17, 17, 17, 0.04)', height: '100%' }}>
-                  <div className="relative w-full overflow-hidden" style={{ aspectRatio: '4 / 3', background: 'var(--brand-cream)' }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={p.img} alt={tHomeProducts(`${p.key}.title`)} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-                  </div>
-                  <div className="px-5 pt-5 pb-5 flex flex-col">
-                    <h3 className="text-[17px] m-0" style={{ color: 'var(--brand-ink)', fontWeight: 700, lineHeight: 1.3, letterSpacing: '-0.01em', minHeight: 'calc(1.3em * 2)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {tHomeProducts(`${p.key}.title`)}
-                    </h3>
-                    <p className="m-0 mt-3" style={{ color: 'var(--muted)', fontSize: 13.5, lineHeight: 1.6, height: 'calc(1.6em * 2)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {tHomeProducts(`${p.key}.description`)}
-                    </p>
-                    <div className="mt-5 pt-4 flex items-center justify-between gap-3" style={{ borderTop: '1px solid var(--line)' }}>
-                      <div className="flex flex-col leading-tight">
-                        <span className="text-[11px]" style={{ color: 'var(--muted)', fontWeight: 500 }}>{tHomeProducts('fromLabel')}</span>
-                        <span className="text-[20px]" style={{ color: 'var(--brand-pink)', fontWeight: 700, letterSpacing: '-0.01em' }}>{stripFromWord(tHomeProducts(p.unit === 'sqft' ? 'priceFromSqft' : 'priceFromFlat', { price: tHomeProducts(`${p.key}.price`) }))}</span>
-                      </div>
-                      <WhatsAppClickTracker phoneNumber={phoneNumber} href={waLink} target="_blank" rel="noopener noreferrer" aria-label={tHomeProducts('bookNow')} className="shrink-0 inline-flex items-center justify-center rounded-full" style={{ background: '#25D366', color: '#fff', width: 44, height: 44, boxShadow: '0 6px 16px rgba(37, 211, 102, 0.30)' }}>
-                        <WAIcon />
-                      </WhatsAppClickTracker>
-                    </div>
-                  </div>
-                </div>
-              </FadeSection>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ServicesGrid products={products} phoneNumber={phoneNumber} waHref={waLink} headingId="loc-products-heading" />
 
       {/* CALCULATOR — same widget as homepage, pre-tied to this location */}
       <section id="calculator" className="py-16 px-6" style={{ background: '#fff', borderTop: '1px solid var(--line)' }} aria-labelledby="loc-calc-heading">

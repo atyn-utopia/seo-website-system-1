@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { seoAlternates } from '@/lib/seoAlternates'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { siteConfig } from '@/config/site'
-import { getPhoneNumber } from '@/lib/webcore'
+import { getPhoneNumber, getProducts } from '@/lib/webcore'
 import { OrganizationSchema } from '@/components/schema/OrganizationSchema'
 import { LocalBusinessSchema } from '@/components/schema/LocalBusinessSchema'
 import { ProductSchema } from '@/components/schema/ProductSchema'
@@ -50,6 +50,7 @@ export default async function HomePage({ params }: Props) {
   const imageAlt = tRoot('imageAlt')
 
   const { phone } = await getPhoneNumber()
+  const products = await getProducts()
   const waHref = `/${locale}/redirect-whatsapp-1`
 
   const uspItems = [
@@ -161,7 +162,7 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      <HomePageClient phoneNumber={phone} />
+      <HomePageClient phoneNumber={phone} products={products} />
 
       <SiteFooter locale={locale} />
     </>
