@@ -534,12 +534,12 @@ export default function HomePageClient({ phoneNumber }: Props) {
         className="relative py-16 px-6 overflow-hidden"
         aria-labelledby="reviews-heading"
         style={{
-          backgroundImage: 'linear-gradient(135deg, rgba(2, 61, 147, 0.88) 0%, rgba(2, 42, 102, 0.94) 100%), url(/images/painters/painter-bg.jpg)',
+          backgroundImage: 'linear-gradient(135deg, rgba(0, 46, 138, 0.88) 0%, rgba(0, 31, 94, 0.94) 100%), url(/images/painters/reviews-bg.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
-        <div className="absolute inset-0 hero-bg" role="img" aria-label={t('reviews.heading')} aria-hidden="false" style={{ pointerEvents: 'none', backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(255,210,63,0.18), transparent 55%), radial-gradient(circle at 15% 80%, rgba(233,30,99,0.10), transparent 55%)' }} />
+        <div className="absolute inset-0 hero-bg" role="img" aria-label={t('reviews.bgAlt')} aria-hidden="false" style={{ pointerEvents: 'none', backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(255,210,63,0.18), transparent 55%), radial-gradient(circle at 15% 80%, rgba(233,30,99,0.10), transparent 55%)' }} />
         <div className="relative max-w-6xl mx-auto">
           <FadeSection>
             <div className="text-center mb-10">
@@ -652,7 +652,7 @@ export default function HomePageClient({ phoneNumber }: Props) {
         className="relative py-20 px-6 text-center text-white overflow-hidden"
         aria-label="Call to action"
         style={{
-          backgroundImage: 'linear-gradient(135deg, rgba(2, 61, 147, 0.88) 0%, rgba(2, 30, 76, 0.93) 100%), url(/images/gallery/job-84.jpg)',
+          backgroundImage: 'linear-gradient(135deg, rgba(0, 46, 138, 0.88) 0%, rgba(0, 24, 72, 0.93) 100%), url(/images/painters/final-cta.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -661,7 +661,7 @@ export default function HomePageClient({ phoneNumber }: Props) {
         <div className="relative max-w-3xl mx-auto">
           <FadeSection>
             <h3 className="font-bold mb-3" style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', letterSpacing: '-0.03em' }}>
-              {t('finalCta.headline')} <span style={{ color: 'var(--brand-yellow)' }}>{t('finalCta.headlineHighlight')}</span>
+              {t('finalCta.headline')} {t('finalCta.headlineHighlight')}
             </h3>
             <h5 className="text-base font-normal mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.85)', lineHeight: 1.6 }}>
               {t('finalCta.subheadline')}

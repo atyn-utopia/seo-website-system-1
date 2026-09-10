@@ -365,12 +365,12 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
         className="relative py-16 px-6 overflow-hidden"
         aria-labelledby="reviews-heading"
         style={{
-          backgroundImage: 'linear-gradient(135deg, rgba(2, 61, 147, 0.88) 0%, rgba(2, 42, 102, 0.94) 100%), url(/images/painters/painter-bg.jpg)',
+          backgroundImage: 'linear-gradient(135deg, rgba(0, 46, 138, 0.88) 0%, rgba(0, 31, 94, 0.94) 100%), url(/images/painters/reviews-bg.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
-        <div className="absolute inset-0 hero-bg" role="img" aria-label={tHomeReviews('heading')} aria-hidden="false" style={{ pointerEvents: 'none', backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(255,210,63,0.18), transparent 55%), radial-gradient(circle at 15% 80%, rgba(233,30,99,0.10), transparent 55%)' }} />
+        <div className="absolute inset-0 hero-bg" role="img" aria-label={tHomeReviews('bgAlt')} aria-hidden="false" style={{ pointerEvents: 'none', backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(255,210,63,0.18), transparent 55%), radial-gradient(circle at 15% 80%, rgba(233,30,99,0.10), transparent 55%)' }} />
         <div className="relative max-w-6xl mx-auto">
           <FadeSection>
             <div className="text-center mb-10">
@@ -451,7 +451,7 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
       {/* FINAL CTA */}
       <section
         className="relative py-20 px-6 text-center text-white overflow-hidden"
-        style={{ backgroundImage: 'linear-gradient(rgba(0, 31, 94, 0.88), rgba(0, 31, 94, 0.88)), url(/images/gallery/job-86.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        style={{ backgroundImage: 'linear-gradient(rgba(0, 31, 94, 0.88), rgba(0, 31, 94, 0.88)), url(/images/painters/final-cta.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="absolute inset-0 hero-bg" role="img" aria-label={t('cta.heading', { city: cityName })} style={{ pointerEvents: 'none' }} />
         <div className="relative max-w-3xl mx-auto">
