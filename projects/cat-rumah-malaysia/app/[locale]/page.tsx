@@ -147,7 +147,10 @@ export default async function HomePage({ params }: Props) {
         <div className="max-w-6xl mx-auto text-center">
           <h3 id="brands-heading" className="text-lg md:text-xl font-bold" style={{ color: 'var(--brand-ink)' }}>{tBrands('heading')}</h3>
           <h5 className="text-xs font-normal mt-2 max-w-2xl mx-auto" style={{ color: 'var(--muted)', lineHeight: 1.6 }}>{tBrands('subheading')}</h5>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+          {/* Each logo takes a third of the row on mobile, so five lay out 3 + 2 with
+              the pair centred — a free wrap put four on the first line and left
+              Sissons alone on the second. Desktop sizes to content in one row. */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-y-6 sm:gap-x-8">
             {[
               { src: '/images/paint-brands/nippon.png', alt: 'Nippon Paint' },
               { src: '/images/paint-brands/jotun.png', alt: 'Jotun' },
@@ -155,8 +158,10 @@ export default async function HomePage({ params }: Props) {
               { src: '/images/paint-brands/kcc.png', alt: 'KCC Paint' },
               { src: '/images/paint-brands/sissons.png', alt: 'Sissons' },
             ].map((b) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={b.alt} src={b.src} alt={b.alt} style={{ height: 48, width: 'auto', objectFit: 'contain', filter: 'saturate(0.95)' }} loading="lazy" />
+              <div key={b.alt} className="w-1/3 sm:w-auto flex justify-center px-2 sm:px-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={b.src} alt={b.alt} style={{ height: 48, width: 'auto', maxWidth: '100%', objectFit: 'contain', filter: 'saturate(0.95)' }} loading="lazy" />
+              </div>
             ))}
           </div>
         </div>
