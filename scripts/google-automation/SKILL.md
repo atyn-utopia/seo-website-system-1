@@ -52,6 +52,9 @@ node gsc-submit.mjs --domain <domain> --url https://www.<domain>/ --site <dir> -
 node ads-import-conversion.mjs --no-mcc --customer-id 1933757591 --domain <domain> --ga4-property-id <numeric-id> --event whatsapp_click
 # PHASE 6 — the 4 toggles Google gives no API for (was the manual 3–4 min)
 node finalize-manual-toggles.mjs --domain <domain>
+# PHASE 7 — close webcore's ads-readiness card, fed by Phase 6's SUMMARY
+set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
+node ads-readiness.mjs --domain <domain> --tick all --yes   # only when Phase 6 exited 0
 ```
 
 Deploy each phase that needs it (3 and 4) separately.
@@ -86,24 +89,35 @@ Still genuinely manual, and still optional: **GTM → Container Settings → Con
 Overview (BETA)**. Screenshots for the manual fallback of all of the above:
 https://websitebuilder.utopiaai.my/google (§04).
 
-## Phase 6 — close the readiness card in webcore (REQUIRED, last)
+## Phase 7 — close the readiness card in webcore (REQUIRED, last)
 
-Toggles 1–3 above are exactly the three gates webcore tracks. Until they are
-ticked there, the performance marketers have no signal the site is ready, so a
-finished setup still looks unfinished to them.
+Three of Phase 6's toggles are exactly the three gates webcore's ads-readiness
+card tracks. Until they are ticked there, the performance marketers have no
+signal the site is ready, so a finished setup still looks unfinished to them.
 
-**Only after the user confirms each toggle is really ON in the Google UI:**
+**Tick from Phase 6's SUMMARY, not from memory:**
+
+| Phase 6 step   | Readiness item | Tick when the step reads |
+|----------------|----------------|--------------------------|
+| `ga4-signals`  | `signals`      | `done-*` or `skip`       |
+| `ads-counting` | `counting`     | `done-*` or `skip`       |
+| `ads-metrics`  | `metrics`      | `done-*` or `skip`       |
 
 ```bash
 set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
-node ads-readiness.mjs --domain <domain>                    # read state, writes nothing
-node ads-readiness.mjs --domain <domain> --tick all --yes   # confirm all three
+node ads-readiness.mjs --domain <domain>                          # read state, writes nothing
+node ads-readiness.mjs --domain <domain> --tick all --yes         # Phase 6 exited 0
+node ads-readiness.mjs --domain <domain> --tick signals,metrics   # e.g. counting unverified
 ```
 
+- A step reading anything other than `done-*` or `skip` (`unverified`, `error`,
+  `missing`…) stays **unticked**. Hand that one toggle to the user (manual
+  fallback in `MANUAL-STEPS.md`) and tick it only after they confirm it is on.
 - `signals` and `counting` are re-verified live by webcore; ticking them **pins**
   the answer, which is what you want when a probe reports `refused` /
   `needs_reconsent` and keeps reading `false` while the toggle is on.
-- `metrics` has no API at all — a human tick is the only way it ever goes true.
+- `metrics` has no API at all — webcore cannot see it, so Phase 6's
+  `aria-checked` + screenshot is the only evidence and the tick is how webcore learns it.
 - **Completing the card notifies the performance marketers once**, which is why
   the completing tick demands `--yes`. Tick because the toggle is on, never to
   tidy the card.

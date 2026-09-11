@@ -1,6 +1,6 @@
 ---
 name: google-integration
-description: Set up a live Utopia site's Google footprint — GA4 + GTM + Google Search Console + Google Ads conversion import — via the internal automation bundle. Use AFTER the site's PAID domain is live on Vercel (post-deploy Step 14). Runs the 6-phase sequence, where Phase 6 drives a browser to flip the four toggles Google exposes no API for (this replaced the old ~3–4 min of manual Google clicks). Internal Utopia only; wired to the shared automation account with credentials on this machine.
+description: Set up a live Utopia site's Google footprint — GA4 + GTM + Google Search Console + Google Ads conversion import — via the internal automation bundle. Use AFTER the site's PAID domain is live on Vercel (post-deploy Step 14). Runs the 6-phase sequence, where Phase 6 drives a browser to flip the four toggles Google exposes no API for (this replaced the old ~3–4 min of manual Google clicks), then Phase 7 ticks the site's ads-readiness card in webcore from Phase 6's verified result. Internal Utopia only; wired to the shared automation account with credentials on this machine.
 ---
 
 # Google Integration (post-deploy)
@@ -27,7 +27,7 @@ obvious credential filenames as a backstop.
 **Preferred — spawn the agent.** Use the Agent tool with the contents of
 [agents/gloo.md](../../../agents/gloo.md) as the prompt, plus the site's paid domain, project
 dir, and supported locales. Gloo (Analytics & Growth Specialist) owns the whole flow: preflight
-gates → 6 phases with deploys between → verify → report.
+gates → 6 phases with deploys between → verify → Phase 7 readiness tick → report.
 
 **Or drive it directly.** `cd` into the script folder, read its own `SKILL.md` +
 `MANUAL-STEPS.md` (source of truth for flags), then:
@@ -56,6 +56,9 @@ node ads-import-conversion.mjs --no-mcc --customer-id 1933757591 --domain <domai
 # → writes the "ads" block into configs/<domain>.json for Phase 6
 # PHASE 6 — the 4 no-API toggles, via a real browser (no deploy)
 node finalize-manual-toggles.mjs --domain <domain>
+# PHASE 7 — close webcore's ads-readiness card from Phase 6's SUMMARY (no deploy)
+set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
+node ads-readiness.mjs --domain <domain> --tick all --yes   # only when Phase 6 exited 0
 ```
 
 ## Prerequisites (block until all true)
@@ -85,25 +88,35 @@ Still manual, still optional: GTM → Container Settings → Consent Overview (B
 fallback for everything above, if Phase 6 can't run: `scripts/google-automation/MANUAL-STEPS.md`,
 screenshots at https://websitebuilder.utopiaai.my/google (§04).
 
-## Phase 6 — tick the ads readiness in webcore (REQUIRED, last)
+## Phase 7 — tick the ads readiness in webcore (REQUIRED, last)
 
-The three required toggles above are the three gates webcore's ads-readiness
-card tracks. The setup is not finished until they are ticked there — that card
-is how the performance marketers learn the site is ready for them.
+Three of Phase 6's toggles are the three gates webcore's ads-readiness card
+tracks. The setup is not finished until they are ticked there — that card is how
+the performance marketers learn the site is ready for them.
 
-Run it **after the user confirms the toggles are actually on**, never before:
+Tick from Phase 6's SUMMARY — only what it verified:
+
+| Phase 6 step   | Readiness item | Tick when the step reads |
+|----------------|----------------|--------------------------|
+| `ga4-signals`  | `signals`      | `done-*` or `skip`       |
+| `ads-counting` | `counting`     | `done-*` or `skip`       |
+| `ads-metrics`  | `metrics`      | `done-*` or `skip`       |
 
 ```bash
 cd scripts/google-automation
 set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
-node ads-readiness.mjs --domain <domain>                    # read state, writes nothing
-node ads-readiness.mjs --domain <domain> --tick all --yes   # confirm all three
+node ads-readiness.mjs --domain <domain>                          # read state, writes nothing
+node ads-readiness.mjs --domain <domain> --tick all --yes         # Phase 6 exited 0
+node ads-readiness.mjs --domain <domain> --tick signals,metrics   # e.g. counting unverified
 ```
 
-Ticking an auto-verified item (`signals`, `counting`) pins it, so a probe that
-reads `refused` / `needs_reconsent` stops overriding a toggle that is genuinely
-on. `metrics` has no API and can only ever be confirmed by hand. Completing the
-card notifies the performance marketers **once** — hence the explicit `--yes`.
+A step reading anything other than `done-*` or `skip` stays unticked and goes
+back to the user. Ticking an auto-verified item (`signals`, `counting`) pins it,
+so a probe that reads `refused` / `needs_reconsent` stops overriding a toggle
+that is genuinely on. `metrics` has no API — webcore cannot see it, so Phase 6's
+`aria-checked` + screenshot is the evidence and the tick is how webcore learns
+it. Completing the card notifies the performance marketers **once** — hence the
+explicit `--yes`.
 
 ## Deploy discipline
 Deploy Phases 3 and 4 **separately** (own checkpoint each). For extracted per-site repos with no

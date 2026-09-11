@@ -105,20 +105,22 @@ Confirm the site now has: **GA4 property + GTM container + GSC properties (1 Dom
 ### 5. Record the per-site config
 The scripts write a per-domain config under the automation folder's `configs/<domain>.json` (containerId, gtmAccountId, ga4MeasurementId, events, createdAt). Confirm it was written and surface the IDs in your report so future re-runs are idempotent.
 
-### 6. Tick the ads readiness in webcore (LAST — the setup is not done without it)
-The three toggles from step 2 are the three gates webcore's ads-readiness card tracks, and that card is how the performance marketers learn the site is ready for them. Handing the toggles back and stopping leaves a finished site looking unfinished.
+### 6. Tick the ads readiness in webcore — Phase 7 (LAST — the setup is not done without it)
+Three of Phase 6's toggles are the three gates webcore's ads-readiness card tracks, and that card is how the performance marketers learn the site is ready for them. Stopping after Phase 6 leaves a finished site looking unfinished.
 
-**Wait for the user to confirm each toggle is really ON in the Google UI**, then:
+**Tick from Phase 6's SUMMARY** — `ga4-signals` → `signals`, `ads-counting` → `counting`, `ads-metrics` → `metrics`. A step reading `done-*` or `skip` is verified; tick it. If Phase 6 exited 0, all three are:
 
 ```bash
 cd scripts/google-automation
 set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
-node ads-readiness.mjs --domain <domain>                    # read state, writes nothing
-node ads-readiness.mjs --domain <domain> --tick all --yes   # confirm all three
+node ads-readiness.mjs --domain <domain>                          # read state, writes nothing
+node ads-readiness.mjs --domain <domain> --tick all --yes         # Phase 6 exited 0
+node ads-readiness.mjs --domain <domain> --tick signals,metrics   # e.g. counting unverified
 ```
 
+- A step reading anything other than `done-*` or `skip` stays **unticked** — hand that toggle to the user and tick it only after they confirm it is on.
 - `signals` + `counting` are re-verified live by webcore; ticking **pins** them, which is the fix when a probe reports `refused` / `needs_reconsent` and keeps reading `false` while the toggle is on.
-- `metrics` has no API — a human tick is the only way it goes true.
+- `metrics` has no API — webcore cannot see it; Phase 6's `aria-checked` + screenshot is the evidence, and the tick is how webcore learns it.
 - Completing the card **notifies the performance marketers once**, hence the explicit `--yes`.
 - Counting probe can't resolve the account (conversions on a manager account)? `--pin-customer-id 123-456-7890`.
 
@@ -140,3 +142,4 @@ Return a status report with:
 - Deploy Phases 3 and 4 separately; for extracted repos redeploy with `vercel --prod` (a push alone won't publish the snippet).
 - If a phase fails, stop and report which phase — do not blindly re-run later phases that depend on it.
 - The setup is not "done" until Google Signals + Ads counting/import toggles are on. Phase 6 does that — read its SUMMARY table and report the per-step verdict. If any step comes back `unverified`, `partial`, or `missing`, say so and hand that one toggle back to the user rather than declaring success.
+- Close the webcore ads-readiness card as your last action (Phase 7, `ads-readiness.mjs`), ticking exactly the items Phase 6 verified. The card is a promise to the performance marketers and completing it notifies them once — never tick to tidy a report; if a toggle is still owed, leave it unticked and say so.
