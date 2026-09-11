@@ -15,7 +15,9 @@
 > `GET /api/public/phone-numbers?website=<candidate>` before writing; an empty
 > array means wrong key and the write will orphan silently.
 >
-> Yours: verify live revalidation end-to-end before you call a deploy done.
+> Yours: wire live revalidation — register the URL with `PUT /api/website-settings`,
+> set the returned secret in Vercel Production, redeploy — then verify it end-to-end
+> before you call a deploy done.
 > `GET /api/public/phone-numbers/resolve?website=<d>` must return the expected
 > number, and a POST to the site's own `/api/revalidate` with the shared secret
 > must answer `200 {"revalidated":[...]}`. A `401` almost always means the
@@ -127,11 +129,13 @@ After the code is pushed to GitHub:
 - Set the required environment variables:
   - `NEXT_PUBLIC_SUPABASE_URL`
   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  - `WEBCORE_REVALIDATE_SECRET` — from the `PUT /api/website-settings` response
   - Any other project-specific env vars
 - Trigger the deployment
 - Wait for the build to complete
 - Verify the deployed site loads correctly
 - Check that the production WhatsApp button still connects to the correct phone numbers
+- **Wire live revalidation (MANDATORY)** — register `https://<d>/api/revalidate` with `PUT /api/website-settings`, set the secret in Production, redeploy, then POST the route with the secret and require `200 {"revalidated":[...]}`. Full steps: `docs/full-website-setup.md` → Step 14 → Live revalidation. A `404` means the site has no route — add one from the template before calling it done.
 
 **Report the final deployment URL to the user.**
 
@@ -142,6 +146,7 @@ Return a status report with:
 1. **Integration test results** — pass/fail for each check, with details on any failures
 2. **GitHub push** — commit hash, branch, repo URL
 3. **Vercel deployment** — deployment URL, build status, any errors
+4. **Live revalidation** — the POST result (`200 revalidated` / `401` / `500` / `404`) and the tags it returned
 
 ---
 

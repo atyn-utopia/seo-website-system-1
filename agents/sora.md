@@ -66,6 +66,14 @@ at 110/mo as #1 while `harga kambing aqiqah` at 480/mo sat lower). If the
 orchestrator hands you volume numbers, re-rank the plan to match them and record
 the figures in the document.
 
+### 1b. Push the verified keywords to webcore (MANDATORY — once the gate passes)
+The plan file is invisible to webcore. As soon as Step B2's gate passes, push the
+verified terms: `keyword-volume.mjs --plan <seo-plan.md> --website <registered-domain> --push`,
+once per language (`--lang ms --only ms`, then `--lang en --only en`), with a
+`--dry-run` first. Verify with a cache-busted `GET /api/public/keywords` and report
+the stored primary/secondary counts. Never hand-write the POST — a body with
+`keywords` instead of `rows` returns `200` and stores nothing.
+
 ### 2. Page hierarchy
 Map keywords to pages:
 ```
