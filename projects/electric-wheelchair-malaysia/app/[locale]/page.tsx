@@ -170,6 +170,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="ew-hero">
         <div className="ew-wrap ew-hero__inner">
           <div className="ew-hero__copy">
+            <span className="ew-eyebrow">{tHero('badge')}</span>
             <h1>
               {tHero('h1')} {tHero('h1Highlight')} {tHero('h1Suffix')}
             </h1>
@@ -248,6 +249,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="ew-sec" id="products">
         <div className="ew-wrap">
           <div className="ew-head">
+            <span className="ew-eyebrow">{tProducts('eyebrow')}</span>
             <h3>{tProducts('sectionHeading')}</h3>
             <p>{tProducts('sectionSubheading')}</p>
           </div>
@@ -296,6 +298,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="ew-sec ew-steps" id="how-it-works">
         <div className="ew-wrap">
           <div className="ew-head">
+            <span className="ew-eyebrow">{tSteps('eyebrow')}</span>
             <h3>{tSteps('heading')}</h3>
             <p>{tSteps('subheading')}</p>
           </div>
@@ -338,6 +341,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="ew-sec">
         <div className="ew-wrap">
           <div className="ew-head">
+            <span className="ew-eyebrow">{tGallery('eyebrow')}</span>
             <h3>{tGallery('heading')}</h3>
             <p>{tGallery('subheading')}</p>
           </div>
@@ -362,6 +366,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="ew-sec ew-sec--paper" id="locations">
         <div className="ew-wrap">
           <div className="ew-head">
+            <span className="ew-eyebrow">{tLocations('eyebrow')}</span>
             <h3>{tLocations('heading')}</h3>
             <p>{tLocations('subheading')}</p>
           </div>
@@ -390,6 +395,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="ew-sec" id="faq">
         <div className="ew-wrap">
           <div className="ew-head">
+            <span className="ew-eyebrow">{tFaq('eyebrow')}</span>
             <h3>{tFaq('heading')}</h3>
           </div>
           <div className="ew-faq">
@@ -412,6 +418,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
         <div className="ew-wrap">
           <figure className="ew-rev__quote">
+            <span className="ew-eyebrow">{tReviews('eyebrow')}</span>
             <div className="ew-rating">
               <b>{tReviews('rating')}</b>
               <Stars label={starLabel} />
@@ -444,6 +451,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <Image src="/brand/final-cta.png" alt={tFinal('bgAlt')} fill sizes="100vw" />
         </div>
         <div className="ew-wrap ew-fcta__body">
+          <span className="ew-eyebrow ew-eyebrow--on-dark">{tFinal('eyebrow')}</span>
           <h3>{tFinal('heading')}</h3>
           <p>{tFinal('subheading')}</p>
           <a href={waHref} target="_blank" rel="noopener noreferrer" className="wa-btn">
