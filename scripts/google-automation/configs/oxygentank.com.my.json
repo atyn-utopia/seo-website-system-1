@@ -1,0 +1,50 @@
+{
+  "domain": "oxygentank.com.my",
+  "containerId": "GTM-NGHMQ8JZ",
+  "gtmAccountId": "6000211475",
+  "ga4MeasurementId": "G-LWKS7S79DR",
+  "events": [
+    {
+      "redirectPath": "/redirect-whatsapp-1",
+      "eventName": "whatsapp_click"
+    }
+  ],
+  "ga4": {
+    "accountId": "153453478",
+    "accountName": "Utopia 1st Analytics",
+    "propertyId": "553551450",
+    "propertyName": "properties/553551450",
+    "measurementId": "G-LWKS7S79DR",
+    "streamName": "properties/553551450/dataStreams/15751579559",
+    "siteUrl": "https://www.oxygentank.com.my",
+    "createdAt": "2026-09-10T06:42:46.015Z"
+  },
+  "gsc": {
+    "siteUrl": "https://www.oxygentank.com.my/zh/",
+    "token": "<meta name=\"google-site-verification\" content=\"FgkJjHkVlXbiDGlBefrc9v8MzajrgYfdoJNpJxTjDaI\" />",
+    "initAt": "2026-09-10T06:50:28.643Z",
+    "verified": true,
+    "verificationMethod": "META",
+    "verifiedAt": "2026-09-10T06:54:02.751Z"
+  },
+  "gtm": {
+    "containerNumericId": "263491290",
+    "workspaceId": "3",
+    "measurementIdVariableId": "3",
+    "note": "Created by a partial run on 2026-09-08, before this config existed, so there is no createdAt. gtm-setup.mjs aborts on it with 'Found entity with duplicate name' — inspect it, do not recreate it. The service account has read-only access to this container: edits need getUserAuth(), and publishing needs a token with tagmanager.publish (the saved OAuth token does not have it) or the GTM UI. 2026-09-10: workspace 3's Constant_Measurement ID was repointed to G-LWKS7S79DR; live version 2 still carried G-TQ3Y9846V7 until a new version is published."
+  },
+  "ads": {
+    "customerId": "1933757591",
+    "conversionActionId": "7757047633",
+    "name": "oxygentank.com.my (web) whatsapp_click",
+    "importsFromGa4Property": "553551450",
+    "note": "Auto-imported from GA4 on 2026-09-10. An auto-imported action's property and event cannot be changed in place: moving it to another property means unlinking and relinking GA4 to Ads, which imports a new action with a new ID."
+  },
+  "supersededGa4": {
+    "propertyId": "552927173",
+    "measurementId": "G-TQ3Y9846V7",
+    "streamId": "15737060249",
+    "createdAt": "2026-09-08T04:59:49.180Z",
+    "note": "Created by the 2026-09-08 partial run. Still the GA4 property webcore has registered for this site, and it received the site's traffic for as long as GTM's live version pointed at it. It has only the default 'purchase' key event, so nothing imports from it. Do not delete it until webcore has been reconnected to 553551450 (admin UI only — there is no API for it) and the repointed GTM measurement ID is published."
+  }
+}
