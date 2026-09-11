@@ -1214,14 +1214,31 @@ p, li, blockquote,
 .ew-rev__more span { font-size: 13px; color: var(--ink-muted); }
 
 /* ── Final CTA ───────────────────────────────────────────────────────────── */
-.ew-fcta { text-align: center; background: #fff; }
-.ew-fcta__band { width: 100%; height: clamp(150px, 22vw, 240px); object-fit: cover; object-position: 50% 45%; display: block; }
+/* Full-bleed photo under a navy overlay. The overlay is deliberately heavy —
+   the source is a blue-hour shot with one porch light, and the centre is kept
+   empty so the centred white copy sits clear of any detail. */
+.ew-fcta {
+  position: relative; isolation: isolate; overflow: hidden;
+  text-align: center; background: var(--brand-navy); color: #fff;
+  padding-top: clamp(72px, 10vw, 128px); padding-bottom: clamp(72px, 10vw, 128px);
+}
+.ew-fcta__bg { position: absolute; inset: 0; z-index: -2; }
+.ew-fcta__bg img { object-fit: cover; object-position: 50% 45%; }
+/* A 2:1 photo cropped to a tall phone box shows only its empty middle; bias
+   the crop toward the chair and porch light so the photo still reads. */
+@media (max-width: 899px) {
+  .ew-fcta__bg img { object-position: 82% 50%; }
+}
+.ew-fcta::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(11, 32, 69, 0.78), rgba(11, 32, 69, 0.9));
+}
 .ew-fcta__body { display: grid; justify-items: center; gap: 18px; }
 .ew-fcta h3 {
   font-size: clamp(27px, 4vw, 42px); font-weight: 800;
-  letter-spacing: -0.03em; color: var(--brand-navy); margin: 0;
+  letter-spacing: -0.03em; color: #fff; margin: 0;
 }
-.ew-fcta p { color: var(--ink-muted); font-size: 17px; max-width: 42ch; margin: 0; }
+.ew-fcta p { color: rgba(255, 255, 255, 0.86); font-size: 17px; max-width: 42ch; margin: 0; }
 
 @media (min-width: 900px) {
   .ew-hero__inner {
