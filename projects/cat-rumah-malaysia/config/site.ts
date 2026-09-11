@@ -6,7 +6,7 @@ export const siteConfig = {
   // Stable webcore identity (company_websites.id). Never changes on domain rename.
   siteId: '54c0e27d-64bd-491e-a97a-8fe6d4e92650',
   brandName: 'Cat Rumah Express',
-  tagline: 'Rumah Baru dalam 1 Hari — Dari RM3.50/sqft',
+  tagline: 'Rumah Baru dalam 1 Hari, dari RM3.50/sqft',
   domain: 'cat-rumah.my',
   baseUrl: 'https://cat-rumah.my',
   siteUrl: 'https://cat-rumah.my',

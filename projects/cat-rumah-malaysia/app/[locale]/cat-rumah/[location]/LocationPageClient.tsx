@@ -252,7 +252,7 @@ export default function LocationPageClient({ locale, locationSlug, cityName, pho
                   <select id="loc-calc-service" value={calcServiceKey} onChange={(e) => setCalcServiceKey(e.target.value)} className="calc-select w-full px-4 py-3 rounded-xl text-sm font-semibold">
                     <optgroup label="Per sqft">
                       {sqftServices.map((s) => (
-                        <option key={s.key} value={s.key}>{tHomeProducts(`${s.key}.title`)} — RM{s.rate}{tCalc('perSqftSuffix')}</option>
+                        <option key={s.key} value={s.key}>{tHomeProducts(`${s.key}.title`)} (RM{s.rate}{tCalc('perSqftSuffix')})</option>
                       ))}
                     </optgroup>
                     <optgroup label="Pakej">

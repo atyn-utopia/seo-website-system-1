@@ -15,7 +15,7 @@ export function LocalBusinessSchema({
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: cityName
-      ? `${siteConfig.brandName} — ${cityName}`
+      ? `${siteConfig.brandName} ${cityName}`
       : siteConfig.brandName,
     url: locationSlug
       ? `${siteConfig.siteUrl}/${locale}/${siteConfig.productSlug}/${locationSlug}`
