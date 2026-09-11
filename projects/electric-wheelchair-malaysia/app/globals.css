@@ -1325,3 +1325,64 @@ p, li, blockquote,
 .ew-steps .ew-head p { color: rgba(255, 255, 255, 0.9); }
 .ew-steps .ew-steps__cta p { color: rgba(255, 255, 255, 0.9); }
 .ew-steps .ew-eyebrow { background: rgba(255, 255, 255, 0.16); color: #fff; }
+
+/* ============================================================
+   LOCATION PAGES — their own treatment: a dark hero that leads with the town,
+   a local card, nearby towns up top, a region-level introduction. Everything
+   below the hero is the same section components the homepage uses.
+   ============================================================ */
+.ew-lhero {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: radial-gradient(60% 70% at 85% 20%, rgba(116, 198, 246, 0.18), transparent 60%),
+              radial-gradient(50% 60% at 10% 90%, rgba(255, 102, 19, 0.16), transparent 60%),
+              var(--brand-navy);
+  color: #fff;
+}
+.ew-lhero__inner { display: grid; gap: 28px; padding: 28px 0 44px; justify-items: center; text-align: center; }
+.ew-lhero__copy { display: grid; gap: 16px; justify-items: center; }
+.ew-crumbs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+.ew-crumbs a { color: rgba(255, 255, 255, 0.75); text-decoration: none; }
+.ew-crumbs a:hover { color: #fff; text-decoration: underline; }
+.ew-crumbs span:last-child { color: #fff; font-weight: 600; }
+.ew-lhero h1 { font-size: clamp(32px, 5.4vw, 60px); font-weight: 800; letter-spacing: -0.035em; color: #fff; margin: 0; }
+.ew-lhero h2 { font-size: clamp(16px, 1.7vw, 19px); font-weight: 400; line-height: 1.5; color: rgba(255, 255, 255, 0.8); max-width: 34em; margin: 0; }
+.ghost-btn--dark { background: transparent; color: #fff; border-color: rgba(255, 255, 255, 0.45); }
+.ghost-btn--dark:hover { border-color: #fff; }
+.ew-local {
+  width: 100%; max-width: 420px; background: #fff; color: var(--brand-navy);
+  border-radius: 22px; padding: 18px 18px 22px; display: grid; gap: 14px;
+  box-shadow: 0 28px 60px rgba(3, 10, 26, 0.45), 0 8px 18px rgba(3, 10, 26, 0.25);
+}
+.ew-local__photo { background: var(--brand-ice); border-radius: 16px; padding: 14px; display: grid; place-items: center; }
+.ew-local__photo img { width: min(100%, 300px); height: auto; mix-blend-mode: multiply; }
+.ew-local__title { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; margin: 0; text-align: left; }
+.ew-local__rows { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.ew-local__rows li { display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: center; padding: 11px 0; border-top: 1px solid var(--hair); text-align: left; color: var(--brand-orange-deep); }
+.ew-local__rows li > span { display: grid; gap: 1px; }
+.ew-local__rows b { font-size: 15px; color: var(--brand-navy); }
+.ew-local__rows small { font-size: 12.5px; color: var(--ink-muted); }
+.ew-nearby { background: #fff; border-bottom: 1px solid var(--hair); }
+.ew-nearby__inner { display: grid; gap: 10px; padding: 16px 20px; justify-items: center; text-align: center; }
+.ew-nearby__label { font-size: 13px; font-weight: 600; color: var(--ink-muted); }
+.ew-nearby__chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.ew-nearby__chips a {
+  display: inline-block; padding: 7px 14px; font-size: 13px; font-weight: 500;
+  color: var(--brand-navy); background: #fff; border: 1px solid var(--hair-strong);
+  border-radius: 999px; text-decoration: none;
+  transition: transform 150ms var(--ease-out);
+}
+.ew-nearby__chips a:hover { border-color: var(--brand-navy); transform: translateY(-1px); }
+.ew-nearby__chips .ew-nearby__all { background: var(--brand-navy); color: #fff; border-color: var(--brand-navy); }
+.ew-intro__inner { display: grid; gap: 14px; max-width: 760px; margin: 0 auto; justify-items: center; text-align: center; }
+.ew-intro h3 { font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; letter-spacing: -0.03em; color: var(--brand-navy); margin: 0; }
+.ew-intro p { color: var(--ink-muted); font-size: 16.5px; line-height: 1.55; margin: 0; }
+@media (min-width: 900px) {
+  .ew-lhero__inner { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); align-items: center; justify-items: start; text-align: left; gap: 48px; padding: 56px 0 72px; }
+  .ew-lhero__copy { justify-items: start; }
+  .ew-crumbs { justify-content: flex-start; }
+  .ew-lhero .ew-hero__ctas { justify-content: flex-start; }
+  .ew-local { justify-self: end; }
+  .ew-nearby__inner { grid-template-columns: auto 1fr; align-items: center; justify-items: start; text-align: left; gap: 18px; padding: 14px 20px; }
+  .ew-nearby__chips { justify-content: flex-start; }
+  .ew-intro__inner { justify-items: start; text-align: left; }
+}
