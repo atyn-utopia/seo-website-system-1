@@ -1,0 +1,29 @@
+{
+  "domain": "waterproofmalaysia.my",
+  "containerId": "GTM-NCQ7KPPC",
+  "gtmAccountId": "6000211475",
+  "ga4MeasurementId": "G-NQDJ36QQKL",
+  "events": [
+    {
+      "redirectPath": "/redirect-whatsapp-1",
+      "eventName": "whatsapp_click"
+    }
+  ],
+  "createdAt": "2026-09-11T07:41:11.776Z",
+  "gsc": {
+    "siteUrl": "https://waterproofmalaysia.my/zh/",
+    "token": "<meta name=\"google-site-verification\" content=\"HaSOZX7XJi0niLyMf0s7LtJSq-8Q6A7Ckp8Iu7OMDOU\" />",
+    "initAt": "2026-09-11T07:45:46.608Z",
+    "verified": true,
+    "verificationMethod": "META",
+    "verifiedAt": "2026-09-11T07:49:37.324Z"
+  },
+  "ads": {
+    "customerId": "1933757591",
+    "ga4PropertyId": "553762010",
+    "conversionActionId": "7759245780",
+    "conversionActionName": "waterproofmalaysia.my (web) whatsapp_click",
+    "event": "whatsapp_click",
+    "importedAt": "2026-09-11T07:50:31.434Z"
+  }
+}
