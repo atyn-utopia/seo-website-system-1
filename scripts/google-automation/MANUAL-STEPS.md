@@ -240,7 +240,7 @@ cd "/Users/aliah/Website Builder/google-automation"
 # 1. Create GA4 property
 node ga4-create.mjs --domain katilhospital.com.my
 # → outputs Measurement ID (e.g. G-XXXXXXXXXX)
-# → manual: toggle Google Signals + User-provided data in GA4 UI
+# → Signals + User-provided data stay OFF here — Phase 6 (step 9) flips them
 
 # 2. Create GTM container + all tags
 node gtm-setup.mjs --domain katilhospital.com.my --ga4-id G-XXXXXXXXXX
@@ -258,20 +258,24 @@ node gsc-submit.mjs --domain katilhospital.com.my --url https://www.katilhospita
 # 6. GSC Phase 2: verify + submit sitemap + bulk index
 node gsc-submit.mjs --domain katilhospital.com.my --url https://www.katilhospital.com.my/ --site ../projects/katilhospital.com.my --finalize
 
-# 7. Manual: GA4 toggles (Google Signals + User-provided data) — 20 seconds
+# 7. (was manual) GA4 toggles — now automated in step 9 (Phase 6)
 
 # 8. Ads conversion import — AUTOMATED (no 24h wait; whatsapp_click is already a Key Event):
 node ads-import-conversion.mjs --no-mcc \
   --customer-id 1933757591 --domain katilhospital.com.my \
   --ga4-property-id <numeric-id> --event whatsapp_click
-#    → then 2 UI-only follow-ups: counting Every→One, "Import app and web metrics" ON
+#    → writes the ads block into configs/<domain>.json; step 9 flips counting + import-metrics
 
-# 9. Tick the ads readiness card in webcore — LAST, after the user confirms
-#    the toggles above are really ON. This is what tells the performance
-#    marketers the site is ready; completing it notifies them once.
+# 9. Phase 6 — the 4 no-API toggles, via a real browser (one-time --login first)
+node finalize-manual-toggles.mjs --domain katilhospital.com.my
+#    → read the SUMMARY; exit 0 means every requested toggle is verified
+
+# 10. Phase 7 — tick the ads readiness card in webcore from step 9's SUMMARY.
+#     Tick only steps that read done-* or skip; completing the card notifies
+#     the performance marketers once.
 set -a && . ../../.env.local && set +a          # WEBCORE_API_KEY, scope ads:write
 node ads-readiness.mjs --domain <domain>                    # read state, writes nothing
-node ads-readiness.mjs --domain <domain> --tick all --yes   # confirm all three
+node ads-readiness.mjs --domain <domain> --tick all --yes   # step 9 exited 0
 ```
 
 ---

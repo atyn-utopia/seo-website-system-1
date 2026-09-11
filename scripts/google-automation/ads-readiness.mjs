@@ -1,16 +1,20 @@
 // Close the ads readiness card in webcore — the last step of the Google flow.
 //
-// The three Google settings that gate a site running ads are the same three
-// residual manual toggles this bundle hands back at the end of Phase 5. Until
-// they are ticked in webcore, the performance marketers have no signal that the
-// site is ready for them, so a finished setup still looks unfinished:
+// The three Google settings that gate a site running ads are three of the four
+// toggles Phase 6 (finalize-manual-toggles.mjs) flips. Until they are ticked in
+// webcore, the performance marketers have no signal that the site is ready for
+// them, so a finished setup still looks unfinished. This is Phase 7:
 //
 //   signals   google_signals       GA4 → Admin → Data collection → Google Signals ON
 //   counting  conversion_counting  Ads → conversion action → Count → "One"
 //   metrics   ga4_metrics_import   Ads → Data manager → GA4 → Import app and web metrics
 //
+// Phase 6 reports these as ga4-signals, ads-counting and ads-metrics. Tick the
+// ones its SUMMARY shows as done-* or skip; leave anything else unticked.
+//
 // `signals` and `counting` are re-verified live by webcore on every read;
-// `metrics` has no API that exposes it, so it can ONLY be confirmed by hand.
+// `metrics` has no API that exposes it — webcore can't see it, so Phase 6's
+// aria-checked + screenshot is the only evidence and this tick is how webcore learns it.
 // Ticking an auto-verified item PINS it, so the live re-check stops overriding
 // the answer — useful when a probe cannot see the account (`reason: refused`).
 //
@@ -156,7 +160,7 @@ if (toTick.length) {
 
   if (completes && !args.yes) {
     console.error('\n⚠️  This would complete the card, which notifies the performance marketers ONCE.');
-    console.error('   Confirm every toggle is genuinely ON in the Google UI, then re-run with --yes.');
+    console.error('   Confirm the Phase 6 SUMMARY shows each item done-* or skip (or the user flipped it by hand), then re-run with --yes.');
     console.error('   Screenshots: https://websitebuilder.utopiaai.my/google (§04)');
     process.exit(1);
   }
@@ -200,6 +204,6 @@ if (args.json && args.json !== true) {
 if (!state.ready) {
   const left = ADS_READINESS_ITEMS.filter((i) => state.readiness?.[i] !== true);
   console.log(`\n⏳ Still owed: ${left.join(', ')}`);
-  console.log('   Flip the toggle in Google first, THEN tick it here.');
+  console.log('   Run Phase 6 (finalize-manual-toggles.mjs) — or flip it by hand — first, THEN tick it here.');
 }
 console.log('');
