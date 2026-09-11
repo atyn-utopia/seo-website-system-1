@@ -293,7 +293,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </section>
 
       {/* ── Delivery steps ─────────────────────────────────────────────── */}
-      <section className="ew-sec ew-sec--paper" id="how-it-works">
+      <section className="ew-sec ew-steps" id="how-it-works">
         <div className="ew-wrap">
           <div className="ew-head">
             <h3>{tSteps('heading')}</h3>
