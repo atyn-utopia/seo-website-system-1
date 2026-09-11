@@ -1,38 +1,43 @@
 import { getTranslations } from 'next-intl/server';
 import { siteConfig } from '@/config/site';
 import { regionOrder, getLocationsByRegion } from '@/config/locations';
+import LocationFinder, { type FinderTown } from '@/components/LocationFinder';
 
-/** Every location page, grouped by region — the site's internal-link spine. */
+/** Find your town: search + state filters over every location page link. */
 export default async function LocationsSection({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'locations' });
   const byRegion = getLocationsByRegion();
+
+  const states = regionOrder.filter((region) => (byRegion[region] ?? []).length > 0);
+  const towns: FinderTown[] = states.flatMap((region) =>
+    (byRegion[region] ?? []).map((loc) => ({
+      slug: loc.slug,
+      name: loc.name,
+      state: region,
+      href: `/${locale}/${siteConfig.productSlug}/${loc.slug}`,
+    })),
+  );
 
   return (
     <section className="ew-sec ew-sec--paper" id="locations">
       <div className="ew-wrap">
         <div className="ew-head">
           <span className="ew-eyebrow">{t('eyebrow')}</span>
-          <h3>{t('heading')}</h3>
-          <p>{t('subheading')}</p>
+          <h3>{t('finderHeading')}</h3>
+          <p>{t('finderSubheading', { n: towns.length })}</p>
         </div>
-        <div className="ew-locs">
-          {regionOrder.map((region) => {
-            const regionLocations = byRegion[region] ?? [];
-            if (regionLocations.length === 0) return null;
-            return (
-              <div className="ew-locs__region" key={region}>
-                <h4>{region}</h4>
-                <div className="ew-locs__chips">
-                  {regionLocations.map((loc) => (
-                    <a key={loc.slug} href={`/${locale}/${siteConfig.productSlug}/${loc.slug}`}>
-                      {loc.name}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <LocationFinder
+          towns={towns}
+          states={states}
+          labels={{
+            placeholder: t('finderPlaceholder'),
+            all: t('finderAll'),
+            count: t('finderCount'),
+            more: t('finderMore'),
+            showAll: t('finderShowAll'),
+            empty: t('finderEmpty'),
+          }}
+        />
       </div>
     </section>
   );
