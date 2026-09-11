@@ -67,9 +67,9 @@ export default async function BlogListingPage({
           >
             {t('title')}
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px' }}>
+          <h2 style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', fontWeight: 400, margin: 0 }}>
             {t('metaDescription')}
-          </p>
+          </h2>
         </div>
       </section>
 
@@ -136,7 +136,7 @@ export default async function BlogListingPage({
                       </p>
 
                       {/* Title */}
-                      <h2
+                      <h3
                         style={{
                           fontSize: '20px',
                           fontWeight: 700,
@@ -146,7 +146,7 @@ export default async function BlogListingPage({
                         }}
                       >
                         {post.title}
-                      </h2>
+                      </h3>
 
                       {/* Excerpt */}
                       <p
