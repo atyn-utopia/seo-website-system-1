@@ -1301,3 +1301,13 @@ p, li, blockquote,
   border-radius: 50%; background: #fff; margin-right: 4px;
   box-shadow: 0 1px 2px rgba(15, 15, 15, 0.08);
 }
+
+/* ── Icons in the USP bar and the spec list ─────────────────────────────── */
+.ew-usp__icon { display: inline-grid; place-items: center; color: var(--brand-orange-deep); margin-bottom: 2px; }
+.ew-specs > div { grid-template-columns: 128px 1fr; }
+.ew-specs dt { display: flex; align-items: center; gap: 8px; }
+.ew-specs__icon { display: inline-grid; place-items: center; color: var(--brand-orange-deep); flex: none; }
+@media (min-width: 900px) {
+  .ew-usp__item { grid-template-columns: auto 1fr; column-gap: 14px; row-gap: 2px; justify-items: start; text-align: left; align-items: center; }
+  .ew-usp__icon { grid-row: span 2; margin: 0; }
+}
