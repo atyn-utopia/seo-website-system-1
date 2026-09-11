@@ -20,7 +20,7 @@ export default async function FinalCta({
   return (
     <section className="ew-sec ew-fcta">
       <div className="ew-fcta__bg">
-        <Image src="/brand/final-cta.png" alt={t('bgAlt')} fill sizes="100vw" />
+        <Image src="/brand/final-cta.webp" alt={t('bgAlt')} fill sizes="100vw" />
       </div>
       <div className="ew-wrap ew-fcta__body">
         <span className="ew-eyebrow ew-eyebrow--on-dark">{t('eyebrow')}</span>

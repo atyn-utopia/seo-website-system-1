@@ -10,7 +10,7 @@ export default async function ReviewsSection({ locale }: { locale: string }) {
   return (
     <section className="ew-sec ew-rev" id="reviews">
       <div className="ew-rev__bg">
-        <Image src="/brand/reviews-bg.png" alt={t('bgAlt')} fill sizes="100vw" />
+        <Image src="/brand/reviews-bg.webp" alt={t('bgAlt')} fill sizes="100vw" />
       </div>
       <div className="ew-wrap">
         <figure className="ew-rev__quote">

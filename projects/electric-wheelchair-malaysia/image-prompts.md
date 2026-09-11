@@ -35,9 +35,12 @@ Say when they're there and we resize, name and place the web copies, wire the al
 text in `en`, `ms` and `zh`, and register the two product photos in webcore.
 
 If you'd rather place them yourself: resize the long edge to the size in the
-manifest, keep each file **under 300 KB**, and **never change the file extension**.
-PNG stays PNG — re-encoding PNG→JPEG flattens alpha and has broken live logos in
-this fleet before (`CLAUDE.md`, Images).
+manifest and keep each file **under 300 KB**. **Photographs** (steps, backgrounds,
+gallery, the daily-life set) are stored as **WebP** at quality 82 — approved on
+11 Sep 2026, cutting `public/` from 16 MB to under 4 MB. **Cutouts and logos**
+(`public/products/`, `public/brand/logo-*.png`) stay **PNG**: re-encoding them
+flattens alpha and has broken live logos in this fleet before (`CLAUDE.md`,
+Images). Deliver originals as PNG either way; the conversion happens here.
 
 ---
 
@@ -83,14 +86,14 @@ stock to the actual customer.
 |---|---|---|---|---|---|---|
 | 1 | Chair, unfolded | `public/products/electric-wheelchair.png` | 1600×1200 | PNG | `product_photos.alt_text` | **needed** |
 | 2 | Chair, folded | `public/products/electric-wheelchair-folded.png` | 1600×1200 | PNG | `product_photos.alt_text` | **needed** |
-| 3 | Step 1, before 2pm | `public/brand/step-1.png` | 1600×1200 | PNG | `howItWorks.steps.0.imageAlt` (new) | **needed** |
-| 4 | Step 2, within the hour | `public/brand/step-2.png` | 1600×1200 | PNG | `howItWorks.steps.1.imageAlt` (new) | **needed** |
-| 5 | Step 3, same evening | `public/brand/step-3.png` | 1600×1200 | PNG | `howItWorks.steps.2.imageAlt` (new) | **needed** |
-| 6 | Reviews band texture | `public/brand/reviews-bg.png` | 2000×1200 | PNG | `reviews.bgAlt` (new) | **needed** |
-| 7 | Final CTA background | `public/brand/final-cta.png` | 2400×1200 | PNG | `finalCta.bgAlt` (exists) | **needed** |
+| 3 | Step 1, before 2pm | `public/brand/step-1.webp` | 1600×1200 | WebP | `howItWorks.steps.0.imageAlt` (new) | **needed** |
+| 4 | Step 2, within the hour | `public/brand/step-2.webp` | 1600×1200 | WebP | `howItWorks.steps.1.imageAlt` (new) | **needed** |
+| 5 | Step 3, same evening | `public/brand/step-3.webp` | 1600×1200 | WebP | `howItWorks.steps.2.imageAlt` (new) | **needed** |
+| 6 | Reviews band texture | `public/brand/reviews-bg.webp` | 2000×1200 | WebP | `reviews.bgAlt` (new) | **needed** |
+| 7 | Final CTA background | `public/brand/final-cta.webp` | 2400×1200 | WebP | `finalCta.bgAlt` (exists) | **needed** |
 | 8 | Folded in a car boot | `public/brand/context-boot.png` | 2000×1333 | PNG | `products.contextAlt` (new) | optional |
 | 9–18 | Daily life ×10 | `public/brand/life-{1..10}.png` | 1600×1200 | PNG | `dailyLife.alts[]` + `dailyLife.captions[]` (new) | **needed** — see below |
-| — | Customer gallery | `public/gallery/*.png` | — | — | `gallery.alts[]` | **do not generate** |
+| — | Customer gallery | `public/gallery/*.webp` | — | — | `gallery.alts[]` | **do not generate** |
 | — | Logo + favicon | `app/icon.svg`, `public/brand/` | — | — | `nav.logoAlt` | client supplied |
 | — | `public/og-*.png` | — | — | — | — | screenshots, not art |
 
