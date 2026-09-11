@@ -197,7 +197,7 @@ function CostCalculator({ locale, phoneNumber }: { locale: string; phoneNumber: 
           >
             <optgroup label="Per sqft">
               {sqftServices.map((s) => (
-                <option key={s.key} value={s.key}>{tProducts(`${s.key}.title`)} — RM{s.rate}{t('perSqftSuffix')}</option>
+                <option key={s.key} value={s.key}>{tProducts(`${s.key}.title`)} (RM{s.rate}{t('perSqftSuffix')})</option>
               ))}
             </optgroup>
             <optgroup label="Pakej">

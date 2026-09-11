@@ -1,6 +1,6 @@
 {
   "logoAlt": "Logo Cat Rumah Malaysia",
-  "imageAlt": "Cat rumah Malaysia — kontraktor cat profesional",
+  "imageAlt": "Cat rumah Malaysia, kontraktor cat profesional",
   "nav": {
     "logoAlt": "Logo Cat Rumah Malaysia",
     "home": "Utama",
@@ -12,11 +12,11 @@
     "whatsappCta": "WhatsApp"
   },
   "products": {
-    "imageAltTemplate": "Cat rumah {model} — Cat Rumah Malaysia"
+    "imageAltTemplate": "Cat rumah {model} oleh Cat Rumah Malaysia"
   },
   "gallery": {
     "alts": [
-      "Cat dinding dalaman ruang tamu — kemasan rapi",
+      "Cat dinding dalaman ruang tamu dengan kemasan rapi",
       "Cat luar rumah teres dua tingkat",
       "Cat siling putih kalis kulat",
       "Cat pagar besi auto-gate warna baru",
@@ -31,7 +31,7 @@
     ]
   },
   "footer": {
-    "tagline": "Kontraktor cat rumah profesional di seluruh Malaysia. Cat dinding dalam & luar, siling, epoxy lantai, dan pagar — guna Nippon, Jotun, Dulux.",
+    "tagline": "Kontraktor cat rumah profesional di seluruh Malaysia. Cat dinding dalam & luar, siling, epoxy lantai dan pagar dengan Nippon, Jotun dan Dulux.",
     "description": "Kontraktor cat rumah profesional di seluruh Malaysia. Cat dinding dalam & luar, siling, epoxy lantai, dan pagar. Jenama premium Nippon, Jotun, Dulux.",
     "whatsappUs": "WhatsApp Kami",
     "productsHeading": "Servis",
@@ -57,7 +57,7 @@
       "description": "Servis cat rumah Malaysia Dari RM3.50/sqft. Cat dinding, luar, siling, epoxy lantai & pagar. Nippon, Jotun, Dulux. WhatsApp sekarang."
     },
     "fomo": {
-      "promo": "Promo bulan ini — quote percuma dalam 1 jam.",
+      "promo": "Promo bulan ini: quote percuma dalam 1 jam.",
       "slotsLeft": "Hanya {slots} slot lagi untuk minggu ini!",
       "bookNow": "Tempah sekarang"
     },
@@ -83,17 +83,17 @@
       "usp1Title": "Quote Percuma",
       "usp1Sub": "Hantar gambar via WhatsApp, kami balas dengan anggaran dalam 1 jam.",
       "usp2Title": "Cat Premium",
-      "usp2Sub": "Nippon Paint, Jotun, Dulux — bukan cat ekonomi murahan.",
+      "usp2Sub": "Nippon Paint, Jotun dan Dulux. Bukan cat ekonomi murahan.",
       "usp3Title": "Jaminan 1 Tahun",
       "usp3Sub": "Calar atau tompok dalam 12 bulan? Kami cat semula percuma."
     },
     "products": {
       "tag": "SERVIS KAMI",
       "heading": "9 Servis Cat Rumah Kami",
-      "subheading": "Dari ruang tamu sampai eksterior — satu pasukan, satu jaminan untuk setiap permukaan.",
+      "subheading": "Dari ruang tamu sampai eksterior: satu pasukan, satu jaminan untuk setiap permukaan.",
       "interior": {
         "title": "Cat Dinding Dalaman",
-        "description": "Ruang tamu, lorong dan dinding aksen — Nippon Odour-less premium tanpa bau yang menyengat.",
+        "description": "Ruang tamu, lorong dan dinding aksen dengan Nippon Odour-less premium, tanpa bau yang menyengat.",
         "price": "3.50"
       },
       "bedroom": {
@@ -108,7 +108,7 @@
       },
       "bathroom": {
         "title": "Cat Bilik Mandi",
-        "description": "Cat anti-kulat dan tahan kelembapan — Jotun Drygolin atau Dulux Easycare.",
+        "description": "Cat anti-kulat dan tahan kelembapan: Jotun Drygolin atau Dulux Easycare.",
         "price": "3.50"
       },
       "exterior": {
@@ -118,7 +118,7 @@
       },
       "weathershield": {
         "title": "Weathershield Premium",
-        "description": "Jotun Jotashield atau Nippon Weatherbond — tahan 7-10 tahun dengan jaminan.",
+        "description": "Jotun Jotashield atau Nippon Weatherbond, tahan 7-10 tahun dengan jaminan.",
         "price": "4.50"
       },
       "marble": {
@@ -133,7 +133,7 @@
       },
       "decor3d": {
         "title": "3D Decorative Wall",
-        "description": "Panel hiasan 3D timbul — pilihan corak monstera, geometri atau organik.",
+        "description": "Panel hiasan 3D timbul dengan pilihan corak monstera, geometri atau organik.",
         "price": "3,500"
       },
       "bookNow": "Tanya Harga Sekarang",
@@ -174,7 +174,7 @@
       "heading": "Kenapa Pilih Cat Rumah Malaysia",
       "reason1": {
         "title": "Jenama Premium Sahaja",
-        "description": "Kami hanya pakai Nippon Paint, Jotun dan Dulux — bukan cat ekonomi murah."
+        "description": "Kami hanya pakai Nippon Paint, Jotun dan Dulux, bukan cat ekonomi murah."
       },
       "reason2": {
         "title": "Siap Sepantas 5 Jam",
@@ -208,7 +208,7 @@
       "step2Desc": "Lawatan tapak percuma. Pilih warna dan dapatkan harga tetap.",
       "step3Num": "03",
       "step3Title": "Siap Sepantas 5 Jam",
-      "step3Desc": "Kerja kecil siap hari sama. Projek besar disiapkan dalam 1–3 hari.",
+      "step3Desc": "Kerja kecil siap hari sama. Projek besar disiapkan dalam 1-3 hari.",
       "cta": "WhatsApp Kami Sekarang"
     },
     "reviews": {
@@ -240,9 +240,9 @@
     "gallery": {
       "tag": "GALERI KERJA",
       "heading": "Lihat Kerja Kami",
-      "imageAlt": "Kerja cat rumah {number} — Cat Rumah Malaysia",
+      "imageAlt": "Kerja cat rumah {number} oleh Cat Rumah Malaysia",
       "alts": [
-        "Cat dinding dalaman ruang tamu — kemasan rapi",
+        "Cat dinding dalaman ruang tamu dengan kemasan rapi",
         "Cat luar rumah teres dua tingkat",
         "Cat siling putih kalis kulat",
         "Cat pagar besi auto-gate warna baru",
@@ -264,7 +264,7 @@
       "q2": "Adakah anda guna cat Nippon Paint, Jotun atau Dulux?",
       "a2": "Ya, kami pakai ketiga-tiga jenama premium ini. Pelanggan boleh pilih ikut bajet.",
       "q3": "Berapa lama untuk siapkan cat satu rumah?",
-      "a3": "Kerja bilik atau ruang tamu siap dalam 5 jam. Rumah teres satu tingkat 1–2 hari. Rumah dua tingkat 2–4 hari.",
+      "a3": "Kerja bilik atau ruang tamu siap dalam 5 jam. Rumah teres satu tingkat 1-2 hari. Rumah dua tingkat 2-4 hari.",
       "q4": "Adakah quote dikenakan caj?",
       "a4": "Tidak. Lawatan tapak dan sebut harga adalah percuma tanpa ikatan.",
       "q5": "Apa jaminan yang anda beri?",
@@ -286,14 +286,14 @@
     "finalCta": {
       "headline": "Sedia Untuk Rumah",
       "headlineHighlight": "Baru?",
-      "subheadline": "Dapatkan quote percuma dalam 1 jam — tanpa ikatan, tanpa deposit dahulu.",
+      "subheadline": "Dapatkan quote percuma dalam 1 jam. Tanpa ikatan, tanpa deposit dahulu.",
       "cta": "WhatsApp Kami Sekarang",
       "fine": "Quote percuma · Respons dalam 1 jam · Jaminan 12 bulan"
     }
   },
   "location": {
     "meta": {
-      "title": "Cat Rumah {city} | Servis Dari RM3.50/sqft — Cat Rumah Malaysia",
+      "title": "Cat Rumah {city} | Servis Dari RM3.50/sqft | Cat Rumah Malaysia",
       "description": "Cari kontraktor cat rumah di {city}? Cat Rumah Malaysia menawarkan servis cat dinding, luar, siling dan pagar Dari RM3.50/sqft."
     },
     "hero": {
@@ -307,20 +307,20 @@
     },
     "services": {
       "heading": "Servis Cat Rumah Di {city}",
-      "interior": "Cat dinding dalaman di {city} — Nippon Odour-less premium, kemasan rapi.",
-      "exterior": "Cat luar rumah di {city} — weathershield tahan cuaca Malaysia.",
-      "ceiling": "Cat siling di {city} — putih bersih, kalis kulat.",
-      "fence": "Cat pagar dan grill di {city} — anti-karat, warna tahan 3+ tahun."
+      "interior": "Cat dinding dalaman di {city} dengan Nippon Odour-less premium dan kemasan rapi.",
+      "exterior": "Cat luar rumah di {city} dengan weathershield tahan cuaca Malaysia.",
+      "ceiling": "Cat siling di {city}: putih bersih dan kalis kulat.",
+      "fence": "Cat pagar dan grill di {city}: anti-karat, warna tahan 3+ tahun."
     },
     "why": {
       "heading": "Kenapa Pilih Kami Di {city}",
-      "fast": "Respons pantas — sampai {city} dalam masa 24 jam.",
+      "fast": "Respons pantas, sampai {city} dalam masa 24 jam.",
       "transparent": "Harga tetap, tanpa kos tersembunyi.",
       "brands": "Semua jenama premium dilayan di {city}.",
       "warranty": "Jaminan 12 bulan untuk setiap kerja di {city}."
     },
     "faq": {
-      "heading": "Soalan Lazim — Cat Rumah {city}",
+      "heading": "Soalan Lazim: Cat Rumah {city}",
       "q1": "Berapa cepat anda sampai {city}?",
       "a1": "Kami ada pasukan dekat {city} dan boleh datang dalam masa 24 jam.",
       "q2": "Berapa kos cat rumah di {city}?",

@@ -1,6 +1,6 @@
 {
   "logoAlt": "Cat Rumah Malaysia 标志",
-  "imageAlt": "马来西亚房屋油漆服务 — 专业油漆承包商",
+  "imageAlt": "马来西亚房屋油漆服务，专业油漆承包商",
   "nav": {
     "logoAlt": "Cat Rumah Malaysia 标志",
     "home": "首页",
@@ -12,11 +12,11 @@
     "whatsappCta": "WhatsApp"
   },
   "products": {
-    "imageAltTemplate": "{model} 房屋油漆 — Cat Rumah Malaysia"
+    "imageAltTemplate": "{model} 房屋油漆，由 Cat Rumah Malaysia 施工"
   },
   "gallery": {
     "alts": [
-      "客厅室内油漆 — 细致完工",
+      "客厅室内油漆，细致完工",
       "双层排屋外墙油漆",
       "白色防霉天花板油漆",
       "电动闸门金属围栏重漆",
@@ -31,7 +31,7 @@
     ]
   },
   "footer": {
-    "tagline": "马来西亚专业房屋油漆承包商 — 室内、室外、天花板、环氧地板与围栏油漆，使用立邦、Jotun与多乐士。",
+    "tagline": "马来西亚专业房屋油漆承包商：室内、室外、天花板、环氧地板与围栏油漆，使用立邦、Jotun与多乐士。",
     "description": "马来西亚专业房屋油漆承包商。室内、室外、天花板、环氧地板和围栏油漆。立邦、Jotun、多乐士高级品牌。",
     "whatsappUs": "WhatsApp 我们",
     "productsHeading": "服务",
@@ -57,7 +57,7 @@
       "description": "马来西亚房屋油漆服务，RM3.50/平方尺起。墙壁、外墙、天花板、地板与围栏。立邦、Jotun、多乐士。立即 WhatsApp。"
     },
     "fomo": {
-      "promo": "本月促销 — 1小时内免费报价。",
+      "promo": "本月促销：1小时内免费报价。",
       "slotsLeft": "本周仅剩 {slots} 个名额！",
       "bookNow": "立即预约"
     },
@@ -83,17 +83,17 @@
       "usp1Title": "免费报价",
       "usp1Sub": "WhatsApp发送照片，1小时内回复估价。",
       "usp2Title": "高级油漆",
-      "usp2Sub": "立邦、Jotun、多乐士 — 绝非廉价经济漆。",
+      "usp2Sub": "立邦、Jotun、多乐士，绝非廉价经济漆。",
       "usp3Title": "1年保固",
       "usp3Sub": "12个月内出现刮痕或脱落？免费重新油漆。"
     },
     "products": {
       "tag": "我们的服务",
       "heading": "8项房屋油漆服务",
-      "subheading": "从客厅到外墙 — 一支团队，一项保证。",
+      "subheading": "从客厅到外墙：一支团队，一项保证。",
       "interior": {
         "title": "室内墙壁油漆",
-        "description": "客厅、走廊与重点墙 — 立邦无味高级漆，细致完工。",
+        "description": "客厅、走廊与重点墙：立邦无味高级漆，细致完工。",
         "price": "3.50"
       },
       "bedroom": {
@@ -108,17 +108,17 @@
       },
       "bathroom": {
         "title": "浴室油漆",
-        "description": "防霉防潮 — Jotun Drygolin 或 Dulux Easycare。",
+        "description": "防霉防潮：Jotun Drygolin 或 Dulux Easycare。",
         "price": "3.50"
       },
       "exterior": {
         "title": "外墙油漆",
-        "description": "为马来西亚气候设计 — 含免费高压清洗。",
+        "description": "为马来西亚气候设计，含免费高压清洗。",
         "price": "3.50"
       },
       "weathershield": {
         "title": "高级耐候漆",
-        "description": "Jotun Jotashield 或立邦 Weatherbond — 7–10年保修。",
+        "description": "Jotun Jotashield 或立邦 Weatherbond，7-10年保修。",
         "price": "4.50"
       },
       "marble": {
@@ -133,7 +133,7 @@
       },
       "decor3d": {
         "title": "3D 装饰墙",
-        "description": "立体浮雕墙板 — 龟背叶、几何或有机图案。",
+        "description": "立体浮雕墙板：龟背叶、几何或有机图案。",
         "price": "3,500"
       },
       "bookNow": "立即询价",
@@ -174,11 +174,11 @@
       "heading": "为什么选择 Cat Rumah Malaysia",
       "reason1": {
         "title": "仅用高级品牌",
-        "description": "我们仅使用立邦、Jotun和多乐士 — 绝非廉价漆。"
+        "description": "我们仅使用立邦、Jotun和多乐士，绝非廉价漆。"
       },
       "reason2": {
         "title": "5小时完成",
-        "description": "卧室或客厅工作 — 您当天就能搬回新家。"
+        "description": "卧室或客厅工作，您当天就能搬回新家。"
       },
       "reason3": {
         "title": "免费报价，无任何承诺",
@@ -194,7 +194,7 @@
       },
       "reason6": {
         "title": "全马来西亚覆盖",
-        "description": "从吉隆坡到槟城 — 我们送上门服务。"
+        "description": "从吉隆坡到槟城，我们送上门服务。"
       }
     },
     "howItWorks": {
@@ -226,7 +226,7 @@
       "review3Text": "双层楼的耐候漆工作。团队准时到场，提前一天完工。值得5星。",
       "review3Name": "Mr Lim",
       "review3Location": "新山",
-      "review4Text": "我以为油漆很贵。Cat Rumah Malaysia 报价 RM3.50/平方尺 — 比其他承包商省了5千。",
+      "review4Text": "我以为油漆很贵。Cat Rumah Malaysia 报价 RM3.50/平方尺，比其他承包商省了5千。",
       "review4Name": "Siti N.",
       "review4Location": "莎阿南",
       "review5Text": "其他承包商报价8千，Cat Rumah Malaysia 只要4.5千做我们的排屋。用的还是立邦高级漆。",
@@ -240,9 +240,9 @@
     "gallery": {
       "tag": "工程展示",
       "heading": "查看我们的近期作品",
-      "imageAlt": "房屋油漆作品 {number} — Cat Rumah Malaysia",
+      "imageAlt": "房屋油漆作品 {number}，由 Cat Rumah Malaysia 施工",
       "alts": [
-        "客厅室内油漆 — 细致完工",
+        "客厅室内油漆，细致完工",
         "双层排屋外墙油漆",
         "白色防霉天花板油漆",
         "电动闸门金属围栏重漆",
@@ -268,9 +268,9 @@
       "q4": "报价是否收费？",
       "a4": "不收费。现场考察与报价都是免费的，没有义务。",
       "q5": "你们提供什么保修？",
-      "a5": "12个月保修。期间出现刮痕或脱落 — 免费重新油漆。",
+      "a5": "12个月保修。期间出现刮痕或脱落，免费重新油漆。",
       "q6": "巴生谷以外的地区是否服务？",
-      "a6": "是的 — 我们覆盖槟城、新山、怡保、马六甲和芙蓉。差旅费已含在报价中。",
+      "a6": "是的，我们覆盖槟城、新山、怡保、马六甲和芙蓉。差旅费已含在报价中。",
       "q7": "可以自己选颜色吗？",
       "a7": "当然。我们带色卡上门，或您可以WhatsApp发送参考图。",
       "q8": "工作期间会搬动家具吗？",
@@ -286,14 +286,14 @@
     "finalCta": {
       "headline": "准备好",
       "headlineHighlight": "焕新家居？",
-      "subheadline": "1小时内获得免费报价 — 无任何承诺，无预付金。",
+      "subheadline": "1小时内获得免费报价。无任何承诺，无预付金。",
       "cta": "立即 WhatsApp 我们",
       "fine": "免费报价 · 1小时回复 · 12个月保修"
     }
   },
   "location": {
     "meta": {
-      "title": "{city} 房屋油漆 | RM3.50/平方尺起 — Cat Rumah Malaysia",
+      "title": "{city} 房屋油漆 | RM3.50/平方尺起 | Cat Rumah Malaysia",
       "description": "寻找 {city} 房屋油漆承包商？Cat Rumah Malaysia 提供墙壁、外墙、天花板和围栏油漆服务，RM3.50/平方尺起。"
     },
     "hero": {
@@ -307,15 +307,15 @@
     },
     "services": {
       "heading": "{city} 房屋油漆服务",
-      "interior": "{city} 室内墙壁油漆 — 立邦无味高级漆，细致完工。",
-      "exterior": "{city} 室外油漆 — 耐候漆适应马来西亚气候。",
-      "ceiling": "{city} 天花板油漆 — 洁白防霉。",
-      "fence": "{city} 围栏与栏杆油漆 — 防锈，颜色持久3年以上。"
+      "interior": "{city} 室内墙壁油漆：立邦无味高级漆，细致完工。",
+      "exterior": "{city} 室外油漆：耐候漆适应马来西亚气候。",
+      "ceiling": "{city} 天花板油漆：洁白防霉。",
+      "fence": "{city} 围栏与栏杆油漆：防锈，颜色持久3年以上。"
     },
     "why": {
       "heading": "为什么在 {city} 选择我们",
-      "fast": "响应迅速 — 24小时内到达 {city}。",
-      "transparent": "固定价格 — 无隐藏费用。",
+      "fast": "响应迅速，24小时内到达 {city}。",
+      "transparent": "固定价格，无隐藏费用。",
       "brands": "{city} 提供所有高级品牌。",
       "warranty": "{city} 每项工作12个月保修。"
     },
