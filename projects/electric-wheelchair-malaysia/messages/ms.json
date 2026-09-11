@@ -27,21 +27,23 @@
     "priceDaily": "Dari RM {price}"
   },
   "gallery": {
-    "heading": "Galeri Pelanggan",
-    "subheading": "Pelanggan sebenar menggunakan kerusi roda elektrik kami di seluruh Malaysia",
+    "heading": "Daripada penghantaran kami sendiri",
+    "subheading": "Gambar sebenar kerja kami, bukan gambar stok.",
     "alts": [
-      "Pelanggan menerima penghantaran kerusi roda elektrik di rumah teres Selangor",
-      "Kerusi roda elektrik lipat ringan ditunjukkan di lobi hospital Kuala Lumpur",
-      "Tutorial pemanduan kerusi roda elektrik untuk pelanggan warga emas",
-      "Bateri kerusi roda elektrik dicas sebelum penghantaran",
-      "Kerusi roda elektrik dimuatkan ke MPV untuk kegunaan bercuti",
-      "Sesi servis berkala — pemeriksaan motor dan brek kerusi roda elektrik",
-      "Penggunaan kerusi roda elektrik di kawasan pejalan kaki KLCC",
-      "Kerusi roda elektrik diparkir berhampiran lif kondo Petaling Jaya",
-      "Sesi try-out kerusi roda elektrik di pusat showroom Shah Alam",
-      "Pemasangan aksesori bumbung penahan hujan pada kerusi roda elektrik",
-      "Pelanggan bersama keluarga selepas penghantaran kerusi roda elektrik",
-      "Kerusi roda elektrik berkuasa tinggi untuk pergerakan luar bandar"
+      "Pelanggan dalam kerusi roda elektrik barunya bersama juruteknik penghantaran kami di luar rumah",
+      "Juruteknik kami menunjukkan kawalan joystick kepada pelanggan di anjung rumah",
+      "Gambar dekat tangan pelanggan pada joystick kerusi roda elektrik",
+      "Kerusi roda elektrik rangka perak dibuka dan sedia untuk dihantar",
+      "Kerusi roda elektrik dibuka bungkusan di sebelah pek bateri sebelum pemasangan",
+      "Perincian rangka lipat dan lengan kerusi roda elektrik"
+    ],
+    "captions": [
+      "serahan",
+      "tunjuk ajar memandu",
+      "kawalan",
+      "sedia dihantar",
+      "buka bungkusan",
+      "rangka lipat"
     ]
   },
   "finalCta": {
@@ -49,7 +51,7 @@
     "subheading": "Sewa dari RM400/bulan atau beli dari RM2,400. Penghantaran hari sama ke seluruh Malaysia.",
     "cta": "WhatsApp Sekarang",
     "phone": "6010-888 9849",
-    "bgAlt": "Pasukan Electric Wheelchair Malaysia menghantar kerusi roda elektrik kepada pelanggan di Lembah Klang"
+    "bgAlt": "Kerusi roda elektrik di anjung rumah di Malaysia pada waktu senja"
   },
   "fomoBanner": {
     "texts": [
@@ -67,7 +69,13 @@
     "subheadline": "Ringan. Boleh dilipat. Berkuasa. Sewa dari RM400/bulan atau beli dari RM2,400. Penghantaran hari sama ke seluruh Malaysia.",
     "ctaPrimary": "WhatsApp Sekarang",
     "ctaSecondary": "Lihat Produk",
-    "trustBadge": "Bertauliah KKM • Waranti 6 Bulan • 2,300+ Pelanggan"
+    "trustBadge": "Bertauliah KKM • Waranti 6 Bulan • 2,300+ Pelanggan",
+    "callouts": [
+      "sandaran boleh melentur",
+      "boleh lipat untuk but kereta",
+      "kawalan joystick",
+      "waranti 6 bulan"
+    ]
   },
   "stats": {
     "items": [
@@ -107,25 +115,64 @@
       "Penghantaran Hari Sama",
       "98% Kadar Keselesaan"
     ],
-    "cta": "WhatsApp Sekarang"
+    "cta": "WhatsApp Sekarang",
+    "sectionHeading": "Kerusi yang kami sewa dan jual",
+    "sectionSubheading": "Satu model, boleh lipat dan melentur, ringan untuk dibawa ke mana-mana.",
+    "rentLabel": "sewa",
+    "buyLabel": "beli",
+    "perMonth": "sebulan",
+    "wasPrefix": "dahulu",
+    "thumbUnfolded": "dibuka",
+    "thumbFolded": "dilipat untuk but",
+    "photoAltUnfolded": "Kerusi roda elektrik ringan boleh lipat, dibuka dan sedia dipandu",
+    "photoAltFolded": "Kerusi roda elektrik yang sama dilipat rata untuk but kereta",
+    "specs": [
+      {
+        "label": "lipatan",
+        "value": "Boleh dilipat untuk but kereta dan perjalanan"
+      },
+      {
+        "label": "sandaran",
+        "value": "Boleh melentur"
+      },
+      {
+        "label": "kawalan",
+        "value": "Joystick, boleh dipasang di mana-mana lengan"
+      },
+      {
+        "label": "waranti",
+        "value": "6 bulan untuk motor, bateri dan rangka"
+      },
+      {
+        "label": "pemasangan",
+        "value": "Pemasangan percuma dan tunjuk ajar memandu"
+      }
+    ]
   },
   "howItWorks": {
-    "heading": "Cara Pesanan",
-    "subheading": "Dapatkan kerusi roda elektrik anda dalam 3 langkah mudah",
+    "heading": "Bagaimana penghantaran berjalan",
+    "subheading": "Pesan sebelum 2pm dan kerusi sampai di pintu rumah anda petang itu juga.",
     "steps": [
       {
         "title": "Hubungi Kami",
-        "description": "WhatsApp kami dengan keperluan anda. Kami akan syorkan kerusi roda terbaik untuk anda."
+        "description": "WhatsApp kami dengan keperluan anda. Kami akan syorkan kerusi roda terbaik untuk anda.",
+        "when": "sebelum 2pm",
+        "imageAlt": "Seorang pelanggan menghantar mesej kepada kami dari meja makan di rumah"
       },
       {
         "title": "Pilih & Bayar",
-        "description": "Pilih sewa atau beli. Bayar melalui perbankan dalam talian. Tiada kad kredit diperlukan."
+        "description": "Pilih sewa atau beli. Bayar melalui perbankan dalam talian. Tiada kad kredit diperlukan.",
+        "when": "dalam sejam",
+        "imageAlt": "Juruteknik kami memeriksa bateri dan rangka sebelum penghantaran"
       },
       {
         "title": "Dihantar!",
-        "description": "Penghantaran hari sama ke depan pintu anda. Pemasangan dan demonstrasi percuma disertakan."
+        "description": "Penghantaran hari sama ke depan pintu anda. Pemasangan dan demonstrasi percuma disertakan.",
+        "when": "petang sama",
+        "imageAlt": "Juruteknik kami menolak kerusi naik ke anjung rumah pelanggan"
       }
-    ]
+    ],
+    "ctaNote": "Hantar alamat dan tarikh anda perlukan. Kami balas dalam masa sejam."
   },
   "risk": {
     "heading": "Mengapa Anda Perlukan Kerusi Roda Elektrik",
@@ -185,7 +232,9 @@
         "text": "Sangat berpuas hati dengan perkhidmatan. Kerusi roda tepat seperti yang diterangkan — ringan dan berkuasa. Ayah saya gunakan setiap hari. Harga pun berpatutan.",
         "rating": 5
       }
-    ]
+    ],
+    "bgAlt": "Kerusi roda elektrik kosong di anjung berjubin sebuah rumah di Malaysia",
+    "ratingSuffix": "daripada 230+ ulasan Google"
   },
   "whyChoose": {
     "heading": "Mengapa Pilih Kerusi Roda Elektrik Malaysia",
@@ -294,5 +343,24 @@
     "heading": "Membuka WhatsApp…",
     "subtext": "Menghubungkan anda dengan pasukan Electric Wheelchair Malaysia.",
     "fallback": "Klik di sini jika tidak dialihkan"
+  },
+  "contact": {
+    "availability": "Hubungi kami"
+  },
+  "usp": {
+    "items": [
+      {
+        "eyebrow": "disahkan",
+        "label": "Diluluskan KKM"
+      },
+      {
+        "eyebrow": "dilindungi",
+        "label": "Waranti 6 bulan"
+      },
+      {
+        "eyebrow": "dihantar",
+        "label": "Hari sama, sebelum 2pm"
+      }
+    ]
   }
 }

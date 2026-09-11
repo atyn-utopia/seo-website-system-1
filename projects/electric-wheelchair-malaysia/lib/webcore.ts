@@ -20,6 +20,11 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 
 export type WebcoreTag = 'webcore-products' | 'webcore-phones' | 'webcore-blog'
 
+// Public webcore API — used only by getDisplayPhone(), which needs webcore's
+// own /display precedence rather than a raw table read.
+const WEBCORE_PUBLIC_BASE = 'https://webcore.utopiaai.my'
+const WEBCORE_FETCH_TIMEOUT_MS = 4000
+
 async function webcoreFetch<T>(path: string, tag: WebcoreTag): Promise<T | null> {
   if (!SUPABASE_URL || !SUPABASE_KEY) return null
   try {
@@ -65,6 +70,9 @@ interface PhoneRow {
   label: string | null
   location_slug: string | null
   page_slug: string | null
+  // Nominates the number this page PRINTS. Unique per (website, page_slug),
+  // not per site — see getDisplayPhone().
+  is_display: boolean | null
 }
 
 // A row is "site-wide" when it isn't pinned to a specific page. Rows that
@@ -119,7 +127,7 @@ async function getLeadsMode(domain: string): Promise<LeadsMode> {
 async function getPhoneRows(domain: string): Promise<PhoneRow[]> {
   if (!domain) return []
   const path =
-    `phone_numbers?select=phone_number,whatsapp_text,percentage,label,location_slug,page_slug` +
+    `phone_numbers?select=phone_number,whatsapp_text,percentage,label,location_slug,page_slug,is_display` +
     `&website=eq.${encodeURIComponent(domain)}` +
     `&is_active=eq.true`
   const data = await webcoreFetch<PhoneRow[]>(path, 'webcore-phones')
@@ -305,4 +313,137 @@ export async function getBlogPostBySlug(
   const data = await webcoreFetch<BlogPostRow[]>(path, 'webcore-blog')
   if (!data || data.length === 0) return null
   return flattenBlogRow(data[0])
+}
+
+/* ============================================================
+ * Products
+ *
+ * CLAUDE.md, Dynamic Product Data: the homepage and location pages read
+ * products from webcore, never from a config file. Adding a row in /admin puts
+ * a product on the site as soon as the webcore-products tag is purged.
+ * ============================================================ */
+
+export interface ProductPhoto {
+  url: string
+  alt_text: string | null
+}
+
+export interface Product {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  sale_price: number | null
+  rental_price: number | null
+  sort_order: number
+  photos: ProductPhoto[]
+}
+
+type ProductRow = Omit<Product, 'photos'> & {
+  product_photos: ProductPhoto[] | null
+}
+
+export async function getProducts(): Promise<Product[]> {
+  const path =
+    `products?select=id,name,slug,description,sale_price,rental_price,sort_order,product_photos(url,alt_text)` +
+    `&website=eq.${encodeURIComponent(siteConfig.domain)}` +
+    `&is_active=eq.true` +
+    `&order=sort_order.asc`
+
+  const rows = await webcoreFetch<ProductRow[]>(path, 'webcore-products')
+  if (!rows) return []
+
+  return rows.map((row) => ({
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    description: row.description,
+    sale_price: row.sale_price,
+    rental_price: row.rental_price,
+    sort_order: row.sort_order,
+    photos: row.product_photos ?? [],
+  }))
+}
+
+/* ============================================================
+ * The number a page PRINTS
+ *
+ * Two different questions, deliberately two different functions:
+ *
+ *   who RECEIVES this lead  -> getPhoneNumber() / the redirect page (rotates)
+ *   what this page SHOWS    -> getDisplayPhone() (deterministic)
+ *
+ * Printing a rotating number would change the digits between page loads.
+ * ============================================================ */
+
+/**
+ * webcore's /display endpoint: page display number -> site-wide display number
+ * -> admin default. `is_display` is unique per (website, page_slug), not per
+ * site, so the page is part of the question.
+ */
+async function fetchDisplayPhone(page?: string): Promise<string | null> {
+  const url =
+    `${WEBCORE_PUBLIC_BASE}/api/public/phone-numbers/display` +
+    `?website=${encodeURIComponent(siteConfig.domain)}` +
+    (page ? `&page=${encodeURIComponent(page)}` : '')
+
+  // Cacheable + tagged so a webcore-phones purge refreshes it, and raced
+  // against a timeout rather than an AbortSignal — a signal opts the response
+  // out of the Data Cache and breaks tag purging.
+  const request = fetch(url, {
+    headers: { Accept: 'application/json' },
+    cache: 'force-cache',
+    next: { tags: ['webcore-phones'] },
+  }).catch(() => null)
+
+  const res = await Promise.race([
+    request,
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), WEBCORE_FETCH_TIMEOUT_MS)),
+  ])
+  if (!res || !res.ok) return null
+
+  const data = (await res.json().catch(() => null)) as { phone_number?: string } | null
+  return data?.phone_number || null
+}
+
+export async function getDisplayPhone(page?: string): Promise<string> {
+  const viaApi = await fetchDisplayPhone(page)
+  if (viaApi) return viaApi
+
+  // Fallback when the public API is unreachable: read the rows and reproduce
+  // its precedence. Page-scoped display row -> site-wide display row -> the
+  // 'default' label -> any site-wide row.
+  try {
+    const rows = await getPhoneRows(siteConfig.domain)
+    if (rows.length === 0) return FALLBACK_PHONE
+    const pageSlug = page ? page.replace(/^\/+|\/+$/g, '') : ''
+    const row =
+      (pageSlug
+        ? rows.find((r) => r.is_display === true && (r.page_slug ?? 'all') === pageSlug)
+        : undefined) ??
+      rows.find((r) => r.is_display === true && (r.page_slug ?? 'all') === 'all') ??
+      findDefaultRow(rows) ??
+      rows.find((r) => (r.location_slug ?? 'all') === 'all') ??
+      rows[0]
+    return row.phone_number || FALLBACK_PHONE
+  } catch {
+    return FALLBACK_PHONE
+  }
+}
+
+/**
+ * `60108889849` -> `010-888 9849`. Malaysian mobile convention: drop the 60,
+ * restore the leading 0, then split the subscriber part. Anything unexpected
+ * falls back to the raw digits rather than mangling an unknown format.
+ */
+export function formatPhoneDisplay(raw: string): string {
+  const digits = (raw || '').replace(/\D/g, '')
+  const local = digits.startsWith('60') ? '0' + digits.slice(2) : digits
+  const m10 = local.match(/^(01\d)(\d{3})(\d{4})$/)
+  if (m10) return `${m10[1]}-${m10[2]} ${m10[3]}`
+  const m11 = local.match(/^(01\d)(\d{4})(\d{4})$/)
+  if (m11) return `${m11[1]}-${m11[2]} ${m11[3]}`
+  const fixed = local.match(/^(0\d)(\d{4})(\d{4})$/)
+  if (fixed) return `${fixed[1]}-${fixed[2]} ${fixed[3]}`
+  return local || raw
 }

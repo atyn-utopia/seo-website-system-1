@@ -23,21 +23,23 @@
   "logoAlt": "Electric Wheelchair Malaysia — 马来西亚电动轮椅租赁与销售",
   "imageAlt": "Electric Wheelchair Malaysia 电动轮椅 — 为客户提供当日送达服务",
   "gallery": {
-    "heading": "客户展示",
-    "subheading": "马来西亚各地的真实客户正在使用我们的电动轮椅",
+    "heading": "来自我们自己的配送",
+    "subheading": "全部是我们实际工作的照片，并非图库素材。",
     "alts": [
-      "客户在雪兰莪排屋门口签收电动轮椅",
-      "吉隆坡医院大厅展示的可折叠轻便电动轮椅",
-      "为长者客户进行电动轮椅驾驶教学",
-      "送货前为电动轮椅电池充电",
-      "将电动轮椅装入 MPV 以便出行使用",
-      "电动轮椅例行保养 — 检查电机与刹车",
-      "在 KLCC 步行区使用的电动轮椅",
-      "电动轮椅停放在八打灵再也公寓电梯旁",
-      "莎阿南展厅的电动轮椅试驾体验",
-      "为电动轮椅加装防雨车顶配件",
-      "客户与家人在电动轮椅送达后合影",
-      "适合乡村路况的大功率电动轮椅"
+      "顾客坐在新的电动轮椅上，与我们的配送技术员在家门外",
+      "我们的技术员在门廊向顾客讲解操纵杆的使用",
+      "顾客手握电动轮椅操纵杆的特写",
+      "银色车架电动轮椅已拆箱，准备配送",
+      "电动轮椅拆开包装，旁边是电池组，准备安装",
+      "电动轮椅折叠车架与扶手细节"
+    ],
+    "captions": [
+      "交付",
+      "操作讲解",
+      "控制",
+      "准备送出",
+      "拆箱",
+      "折叠车架"
     ]
   },
   "finalCta": {
@@ -45,7 +47,7 @@
     "subheading": "月租RM400起或购买RM2,400起。全马当日送达。",
     "cta": "立即WhatsApp",
     "phone": "6010-888 9849",
-    "bgAlt": "Electric Wheelchair Malaysia 团队将电动轮椅送至巴生谷客户家中"
+    "bgAlt": "黄昏时分停放在马来西亚住家门廊的电动轮椅"
   },
   "fomoBanner": {
     "texts": [
@@ -63,7 +65,13 @@
     "subheadline": "轻便。可折叠。动力强劲。月租RM400起或购买RM2,400起。全马当日送达。",
     "ctaPrimary": "立即WhatsApp",
     "ctaSecondary": "查看产品",
-    "trustBadge": "KKM认证 • 6个月保修 • 2,300+客户"
+    "trustBadge": "KKM认证 • 6个月保修 • 2,300+客户",
+    "callouts": [
+      "可调节靠背",
+      "可折叠放入车尾箱",
+      "操纵杆控制",
+      "六个月保修"
+    ]
   },
   "stats": {
     "items": [
@@ -103,25 +111,64 @@
       "当日送达",
       "98%舒适度"
     ],
-    "cta": "立即WhatsApp"
+    "cta": "立即WhatsApp",
+    "sectionHeading": "我们出租与出售的轮椅",
+    "sectionSubheading": "单一型号，可折叠、可调节靠背，轻便易于携带出行。",
+    "rentLabel": "租用",
+    "buyLabel": "购买",
+    "perMonth": "每月",
+    "wasPrefix": "原价",
+    "thumbUnfolded": "展开",
+    "thumbFolded": "折叠后放入车尾箱",
+    "photoAltUnfolded": "轻便可折叠电动轮椅，展开后可立即使用",
+    "photoAltFolded": "同款电动轮椅折叠后可放入车尾箱",
+    "specs": [
+      {
+        "label": "折叠",
+        "value": "可折叠放入车尾箱，方便出行"
+      },
+      {
+        "label": "靠背",
+        "value": "可调节"
+      },
+      {
+        "label": "控制",
+        "value": "操纵杆，可安装在任一扶手"
+      },
+      {
+        "label": "保修",
+        "value": "电机、电池与车架保修六个月"
+      },
+      {
+        "label": "安装",
+        "value": "免费组装并教您操作"
+      }
+    ]
   },
   "howItWorks": {
-    "heading": "订购流程",
-    "subheading": "3个简单步骤，获取您的电动轮椅",
+    "heading": "配送流程",
+    "subheading": "下午 2 点前下单，轮椅当天傍晚送到您家门口。",
     "steps": [
       {
         "title": "联系我们",
-        "description": "通过WhatsApp告诉我们您的需求，我们会为您推荐最合适的轮椅。"
+        "description": "通过WhatsApp告诉我们您的需求，我们会为您推荐最合适的轮椅。",
+        "when": "下午 2 点前",
+        "imageAlt": "顾客在家中餐桌旁通过手机联系我们"
       },
       {
         "title": "选择与付款",
-        "description": "选择租赁或购买。通过网上银行付款，无需信用卡。"
+        "description": "选择租赁或购买。通过网上银行付款，无需信用卡。",
+        "when": "一小时内",
+        "imageAlt": "我们的技术员在配送前检查电池与车架"
       },
       {
         "title": "送达！",
-        "description": "当日送到您家门口。免费安装和使用演示。"
+        "description": "当日送到您家门口。免费安装和使用演示。",
+        "when": "当天傍晚",
+        "imageAlt": "我们的技术员将轮椅推到顾客家门廊"
       }
-    ]
+    ],
+    "ctaNote": "发送您的地址和所需日期，我们会在一小时内回复。"
   },
   "risk": {
     "heading": "为什么您需要电动轮椅",
@@ -181,7 +228,9 @@
         "text": "对服务非常满意。轮椅和描述的一模一样——轻便又有力。父亲每天都用它出去散步。价格也很合理。",
         "rating": 5
       }
-    ]
+    ],
+    "bgAlt": "马来西亚住家瓷砖门廊上一台空置的电动轮椅",
+    "ratingSuffix": "来自 230+ 则 Google 评论"
   },
   "whyChoose": {
     "heading": "为什么选择马来西亚电动轮椅",
@@ -290,5 +339,24 @@
     "heading": "正在开启 WhatsApp…",
     "subtext": "正在为您连接 Electric Wheelchair Malaysia 团队。",
     "fallback": "如果没有自动跳转，请点击这里"
+  },
+  "contact": {
+    "availability": "致电我们"
+  },
+  "usp": {
+    "items": [
+      {
+        "eyebrow": "认证",
+        "label": "通过 KKM 认证"
+      },
+      {
+        "eyebrow": "保修",
+        "label": "六个月保修"
+      },
+      {
+        "eyebrow": "配送",
+        "label": "下午 2 点前下单当天送达"
+      }
+    ]
   }
 }

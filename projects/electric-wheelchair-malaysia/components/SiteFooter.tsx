@@ -6,10 +6,19 @@
 // element only, not a reskin.
 // Uses existing nav.* / footer.* keys, so no new translation keys are needed.
 import Link from 'next/link';
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import type { Locale } from '@/i18n/routing';
+import ContactNumber from './ContactNumber';
 
-export default async function SiteFooter({ locale }: { locale: Locale }) {
+export default async function SiteFooter({
+  locale,
+  page,
+}: {
+  locale: Locale;
+  /** Locale-stripped path, forwarded to ContactNumber — see that component. */
+  page?: string;
+}) {
   const tNav = await getTranslations({ locale, namespace: 'nav' });
   const tFoot = await getTranslations({ locale, namespace: 'footer' });
 
@@ -18,19 +27,25 @@ export default async function SiteFooter({ locale }: { locale: Locale }) {
       <div className="site-footer__container">
         <div className="footer-top">
           <div className="footer-brand">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icon.svg" alt={tNav('logoAlt')} className="footer-logo" />
-            <span className="footer-brand-text">{tNav('brandName')}</span>
+            <Image
+              src="/brand/logo-light.png"
+              alt={tNav('logoAlt')}
+              className="footer-logo"
+              width={1200}
+              height={480}
+            />
           </div>
 
           <nav className="footer-nav" aria-label="Footer">
             <Link href={`/${locale}`}>{tNav('home')}</Link>
             <a href={`/${locale}#products`}>{tNav('products')}</a>
-            <a href={`/${locale}#services`}>{tNav('services')}</a>
+            <a href={`/${locale}#how-it-works`}>{tNav('howItWorks')}</a>
             <a href={`/${locale}#reviews`}>{tNav('reviews')}</a>
             <Link href={`/${locale}/blog`}>{tNav('blog')}</Link>
             <a href={`/${locale}#faq`}>{tNav('faq')}</a>
           </nav>
+
+          <ContactNumber locale={locale} page={page} className="contact-number--footer" />
         </div>
 
         <div className="footer-line" aria-hidden="true" />
@@ -78,12 +93,8 @@ export default async function SiteFooter({ locale }: { locale: Locale }) {
           display: flex; align-items: center; justify-content: space-between;
           flex-wrap: wrap; gap: 20px 32px;
         }
-        .footer-brand { display: inline-flex; align-items: center; gap: 10px; }
-        .footer-logo { width: 34px; height: 34px; }
-        .footer-brand-text {
-          font-weight: 800; font-size: 16px; color: var(--navy);
-          letter-spacing: -0.01em;
-        }
+        .footer-brand { display: inline-flex; align-items: center; }
+        .footer-logo { width: auto; height: 46px; }
         .footer-nav { display: flex; flex-wrap: wrap; gap: 12px 26px; }
         .footer-nav a {
           color: var(--text); font-weight: 600; font-size: 14.5px;

@@ -5,6 +5,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -22,7 +23,12 @@ function WaIcon({ size = 16 }: { size?: number }) {
 // page.tsx still passes a locale prop. Accept it for back-compat but read
 // useLocale() at runtime so this can be a client component (needed for burger
 // menu state).
-export default function SiteHeader(_props?: { locale?: Locale }) {
+//
+// `contact` is a ReactNode, not a phone string, because the number is resolved
+// on the server (getDisplayPhone) and this component is a client one. Every
+// page renders it as
+// `<SiteHeader contact={<ContactNumber locale={locale} page="/" />} />`.
+export default function SiteHeader({ contact }: { locale?: Locale; contact?: React.ReactNode }) {
   const t = useTranslations('nav');
   const locale = useLocale();
   const [open, setOpen] = useState(false);
@@ -33,7 +39,7 @@ export default function SiteHeader(_props?: { locale?: Locale }) {
   const navItems = [
     { href: `/${locale}`, label: t('home') },
     { href: `/${locale}#products`, label: t('products') },
-    { href: `/${locale}#services`, label: t('services') },
+    { href: `/${locale}#how-it-works`, label: t('howItWorks') },
     { href: `/${locale}#reviews`, label: t('reviews') },
     { href: `/${locale}#locations`, label: t('locations') },
     { href: `/${locale}/blog`, label: t('blog') },
@@ -43,9 +49,14 @@ export default function SiteHeader(_props?: { locale?: Locale }) {
     <header className="ewc-header">
       <div className="ewc-header__inner">
         <Link href={`/${locale}`} className="ewc-header__brand" aria-label={t('brandName')}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/icon.svg" alt={t('logoAlt')} className="ewc-header__logo" />
-          <span className="ewc-header__brand-text">{t('brandName')}</span>
+          <Image
+            src="/brand/logo-light.png"
+            alt={t('logoAlt')}
+            className="ewc-header__logo"
+            width={1200}
+            height={480}
+            priority
+          />
         </Link>
 
         <nav className="ewc-header__nav ewc-header__nav--desktop" aria-label="Primary">
@@ -68,6 +79,7 @@ export default function SiteHeader(_props?: { locale?: Locale }) {
         </button>
 
         <div className="ewc-header__actions">
+          {contact}
           <div className="ewc-header__lang"><LanguageSwitcher /></div>
           <Link
             href={waHref}
@@ -91,6 +103,7 @@ export default function SiteHeader(_props?: { locale?: Locale }) {
           </Link>
         </nav>
         <div className="ewc-header__mobile-actions">
+          {contact}
           <LanguageSwitcher />
           <Link
             href={waHref}

@@ -23,21 +23,23 @@
   "logoAlt": "Electric Wheelchair Malaysia — Rental and Sales Across Malaysia",
   "imageAlt": "Electric Wheelchair Malaysia chair ready for same-day delivery to a customer",
   "gallery": {
-    "heading": "Customer Gallery",
-    "subheading": "Real customers using our electric wheelchairs across Malaysia",
+    "heading": "From our own deliveries",
+    "subheading": "Real photos of our jobs, not stock imagery.",
     "alts": [
-      "Customer receiving an electric wheelchair delivery at a Selangor terrace home",
-      "Foldable lightweight electric wheelchair displayed in a Kuala Lumpur hospital lobby",
-      "Driving tutorial for an elderly customer on a new electric wheelchair",
-      "Electric wheelchair batteries on charge before delivery",
-      "Electric wheelchair loaded into an MPV for travel use",
-      "Routine service inspection — motor and brake check on an electric wheelchair",
-      "Electric wheelchair in use along the KLCC pedestrian walkway",
-      "Electric wheelchair parked beside the lift inside a Petaling Jaya condo",
-      "Try-out session at the Shah Alam showroom",
-      "Rain-cover accessory being fitted to an electric wheelchair",
-      "Customer with family after taking delivery of the electric wheelchair",
-      "High-power outdoor electric wheelchair for rural mobility"
+      "Customer in his new electric wheelchair with our delivery technician outside his home",
+      "Our technician showing a customer the joystick controls at his porch",
+      "Close-up of a customer's hand on the electric wheelchair joystick",
+      "Silver-frame electric wheelchair unpacked and ready for delivery",
+      "Electric wheelchair unwrapped beside its battery pack before setup",
+      "Folding frame and armrest detail of an electric wheelchair"
+    ],
+    "captions": [
+      "handover",
+      "driving lesson",
+      "controls",
+      "ready to go",
+      "unwrapping",
+      "folding frame"
     ]
   },
   "finalCta": {
@@ -45,7 +47,7 @@
     "subheading": "Rent from RM400/month or buy from RM2,400. Same-day delivery across Malaysia.",
     "cta": "WhatsApp Now",
     "phone": "6010-888 9849",
-    "bgAlt": "Electric Wheelchair Malaysia team delivering wheelchairs to customers across the Klang Valley"
+    "bgAlt": "An electric wheelchair parked on a Malaysian porch at dusk"
   },
   "fomoBanner": {
     "texts": [
@@ -63,7 +65,13 @@
     "subheadline": "Lightweight. Foldable. Powerful. Rent from RM400/month or buy from RM2,400. Same-day delivery across Malaysia.",
     "ctaPrimary": "WhatsApp Now",
     "ctaSecondary": "View Products",
-    "trustBadge": "KKM Certified • 6-Month Warranty • 2,300+ Customers"
+    "trustBadge": "KKM Certified • 6-Month Warranty • 2,300+ Customers",
+    "callouts": [
+      "reclining backrest",
+      "folds for the car boot",
+      "joystick control",
+      "6-month warranty"
+    ]
   },
   "stats": {
     "items": [
@@ -103,25 +111,64 @@
       "Same-Day Delivery",
       "98% Comfort Rating"
     ],
-    "cta": "WhatsApp Now"
+    "cta": "WhatsApp Now",
+    "sectionHeading": "The chair we rent and sell",
+    "sectionSubheading": "One model, foldable and reclining, light enough to travel with.",
+    "rentLabel": "rent",
+    "buyLabel": "buy",
+    "perMonth": "per month",
+    "wasPrefix": "was",
+    "thumbUnfolded": "unfolded",
+    "thumbFolded": "folded for the boot",
+    "photoAltUnfolded": "Foldable lightweight electric wheelchair, unfolded and ready to drive",
+    "photoAltFolded": "The same electric wheelchair folded flat for a car boot",
+    "specs": [
+      {
+        "label": "folding",
+        "value": "Folds for the car boot and for travel"
+      },
+      {
+        "label": "backrest",
+        "value": "Reclining"
+      },
+      {
+        "label": "control",
+        "value": "Joystick, mounts on either armrest"
+      },
+      {
+        "label": "warranty",
+        "value": "6 months on motor, battery and frame"
+      },
+      {
+        "label": "setup",
+        "value": "Free assembly and a driving lesson"
+      }
+    ]
   },
   "howItWorks": {
-    "heading": "How It Works",
-    "subheading": "Get your electric wheelchair in 3 simple steps",
+    "heading": "How delivery runs",
+    "subheading": "Order before 2pm and the chair is at your door the same evening.",
     "steps": [
       {
         "title": "Contact Us",
-        "description": "WhatsApp us with your requirements. We'll recommend the best wheelchair for you."
+        "description": "WhatsApp us with your requirements. We'll recommend the best wheelchair for you.",
+        "when": "before 2pm",
+        "imageAlt": "A customer messaging us from her dining table at home"
       },
       {
         "title": "Choose & Pay",
-        "description": "Select rental or purchase. Pay via online banking. No credit card needed."
+        "description": "Select rental or purchase. Pay via online banking. No credit card needed.",
+        "when": "within the hour",
+        "imageAlt": "Our technician checking the battery and frame before delivery"
       },
       {
         "title": "Delivered!",
-        "description": "Same-day delivery to your doorstep. Free setup and demonstration included."
+        "description": "Same-day delivery to your doorstep. Free setup and demonstration included.",
+        "when": "same evening",
+        "imageAlt": "Our technician wheeling the chair up to a customer's porch"
       }
-    ]
+    ],
+    "ctaNote": "Send your address and the date you need it. We reply within an hour."
   },
   "risk": {
     "heading": "Why You Need an Electric Wheelchair",
@@ -181,7 +228,9 @@
         "text": "Very satisfied with the service. The wheelchair is exactly as described — lightweight and powerful. My father uses it daily for his walks. The price is fair too.",
         "rating": 5
       }
-    ]
+    ],
+    "bgAlt": "An empty electric wheelchair on the tiled porch of a Malaysian home",
+    "ratingSuffix": "from 230+ Google reviews"
   },
   "whyChoose": {
     "heading": "Why Choose Electric Wheelchair Malaysia",
@@ -290,5 +339,24 @@
     "heading": "Opening WhatsApp…",
     "subtext": "Connecting you to the Electric Wheelchair Malaysia team.",
     "fallback": "Click here if it doesn't redirect"
+  },
+  "contact": {
+    "availability": "Call us"
+  },
+  "usp": {
+    "items": [
+      {
+        "eyebrow": "certified",
+        "label": "KKM approved"
+      },
+      {
+        "eyebrow": "covered",
+        "label": "6-month warranty"
+      },
+      {
+        "eyebrow": "delivered",
+        "label": "Same day, by 2pm"
+      }
+    ]
   }
 }

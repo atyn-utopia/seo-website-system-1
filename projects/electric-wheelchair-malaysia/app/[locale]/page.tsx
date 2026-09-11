@@ -1,31 +1,77 @@
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
-import { seoAlternates } from '@/lib/seoAlternates'
+import { seoAlternates } from '@/lib/seoAlternates';
 import { siteConfig } from '@/config/site';
+import { getProducts } from '@/lib/webcore';
+import { waRedirect } from '@/lib/waRedirect';
+import { ogImages } from '@/lib/ogImage';
+import { regionOrder, getLocationsByRegion } from '@/config/locations';
 import { LocalBusinessSchema } from '@/components/schema/LocalBusinessSchema';
 import { ProductSchema } from '@/components/schema/ProductSchema';
 import { FAQSchema } from '@/components/schema/FAQSchema';
 import FomoBanner from '@/components/FomoBanner';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
+import ContactNumber from '@/components/ContactNumber';
+import ProductShowcase, { type ShowcasePhoto } from '@/components/ProductShowcase';
 import PageStyles from '@/components/PageStyles';
-import HomePageClient from './HomePageClient';
-import { waRedirect } from '@/lib/waRedirect';
-import { ogImages } from '@/lib/ogImage';
 
-// The wheelchair hero photo is hosted on the brand's Wix CDN (no public/brand
-// dir exists in this project). HomePageClient already references the same URL
-// for its product gallery, so it's already cached on visitors' browsers.
-const HERO_PHOTO_URL =
-  'https://static.wixstatic.com/media/d3104b_64b5d16422824a7384e5630d9b70c0ae~mv2.png';
+/**
+ * Product photos live in `product_photos` (CLAUDE.md, Dynamic Product Data), so
+ * the DB is read first. These two files are the fallback for the window before
+ * the rows are registered, and for a webcore outage — the same role
+ * `config/products.ts` is allowed to play. They are never the source of truth.
+ */
+const PHOTO_FALLBACK = ['/products/electric-wheelchair.png', '/products/electric-wheelchair-folded.png'];
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+/**
+ * A DB photo URL on our own domain is served from `public/`, so hand
+ * next/image the path rather than the absolute URL: a local src is optimised
+ * without `images.remotePatterns`, which would be a build-config change.
+ * A foreign URL (the old Wix CDN, a stock host) is left for the fallback.
+ */
+function toLocalSrc(url: string): string | null {
+  if (url.startsWith('/')) return url;
+  try {
+    const parsed = new URL(url);
+    return parsed.origin === siteConfig.siteUrl ? parsed.pathname : null;
+  } catch {
+    return null;
+  }
+}
+
+function formatRM(amount: number): string {
+  return `RM${amount.toLocaleString('en-MY')}`;
+}
+
+function Stars({ label }: { label: string }) {
+  return (
+    <span className="ew-stars" role="img" aria-label={label}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg key={i} width="16" height="16" viewBox="0 0 20 20" aria-hidden="true">
+          <path
+            fill="#FBBC04"
+            stroke="#C99300"
+            strokeWidth="0.7"
+            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.7l5.34-.78L10 1z"
+          />
+        </svg>
+      ))}
+    </span>
+  );
+}
+
+function WhatsAppIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
+  );
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
-
   const url = `${siteConfig.siteUrl}/${locale}`;
 
   return {
@@ -44,151 +90,375 @@ export async function generateMetadata({
   };
 }
 
-export default async function HomePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'metadata' });
-  const faqT = await getTranslations({ locale, namespace: 'faq' });
-  const heroT = await getTranslations({ locale, namespace: 'hero' });
-  const tRoot = await getTranslations({ locale });
-  const imageAlt = tRoot('imageAlt');
+  const t = await getTranslations({ locale });
+  const tMeta = await getTranslations({ locale, namespace: 'metadata' });
+  const tHero = await getTranslations({ locale, namespace: 'hero' });
+  const tProducts = await getTranslations({ locale, namespace: 'products' });
+  const tSteps = await getTranslations({ locale, namespace: 'howItWorks' });
+  const tGallery = await getTranslations({ locale, namespace: 'gallery' });
+  const tReviews = await getTranslations({ locale, namespace: 'reviews' });
+  const tFaq = await getTranslations({ locale, namespace: 'faq' });
+  const tLocations = await getTranslations({ locale, namespace: 'locations' });
+  const tFinal = await getTranslations({ locale, namespace: 'finalCta' });
 
-  // Build FAQ array for schema
-  const faqs = [];
-  for (let i = 0; i < 6; i++) {
-    faqs.push({
-      question: faqT(`items.${i}.question`),
-      answer: faqT(`items.${i}.answer`),
-    });
-  }
+  const waHref = waRedirect(locale);
+  const products = await getProducts();
+  const product = products[0] ?? null;
+
+  const rentPrice = product?.rental_price ?? 400;
+  const buyPrice = product?.sale_price ?? 2400;
+  const productName = product?.name ?? tProducts('name');
+  const productBlurb = product?.description ?? tProducts('description');
+
+  const dbPhotos: ShowcasePhoto[] = (product?.photos ?? [])
+    .map((photo, i) => {
+      const src = toLocalSrc(photo.url);
+      if (!src) return null;
+      return {
+        src,
+        alt: photo.alt_text ?? (i === 0 ? tProducts('photoAltUnfolded') : tProducts('photoAltFolded')),
+        label: i === 0 ? tProducts('thumbUnfolded') : tProducts('thumbFolded'),
+      };
+    })
+    .filter((p): p is ShowcasePhoto => p !== null);
+
+  const photos: ShowcasePhoto[] =
+    dbPhotos.length > 0
+      ? dbPhotos
+      : [
+          { src: PHOTO_FALLBACK[0], alt: tProducts('photoAltUnfolded'), label: tProducts('thumbUnfolded') },
+          { src: PHOTO_FALLBACK[1], alt: tProducts('photoAltFolded'), label: tProducts('thumbFolded') },
+        ];
+
+  const callouts = [0, 1, 2, 3].map((i) => tHero(`callouts.${i}`));
+  const uspItems = [0, 1, 2].map((i) => ({
+    eyebrow: t(`usp.items.${i}.eyebrow`),
+    label: t(`usp.items.${i}.label`),
+  }));
+  const steps = [0, 1, 2].map((i) => ({
+    title: tSteps(`steps.${i}.title`),
+    description: tSteps(`steps.${i}.description`),
+    when: tSteps(`steps.${i}.when`),
+    imageAlt: tSteps(`steps.${i}.imageAlt`),
+    src: `/brand/step-${i + 1}.png`,
+  }));
+  const galleryItems = [0, 1, 2, 3, 4, 5].map((i) => ({
+    src: `/gallery/${i + 1}.png`,
+    alt: tGallery(`alts.${i}`),
+    caption: tGallery(`captions.${i}`),
+  }));
+  const faqs = [0, 1, 2, 3, 4, 5].map((i) => ({
+    question: tFaq(`items.${i}.question`),
+    answer: tFaq(`items.${i}.answer`),
+  }));
+  const locationsByRegion = getLocationsByRegion();
+  const starLabel = `${tReviews('rating')} / 5`;
 
   return (
     <>
       <PageStyles />
       <LocalBusinessSchema locale={locale} />
-      <ProductSchema name={t('title')} description={t('description')} locale={locale} />
+      <ProductSchema name={tMeta('title')} description={tMeta('description')} locale={locale} />
       <FAQSchema faqs={faqs} />
 
       <FomoBanner locale={locale as 'en' | 'ms' | 'zh'} />
-      <SiteHeader locale={locale as 'en' | 'ms' | 'zh'} />
+      <SiteHeader contact={<ContactNumber locale={locale} page="/" />} />
 
-      {/* HERO — mirrors the location-page hero markup exactly (the one
-          rendered inside HomePageClient for location pages): navy gradient,
-          dashed orange ring around the product photo, four corner stamps,
-          pulsing badge + trust chips on the left. H1 + H2 stay here so the
-          checklist's app/[locale] scan finds them. */}
-      <section
-        style={{
-          position: 'relative',
-          minHeight: '600px',
-          overflow: 'hidden',
-          background: 'linear-gradient(155deg, #0F1B3A 0%, #1B2D5B 45%, #2A4080 100%)',
-        }}
-      >
-        {/* Background overlays — radial orange glow + dot grid. role=img on
-            this layer satisfies the checklist's bg-role-img-aria-label rule. */}
-        <div
-          role="img"
-          aria-label={imageAlt}
-          style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 50% 60% at 70% 50%, rgba(244,123,32,0.08) 0%, transparent 70%)', pointerEvents: 'none' }}
-        />
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '40px 40px', pointerEvents: 'none' }} />
-
-        <div
-          className="section-container"
-          style={{
-            position: 'relative',
-            zIndex: 1,
-            paddingTop: 'var(--space-3xl)',
-            paddingBottom: 'var(--space-3xl)',
-          }}
-        >
-          <div className="hero-split-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '48px', alignItems: 'center', minHeight: '500px' }}>
-            {/* Left column — copy + CTAs + trust chips */}
-            <div className="fade-up">
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(244,123,32,0.12)', border: '1px solid rgba(244,123,32,0.25)', color: 'rgba(255,255,255,0.9)', fontSize: '13px', fontWeight: 600, padding: '6px 16px', borderRadius: 'var(--radius-full)', marginBottom: 'var(--space-lg)' }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--orange)', animation: 'fomoPulse 2s ease-in-out infinite' }} />
-                {heroT('badge')}
-              </span>
-
-              <h1 style={{ fontSize: 'clamp(34px, 5vw, 54px)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.025em', color: 'var(--white)', marginBottom: 'var(--space-lg)' }}>
-                {heroT('h1')}<br /><span style={{ color: 'var(--orange)' }}>{heroT('h1Highlight')}</span>{' '}{heroT('h1Suffix')}
-              </h1>
-
-              <h2 style={{ fontSize: '17px', fontWeight: 400, lineHeight: 1.7, color: 'rgba(255,255,255,0.7)', marginBottom: 'var(--space-xl)', maxWidth: '460px' }}>
-                {heroT('subheadline')}
-              </h2>
-
-              <div className="hero-cta-row" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: 'var(--space-xl)' }}>
-                <a
-                  href={waRedirect(locale)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="wa-btn"
-                  style={{ fontSize: '16px', padding: '14px 32px', boxShadow: '0 8px 28px rgba(37,211,102,0.3)' }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.607zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                  </svg>
-                  {heroT('ctaPrimary')}
-                </a>
-                <a
-                  href="#products"
-                  className="ghost-btn"
-                  style={{ borderColor: 'rgba(255,255,255,0.3)', color: 'var(--white)', fontSize: '15px', padding: '12px 28px' }}
-                >
-                  {heroT('ctaSecondary')}
-                </a>
-              </div>
-
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                {['KKM Certified', '6-Month Warranty', 'Same-Day Delivery'].map((item) => (
-                  <span key={item} style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', color: 'rgba(255,255,255,0.7)', fontSize: '12px', fontWeight: 500, background: 'rgba(255,255,255,0.08)', padding: '5px 12px', borderRadius: 'var(--radius-full)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="var(--orange)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 10 8 14 16 6" /></svg>
-                    {item}
-                  </span>
-                ))}
-              </div>
+      {/* ── Hero: the chair, annotated ─────────────────────────────────── */}
+      <section className="ew-hero">
+        <div className="ew-wrap ew-hero__inner">
+          <div className="ew-hero__copy">
+            <h1>
+              {tHero('h1')} {tHero('h1Highlight')} {tHero('h1Suffix')}
+            </h1>
+            <h2>{tHero('subheadline')}</h2>
+            <div className="ew-hero__ctas">
+              <a href={waHref} target="_blank" rel="noopener noreferrer" className="wa-btn">
+                <WhatsAppIcon size={18} />
+                {tHero('ctaPrimary')}
+              </a>
+              <a href="#products" className="ghost-btn">
+                {tHero('ctaSecondary')}
+              </a>
             </div>
+          </div>
 
-            {/* Right column — product image with dashed ring + corner stamps */}
-            <div className="hero-right-col" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '420px' }}>
-              <div style={{ position: 'absolute', width: '380px', height: '380px', borderRadius: '50%', border: '1px dashed rgba(244,123,32,0.2)', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }} />
-              <div style={{ position: 'absolute', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(244,123,32,0.12) 0%, transparent 70%)', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }} />
+          <div className="ew-diagram">
+            <Image
+              className="ew-diagram__chair"
+              src={photos[0].src}
+              alt={photos[0].alt}
+              width={1100}
+              height={825}
+              sizes="(min-width: 900px) 520px, 88vw"
+              priority
+            />
+            {/* Desktop: fine lines from the label to a dot on the chair.
+                Below 900px there is no room for them, so the same four facts
+                render as the list underneath. The chair is photographed from
+                the front, so its right armrest — where the joystick sits — is
+                on the viewer's LEFT; the joystick callout goes on that side. */}
+            <span className="ew-callout ew-callout--l ew-callout--1">
+              <span>{callouts[2]}</span>
+              <span className="ew-callout__line" />
+              <span className="ew-callout__dot" />
+            </span>
+            <span className="ew-callout ew-callout--l ew-callout--2">
+              <span>{callouts[1]}</span>
+              <span className="ew-callout__line" />
+              <span className="ew-callout__dot" />
+            </span>
+            <span className="ew-callout ew-callout--r ew-callout--3">
+              <span>{callouts[0]}</span>
+              <span className="ew-callout__line" />
+              <span className="ew-callout__dot" />
+            </span>
+            <span className="ew-callout ew-callout--r ew-callout--4">
+              <span>{callouts[3]}</span>
+              <span className="ew-callout__line" />
+              <span className="ew-callout__dot" />
+            </span>
+            <ul className="ew-spec-list">
+              {callouts.map((line) => (
+                <li key={line}>
+                  <i aria-hidden="true" />
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
 
-              <div className="hero-float" style={{ position: 'relative', zIndex: 2 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={HERO_PHOTO_URL}
-                  alt={imageAlt}
-                  loading="eager"
-                  style={{ width: '340px', maxWidth: '90%', filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.4))', position: 'relative', zIndex: 1 }}
-                />
+      {/* ── 3-point USP bar ────────────────────────────────────────────── */}
+      <div className="ew-usp">
+        <div className="ew-wrap ew-usp__grid">
+          {uspItems.map((item) => (
+            <div className="ew-usp__item" key={item.label}>
+              <span className="ew-mono">{item.eyebrow}</span>
+              <b>{item.label}</b>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Product ────────────────────────────────────────────────────── */}
+      <section className="ew-sec" id="products">
+        <div className="ew-wrap">
+          <div className="ew-head">
+            <h3>{tProducts('sectionHeading')}</h3>
+            <p>{tProducts('sectionSubheading')}</p>
+          </div>
+
+          <div className="ew-prod__grid">
+            <ProductShowcase photos={photos} />
+
+            <div className="ew-prod__info">
+              <h4>{productName}</h4>
+              <p className="ew-prod__blurb">{productBlurb}</p>
+
+              <div className="ew-rates">
+                <div className="ew-rate">
+                  <span className="ew-mono">{tProducts('rentLabel')}</span>
+                  <b>{formatRM(rentPrice)}</b>
+                  <small>{tProducts('perMonth')}</small>
+                </div>
+                <div className="ew-rate">
+                  <span className="ew-mono">{tProducts('buyLabel')}</span>
+                  <b>{formatRM(buyPrice)}</b>
+                  <small>
+                    {tProducts('wasPrefix')} {tProducts('rrp')}
+                  </small>
+                </div>
               </div>
 
-              <div style={{ position: 'absolute', top: '8%', left: '5%', zIndex: 3, width: '76px', height: '76px', borderRadius: '50%', background: 'rgba(27,45,91,0.95)', border: '2px dashed rgba(244,123,32,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: 'white', fontSize: '10px', fontWeight: 700, lineHeight: 1.2, padding: '6px', transform: 'rotate(-8deg)', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
-                KKM<br/>Certified
-              </div>
-              <div style={{ position: 'absolute', top: '5%', right: '8%', zIndex: 3, width: '76px', height: '76px', borderRadius: '50%', background: 'rgba(244,123,32,0.95)', border: '2px dashed rgba(255,255,255,0.5)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: 'white', fontSize: '10px', fontWeight: 700, lineHeight: 1.2, padding: '6px', transform: 'rotate(6deg)', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
-                Same Day<br/>Delivery
-              </div>
-              <div style={{ position: 'absolute', bottom: '10%', right: '5%', zIndex: 3, width: '76px', height: '76px', borderRadius: '50%', background: 'rgba(27,45,91,0.95)', border: '2px dashed rgba(244,123,32,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: 'white', fontSize: '10px', fontWeight: 700, lineHeight: 1.2, padding: '6px', transform: 'rotate(10deg)', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
-                6-Month<br/>Warranty
-              </div>
-              <div style={{ position: 'absolute', bottom: '8%', left: '8%', zIndex: 3, width: '76px', height: '76px', borderRadius: '50%', background: 'rgba(244,123,32,0.95)', border: '2px dashed rgba(255,255,255,0.5)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: 'white', fontSize: '10px', fontWeight: 700, lineHeight: 1.2, padding: '6px', transform: 'rotate(-6deg)', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
-                From<br/>RM400/mo
-              </div>
+              <dl className="ew-specs">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <div key={i}>
+                    <dt className="ew-mono">{tProducts(`specs.${i}.label`)}</dt>
+                    <dd>{tProducts(`specs.${i}.value`)}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <a href={waHref} target="_blank" rel="noopener noreferrer" className="wa-btn">
+                <WhatsAppIcon size={18} />
+                {tProducts('cta')}
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      <HomePageClient chromeProvided heroProvided />
+      {/* ── Delivery steps ─────────────────────────────────────────────── */}
+      <section className="ew-sec ew-sec--paper" id="how-it-works">
+        <div className="ew-wrap">
+          <div className="ew-head">
+            <h3>{tSteps('heading')}</h3>
+            <p>{tSteps('subheading')}</p>
+          </div>
 
-      <SiteFooter locale={locale as 'en' | 'ms' | 'zh'} />
+          <ol className="ew-steps__list">
+            {steps.map((step) => (
+              <li className="ew-step" key={step.src}>
+                <figure className="ew-step__figure">
+                  <Image
+                    src={step.src}
+                    alt={step.imageAlt}
+                    width={1100}
+                    height={825}
+                    sizes="(min-width: 900px) 370px, 92vw"
+                  />
+                  <figcaption className="ew-step__when ew-mono">{step.when}</figcaption>
+                </figure>
+                <div className="ew-step__body">
+                  <h4>{step.title}</h4>
+                  <p>{step.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          {/* CLAUDE.md: the numbered process section must close with a CTA —
+              step one is "WhatsApp us", so this is the highest-intent moment
+              on the page. */}
+          <div className="ew-steps__cta">
+            <a href={waHref} target="_blank" rel="noopener noreferrer" className="wa-btn">
+              <WhatsAppIcon size={18} />
+              {tProducts('cta')}
+            </a>
+            <p>{tSteps('ctaNote')}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Gallery: the client's own jobs ─────────────────────────────── */}
+      <section className="ew-sec">
+        <div className="ew-wrap">
+          <div className="ew-head">
+            <h3>{tGallery('heading')}</h3>
+            <p>{tGallery('subheading')}</p>
+          </div>
+          <div className="ew-gal">
+            {galleryItems.map((item) => (
+              <figure key={item.src}>
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  width={800}
+                  height={800}
+                  sizes="(min-width: 900px) 370px, 45vw"
+                />
+                <figcaption className="ew-mono">{item.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Locations ──────────────────────────────────────────────────── */}
+      <section className="ew-sec ew-sec--paper" id="locations">
+        <div className="ew-wrap">
+          <div className="ew-head">
+            <h3>{tLocations('heading')}</h3>
+            <p>{tLocations('subheading')}</p>
+          </div>
+          <div className="ew-locs">
+            {regionOrder.map((region) => {
+              const regionLocations = locationsByRegion[region] ?? [];
+              if (regionLocations.length === 0) return null;
+              return (
+                <div className="ew-locs__region" key={region}>
+                  <h4>{region}</h4>
+                  <div className="ew-locs__chips">
+                    {regionLocations.map((loc) => (
+                      <a key={loc.slug} href={`/${locale}/${siteConfig.productSlug}/${loc.slug}`}>
+                        {loc.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ────────────────────────────────────────────────────────── */}
+      <section className="ew-sec" id="faq">
+        <div className="ew-wrap">
+          <div className="ew-head">
+            <h3>{tFaq('heading')}</h3>
+          </div>
+          <div className="ew-faq">
+            {faqs.map((faq, i) => (
+              <details key={faq.question} open={i === 0}>
+                <summary>
+                  <h4>{faq.question}</h4>
+                </summary>
+                <p>{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Reviews ────────────────────────────────────────────────────── */}
+      <section className="ew-sec ew-rev" id="reviews">
+        <div className="ew-rev__bg">
+          <Image src="/brand/reviews-bg.png" alt={tReviews('bgAlt')} fill sizes="100vw" />
+        </div>
+        <div className="ew-wrap">
+          <figure className="ew-rev__quote">
+            <div className="ew-rating">
+              <b>{tReviews('rating')}</b>
+              <Stars label={starLabel} />
+              <span>{tReviews('ratingSuffix')}</span>
+            </div>
+            <blockquote>&ldquo;{tReviews('items.0.text')}&rdquo;</blockquote>
+            <figcaption>
+              {tReviews('items.0.name')}, {tReviews('items.0.location')}
+            </figcaption>
+          </figure>
+
+          <div className="ew-rev__more">
+            {[1, 2].map((i) => (
+              <div key={i}>
+                <p>&ldquo;{tReviews(`items.${i}.text`)}&rdquo;</p>
+                <span>
+                  {tReviews(`items.${i}.name`)}, {tReviews(`items.${i}.location`)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Final CTA ──────────────────────────────────────────────────── */}
+      <section className="ew-fcta">
+        <Image
+          className="ew-fcta__band"
+          src="/brand/final-cta.png"
+          alt={tFinal('bgAlt')}
+          width={1774}
+          height={887}
+          sizes="100vw"
+        />
+        <div className="ew-sec">
+          <div className="ew-wrap ew-fcta__body">
+            <h3>{tFinal('heading')}</h3>
+            <p>{tFinal('subheading')}</p>
+            <a href={waHref} target="_blank" rel="noopener noreferrer" className="wa-btn">
+              <WhatsAppIcon size={18} />
+              {tFinal('cta')}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <SiteFooter locale={locale as 'en' | 'ms' | 'zh'} page="/" />
     </>
   );
 }
