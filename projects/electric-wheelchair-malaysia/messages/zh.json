@@ -270,7 +270,15 @@
     "heading": "全马送货服务",
     "subheading": "全国80+城市当日送达",
     "viewAll": "查看所有地区",
-    "eyebrow": "配送范围"
+    "eyebrow": "配送范围",
+    "finderHeading": "查找您的城镇",
+    "finderSubheading": "覆盖马来西亚 {n} 个城镇。输入您的城镇，或选择州属。",
+    "finderPlaceholder": "输入您的城镇，例如 Shah Alam",
+    "finderAll": "全部",
+    "finderCount": "{n} 个城镇",
+    "finderMore": "显示 {n} 个中的 {shown} 个。",
+    "finderShowAll": "显示全部 {n} 个",
+    "finderEmpty": "暂无名为“{q}”的城镇——请 WhatsApp 联系我们，大多数地区我们都能配送。"
   },
   "faq": {
     "heading": "常见问题",

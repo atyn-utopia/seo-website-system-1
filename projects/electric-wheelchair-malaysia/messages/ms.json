@@ -274,7 +274,15 @@
     "heading": "Kami Menghantar Ke Seluruh Malaysia",
     "subheading": "Penghantaran hari sama ke 80+ bandar di seluruh negara",
     "viewAll": "Lihat Semua Lokasi",
-    "eyebrow": "Kawasan penghantaran"
+    "eyebrow": "Kawasan penghantaran",
+    "finderHeading": "Cari bandar anda",
+    "finderSubheading": "{n} bandar di seluruh Malaysia. Taip bandar anda, atau pilih negeri.",
+    "finderPlaceholder": "Taip bandar anda, cth. Shah Alam",
+    "finderAll": "Semua",
+    "finderCount": "{n} bandar",
+    "finderMore": "Menunjukkan {shown} daripada {n}.",
+    "finderShowAll": "Tunjuk semua {n}",
+    "finderEmpty": "Belum ada bandar bernama “{q}” — WhatsApp kami, kami hantar ke kebanyakan tempat."
   },
   "faq": {
     "heading": "Soalan Lazim",

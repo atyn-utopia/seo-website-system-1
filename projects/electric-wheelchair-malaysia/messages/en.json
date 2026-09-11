@@ -270,7 +270,15 @@
     "heading": "We Deliver Across Malaysia",
     "subheading": "Same-day delivery to 80+ cities nationwide",
     "viewAll": "View All Locations",
-    "eyebrow": "Where we deliver"
+    "eyebrow": "Where we deliver",
+    "finderHeading": "Find your town",
+    "finderSubheading": "{n} towns across Malaysia. Type yours, or pick a state.",
+    "finderPlaceholder": "Type your town, e.g. Shah Alam",
+    "finderAll": "All",
+    "finderCount": "{n} towns",
+    "finderMore": "Showing {shown} of {n}.",
+    "finderShowAll": "Show all {n}",
+    "finderEmpty": "No town called “{q}” yet — WhatsApp us, we deliver most places."
   },
   "faq": {
     "heading": "Frequently Asked Questions",
