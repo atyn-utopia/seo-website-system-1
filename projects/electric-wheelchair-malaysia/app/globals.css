@@ -1311,3 +1311,17 @@ p, li, blockquote,
   .ew-usp__item { grid-template-columns: auto 1fr; column-gap: 14px; row-gap: 2px; justify-items: start; text-align: left; align-items: center; }
   .ew-usp__icon { grid-row: span 2; margin: 0; }
 }
+
+/* ── Steps: photo under the orange, white copy ─────────────────────────── */
+/* The photo is desaturated and sits at low opacity under the orange so it
+   reads as texture; the tint stays strong enough that white copy passes on
+   every part of it (white on #FF6613 alone is 3.0:1 for large bold text, and
+   the darkened photo only raises that). */
+.ew-steps { position: relative; isolation: isolate; overflow: hidden; color: #fff; }
+.ew-steps__bg { position: absolute; inset: 0; z-index: -2; }
+.ew-steps__bg img { object-fit: cover; object-position: 50% 40%; filter: grayscale(1) contrast(1.1); opacity: 0.22; }
+.ew-steps::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(184, 77, 10, 0.55), rgba(184, 77, 10, 0.7)); }
+.ew-steps .ew-head h3 { color: #fff; }
+.ew-steps .ew-head p { color: rgba(255, 255, 255, 0.9); }
+.ew-steps .ew-steps__cta p { color: rgba(255, 255, 255, 0.9); }
+.ew-steps .ew-eyebrow { background: rgba(255, 255, 255, 0.16); color: #fff; }
