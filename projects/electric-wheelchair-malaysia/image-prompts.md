@@ -89,6 +89,7 @@ stock to the actual customer.
 | 6 | Reviews band texture | `public/brand/reviews-bg.png` | 2000×1200 | PNG | `reviews.bgAlt` (new) | **needed** |
 | 7 | Final CTA background | `public/brand/final-cta.png` | 2400×1200 | PNG | `finalCta.bgAlt` (exists) | **needed** |
 | 8 | Folded in a car boot | `public/brand/context-boot.png` | 2000×1333 | PNG | `products.contextAlt` (new) | optional |
+| 9–18 | Daily life ×10 | `public/brand/life-{1..10}.png` | 1600×1200 | PNG | `dailyLife.alts[]` + `dailyLife.captions[]` (new) | **needed** — see below |
 | — | Customer gallery | `public/gallery/*.png` | — | — | `gallery.alts[]` | **do not generate** |
 | — | Logo + favicon | `app/icon.svg`, `public/brand/` | — | — | `nav.logoAlt` | client supplied |
 | — | `public/og-*.png` | — | — | — | — | screenshots, not art |
@@ -368,11 +369,164 @@ parking lot.
 
 ---
 
+## 9–18 · The chair in daily life — ten images for a NEW section
+
+**Why this exists.** The client asked for ten more gallery images. The only gallery
+on the page is "From our own deliveries", which is the proof section and keeps its
+six real photos (see above). So the ten new images get **their own section**,
+placed after the delivery gallery and before Locations, with an honest label:
+
+> eyebrow *Everyday use* · h3 **The chair in daily life** · p *Where a foldable
+> electric wheelchair goes once it's yours.*
+
+Rules that make this section safe to ship:
+
+- **No faces towards camera, no one posed as a customer.** A person may appear
+  from behind, from the shoulders down, or as hands — the subject is the chair in
+  a place, never a testimonial.
+- **No logo, no watermark, no text.** A logo on a generated image says "we took
+  this"; the honest label above says what the images are, and that is enough.
+- **Ten images, columns that divide ten.** Two columns on phones, five on desktop
+  (`CLAUDE.md`: a gallery grid never leaves a blank slot). Not three.
+- **Same chair as slots 1–2** — black frame, orange accents — so the section
+  matches the product photos.
+- Alt keys `dailyLife.alts[0..9]` and captions `dailyLife.captions[0..9]` in all
+  three locales; captions are two or three words in mono, like the delivery
+  gallery.
+
+Each prompt below takes the house style block first. Format for all ten:
+**4:3, 1600×1200, PNG**, to `public/brand/life-N.png`.
+
+### 9 · Condo lift lobby
+```
+{HOUSE STYLE BLOCK}
+SUBJECT: A black foldable electric wheelchair with orange accents parked beside
+the lift doors in a Malaysian condominium lobby. Empty — no people. Polished
+tiled floor, a potted plant, brushed-steel lift doors, a notice board with no
+readable text. COMPOSITION: 4:3, chair in the right half, lift doors behind.
+LIGHT: cool even lobby light mixed with daylight from the entrance.
+NEGATIVE: no people, no readable signage, no text, no logo, no watermark.
+```
+→ `public/brand/life-1.png` · caption *condo lobby*
+
+### 10 · Terrace-house porch
+```
+{HOUSE STYLE BLOCK}
+SUBJECT: The same electric wheelchair on the tiled porch of a Malaysian terrace
+house, parked beside the front door, a pair of sandals on the step, potted
+plants, window grilles. Empty. COMPOSITION: 4:3, chair left of centre, door and
+grilles behind. LIGHT: soft morning daylight under the porch roof.
+NEGATIVE: no people, no house number, no text, no logo, no watermark.
+```
+→ `public/brand/life-2.png` · caption *front porch*
+
+### 11 · Park path
+```
+{HOUSE STYLE BLOCK}
+SUBJECT: An elderly Malaysian man seen from BEHIND, seated in the electric
+wheelchair, driving along a paved path in a Malaysian public park under rain
+trees, a lake or open lawn ahead. Back of head and shoulders only. COMPOSITION:
+4:3, chair and rider in the lower centre moving away from camera, path leading
+into the frame. LIGHT: late afternoon, long soft shadows.
+NEGATIVE: no face, no one turned to camera, no text, no logo, no watermark, no
+park signage.
+```
+→ `public/brand/life-3.png` · caption *evening walk*
+
+### 12 · Clinic ramp
+```
+{HOUSE STYLE BLOCK}
+SUBJECT: The electric wheelchair at the foot of a concrete access ramp with a
+steel handrail at the entrance of a Malaysian clinic or community building.
+Empty. Plain painted wall, glass door reflecting greenery. COMPOSITION: 4:3,
+ramp rising from left to right, chair at its base. LIGHT: overcast-bright.
+NEGATIVE: no people, no signage, no text, no logo, no watermark, no medical
+symbols.
+```
+→ `public/brand/life-4.png` · caption *clinic ramp*
+
+### 13 · Shoplot five-foot way
+```
+{HOUSE STYLE BLOCK}
+SUBJECT: A Malaysian woman seen from the shoulders down, seated in the electric
+wheelchair, moving along the covered five-foot walkway (kaki lima) of a row of
+old shoplots — tiled floor, square columns, a bicycle leaning on a pillar. Her
+hand rests on the joystick. COMPOSITION: 4:3, walkway receding, chair in the
+left third. LIGHT: dappled morning light between the columns.
+NEGATIVE: no face, no shop signage, no text, no logo, no watermark.
+```
+→ `public/brand/life-5.png` · caption *morning errands*
+
+### 14 · Apartment balcony
+```
+{HOUSE STYLE BLOCK}
+SUBJECT: The electric wheelchair parked on a small apartment balcony with a
+railing, a folding chair and a few plants, a Malaysian city skyline soft and
+out of focus beyond. Empty. COMPOSITION: 4:3, chair in the right half, railing
+and skyline behind. LIGHT: golden hour.
+NEGATIVE: no people, no recognisable landmark, no text, no logo, no watermark.
+```
+→ `public/brand/life-6.png` · caption *balcony*
+
+### 15 · Charging at home
+```
+{HOUSE STYLE BLOCK}
+SUBJECT: Close crop of the electric wheelchair's battery pack on charge beside
+a wall socket on a tiled living-room floor, the charger's small indicator light
+on, the chair's rear wheel in the background. Malaysian home interior, rattan
+furniture edge. COMPOSITION: 4:3, battery and cable in the lower left, wheel
+softly out of focus behind. LIGHT: soft window daylight.
+NEGATIVE: no people, no text on the charger, no logo, no watermark.
+```
+→ `public/brand/life-7.png` · caption *charging overnight*
+
+### 16 · Lifting it into the car
+```
+{HOUSE STYLE BLOCK}
+SUBJECT: A pair of hands lifting the FOLDED electric wheelchair into the open
+boot of a Malaysian compact MPV, in the driveway of a terrace house. Hands and
+forearms only. COMPOSITION: 4:3, folded chair mid-lift at the boot sill, house
+and greenery soft behind. LIGHT: overcast-bright.
+NEGATIVE: no face, no readable number plate, no car badge, no text, no logo, no
+watermark, no left-hand-drive interior.
+```
+→ `public/brand/life-8.png` · caption *into the boot*
+
+### 17 · Rain on the porch
+```
+{HOUSE STYLE BLOCK}
+SUBJECT: The electric wheelchair parked under a Malaysian porch roof during an
+afternoon rain shower — wet tiles reflecting light, rain streaking beyond the
+roof edge, a folded umbrella against the wall. Empty. COMPOSITION: 4:3, chair
+dry under the roof in the centre, rain visible at the right edge.
+LIGHT: grey-blue rain light, warm porch bulb on.
+NEGATIVE: no people, no text, no logo, no watermark.
+```
+→ `public/brand/life-9.png` · caption *monsoon afternoon*
+
+### 18 · Kampung compound
+```
+{HOUSE STYLE BLOCK}
+SUBJECT: An elderly Malaysian woman in a batik sarong seen from BEHIND, seated
+in the electric wheelchair on the packed-earth compound of a wooden kampung
+house, banana plants and a rain tree beyond, a cat on the steps. Back and
+shoulders only. COMPOSITION: 4:3, chair and rider lower left facing the house.
+LIGHT: late afternoon, warm and soft.
+NEGATIVE: no face, no text, no logo, no watermark.
+```
+→ `public/brand/life-10.png` · caption *back home*
+
+**Alt text** for each is written when the files arrive, from what the image
+actually shows — never from the prompt — in en, ms and zh.
+
+---
+
 ## When the files come back
 
 1. Raw originals land in `brand_assets/generated/` (gitignored).
 2. Resize to the manifest size, keep the extension, keep each under 300 KB.
-3. Place into `public/brand/` and `public/products/`.
+3. Place into `public/brand/` and `public/products/`. The ten daily-life images
+   need their section built first (a separate PR) — the files alone do nothing.
 4. Add the new alt keys to `messages/en.json`, `ms.json` and `zh.json`.
 5. Register slots 1 and 2 as `product_photos` rows in webcore with `alt_text` set,
    so the DB-driven product contract in `CLAUDE.md` still holds.
