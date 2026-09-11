@@ -33,6 +33,14 @@ The system should scale to:
 - Keep prompts modular and reusable
 - Store brand guidelines in `brand_assets/` before starting a project
 - Each project gets its own subfolder under `projects/`
+- **One site, one branch.** A fix to a site under `projects/<site>/` goes on its
+  own branch and PR, named for the site (`fix/<site>-<what>`). Never bundle
+  several sites' fixes into one branch — not even the same fix repeated: 11
+  sites means 11 branches. Each site is then reviewed, merged and deployed on its
+  own schedule, which matters because some sites auto-deploy on merge (revmove)
+  and some have another session mid-work on them. Repo-wide work that is not a
+  site fix — flow docs, `scripts/`, `agents/`, `templates/` — stays one branch
+  per purpose.
 
 
 # Technology Stack
