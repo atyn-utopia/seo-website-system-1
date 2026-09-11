@@ -236,7 +236,7 @@ CSV/TSV export as one string. `mode: 'replace'` clears existing rows first
 (default merges). An empty response means no research has been pushed yet —
 that is a gap to fill, not a reason to invent keywords.
 
-**Four behaviours that will mislead you if you don't know them:**
+**Six behaviours that will mislead you if you don't know them:**
 
 - **The POST body field is `rows`, not `keywords`.** `keywords` is the *GET
   response* field name, and sending it on a POST is accepted with `200` and
@@ -262,6 +262,25 @@ that is a gap to fill, not a reason to invent keywords.
   minutes after a successful write.** Append a cache-buster
   (`&_=$(date +%s)`) plus `Cache-Control: no-cache` when verifying a push, or
   you will conclude the write failed when it did not.
+- **`primary_keywords` and `secondary_keywords` are REPLACED on every POST;
+  only `rows` merge.** "Upsert" above is true for rows and false for the two
+  lists — whatever lists the last POST carried are the lists the site has.
+  `keyword-volume.mjs --push` sends the lists on every run, so the per-language
+  flow (`--lang ms`, then `--lang en`) ends with only the English lists.
+  Measured on acsonaircond.my (2026-09-11): `primary=[aircond acson]` after the
+  `ms` push, `primary=[acson aircond]` after the `en` push — the Malay term
+  gone, all five rows intact. **Order that works:** push `rows` per language
+  first, then make ONE final POST carrying the merged `primary_keywords` +
+  `secondary_keywords` for every language and no `rows`. Read back and count
+  the lists, not just `saved`.
+- **The plan parser needs an enclosing H2, not only the H3.** The skill says
+  head terms must sit under an H3 like `### 1.2 Primary money keywords`. That
+  H3 is only read when it is nested under an H2 matching
+  `keyword strategy` / `keyword plan` / `primary keyword` / `money keyword`
+  (`lib/seo-plan.mjs`, `inStrategy`). A plan with the H3 and no such H2 yields
+  **0 keywords**, `--list` prints an empty section list, and the gate prints
+  "passed" having checked nothing. Sora's plans carry `## 1. Keyword strategy`
+  and are fine; a hand-written backfill plan usually is not.
 
 ## 7. Integrations — `integrations:write`
 
