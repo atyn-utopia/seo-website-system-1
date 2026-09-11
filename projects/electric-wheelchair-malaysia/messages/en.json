@@ -40,14 +40,16 @@
       "ready to go",
       "unwrapping",
       "folding frame"
-    ]
+    ],
+    "eyebrow": "Our deliveries"
   },
   "finalCta": {
     "heading": "Get Your Electric Wheelchair Today",
     "subheading": "Rent from RM400/month or buy from RM2,400. Same-day delivery across Malaysia.",
     "cta": "WhatsApp Now",
     "phone": "6010-888 9849",
-    "bgAlt": "An electric wheelchair parked on a Malaysian porch at dusk"
+    "bgAlt": "An electric wheelchair parked on a Malaysian porch at dusk",
+    "eyebrow": "Get started"
   },
   "fomoBanner": {
     "texts": [
@@ -143,7 +145,8 @@
         "label": "setup",
         "value": "Free assembly and a driving lesson"
       }
-    ]
+    ],
+    "eyebrow": "Rent or buy"
   },
   "howItWorks": {
     "heading": "How delivery runs",
@@ -168,7 +171,8 @@
         "imageAlt": "Our technician wheeling the chair up to a customer's porch"
       }
     ],
-    "ctaNote": "Send your address and the date you need it. We reply within an hour."
+    "ctaNote": "Send your address and the date you need it. We reply within an hour.",
+    "eyebrow": "Same-day delivery"
   },
   "risk": {
     "heading": "Why You Need an Electric Wheelchair",
@@ -230,7 +234,8 @@
       }
     ],
     "bgAlt": "An empty electric wheelchair on the tiled porch of a Malaysian home",
-    "ratingSuffix": "from 230+ Google reviews"
+    "ratingSuffix": "from 230+ Google reviews",
+    "eyebrow": "Google reviews"
   },
   "whyChoose": {
     "heading": "Why Choose Electric Wheelchair Malaysia",
@@ -264,7 +269,8 @@
   "locations": {
     "heading": "We Deliver Across Malaysia",
     "subheading": "Same-day delivery to 80+ cities nationwide",
-    "viewAll": "View All Locations"
+    "viewAll": "View All Locations",
+    "eyebrow": "Where we deliver"
   },
   "faq": {
     "heading": "Frequently Asked Questions",
@@ -293,7 +299,8 @@
         "question": "What is the weight capacity of your electric wheelchairs?",
         "answer": "Our standard lightweight models support up to 100kg. For larger users, our heavy-duty model supports up to 120kg with a reinforced steel frame. All models are foldable and fit in most car boots."
       }
-    ]
+    ],
+    "eyebrow": "Common questions"
   },
   "footer": {
     "brandName": "Electric Wheelchair Malaysia",

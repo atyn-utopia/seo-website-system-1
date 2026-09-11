@@ -1279,3 +1279,17 @@ p, li, blockquote,
 .ewc-fomo { background: #0C1220; }
 .ewc-fomo__clock { background: #E10600; }
 .ewc-fomo__cta { color: #0C1220 !important; border-radius: 12px !important; }
+
+/* ── Section eyebrows (DESIGN.md eyebrow-badge) ─────────────────────────── */
+/* One label above every section heading: pill on the pale accent, deep accent
+   text. On the orange steps ground the pill goes white with navy text; on the
+   navy final-CTA ground it goes translucent white. */
+.ew-eyebrow {
+  display: inline-block; padding: 6px 12px; border-radius: 999px;
+  background: #FFF3EA; color: var(--brand-orange-deep);
+  font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700;
+  line-height: 1; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.ew-hero__copy .ew-eyebrow { margin-bottom: 2px; }
+.ew-steps .ew-eyebrow { background: #fff; color: var(--brand-navy); }
+.ew-eyebrow--on-dark { background: rgba(255, 255, 255, 0.14); color: #fff; }

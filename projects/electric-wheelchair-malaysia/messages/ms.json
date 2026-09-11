@@ -44,14 +44,16 @@
       "sedia dihantar",
       "buka bungkusan",
       "rangka lipat"
-    ]
+    ],
+    "eyebrow": "Penghantaran kami"
   },
   "finalCta": {
     "heading": "Dapatkan Kerusi Roda Elektrik Anda Hari Ini",
     "subheading": "Sewa dari RM400/bulan atau beli dari RM2,400. Penghantaran hari sama ke seluruh Malaysia.",
     "cta": "WhatsApp Sekarang",
     "phone": "6010-888 9849",
-    "bgAlt": "Kerusi roda elektrik di anjung rumah di Malaysia pada waktu senja"
+    "bgAlt": "Kerusi roda elektrik di anjung rumah di Malaysia pada waktu senja",
+    "eyebrow": "Mula sekarang"
   },
   "fomoBanner": {
     "texts": [
@@ -147,7 +149,8 @@
         "label": "pemasangan",
         "value": "Pemasangan percuma dan tunjuk ajar memandu"
       }
-    ]
+    ],
+    "eyebrow": "Sewa atau beli"
   },
   "howItWorks": {
     "heading": "Bagaimana penghantaran berjalan",
@@ -172,7 +175,8 @@
         "imageAlt": "Juruteknik kami menolak kerusi naik ke anjung rumah pelanggan"
       }
     ],
-    "ctaNote": "Hantar alamat dan tarikh anda perlukan. Kami balas dalam masa sejam."
+    "ctaNote": "Hantar alamat dan tarikh anda perlukan. Kami balas dalam masa sejam.",
+    "eyebrow": "Penghantaran hari sama"
   },
   "risk": {
     "heading": "Mengapa Anda Perlukan Kerusi Roda Elektrik",
@@ -234,7 +238,8 @@
       }
     ],
     "bgAlt": "Kerusi roda elektrik kosong di anjung berjubin sebuah rumah di Malaysia",
-    "ratingSuffix": "daripada 230+ ulasan Google"
+    "ratingSuffix": "daripada 230+ ulasan Google",
+    "eyebrow": "Ulasan Google"
   },
   "whyChoose": {
     "heading": "Mengapa Pilih Kerusi Roda Elektrik Malaysia",
@@ -268,7 +273,8 @@
   "locations": {
     "heading": "Kami Menghantar Ke Seluruh Malaysia",
     "subheading": "Penghantaran hari sama ke 80+ bandar di seluruh negara",
-    "viewAll": "Lihat Semua Lokasi"
+    "viewAll": "Lihat Semua Lokasi",
+    "eyebrow": "Kawasan penghantaran"
   },
   "faq": {
     "heading": "Soalan Lazim",
@@ -297,7 +303,8 @@
         "question": "Berapakah kapasiti berat kerusi roda elektrik anda?",
         "answer": "Model ringan standard kami menanggung sehingga 100kg. Untuk pengguna lebih besar, model tugas berat kami menanggung sehingga 120kg dengan rangka keluli diperkukuh. Semua model boleh dilipat dan muat dalam kebanyakan but kereta."
       }
-    ]
+    ],
+    "eyebrow": "Soalan lazim"
   },
   "footer": {
     "brandName": "Kerusi Roda Elektrik Malaysia",
