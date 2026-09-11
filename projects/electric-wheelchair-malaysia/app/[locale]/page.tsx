@@ -335,6 +335,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       {/* ── Delivery steps ─────────────────────────────────────────────── */}
       <section className="ew-sec ew-steps" id="how-it-works">
+        {/* The delivery photo under a heavy orange tint — texture, not a
+            subject — so this band reads like the other photo-backed ones. */}
+        <div className="ew-steps__bg" aria-hidden="true">
+          <Image src="/brand/step-3.png" alt="" fill sizes="100vw" />
+        </div>
         <div className="ew-wrap">
           <div className="ew-head">
             <span className="ew-eyebrow">{tSteps('eyebrow')}</span>
