@@ -437,24 +437,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </section>
 
       {/* ── Final CTA ──────────────────────────────────────────────────── */}
-      <section className="ew-fcta">
-        <Image
-          className="ew-fcta__band"
-          src="/brand/final-cta.png"
-          alt={tFinal('bgAlt')}
-          width={1774}
-          height={887}
-          sizes="100vw"
-        />
-        <div className="ew-sec">
-          <div className="ew-wrap ew-fcta__body">
-            <h3>{tFinal('heading')}</h3>
-            <p>{tFinal('subheading')}</p>
-            <a href={waHref} target="_blank" rel="noopener noreferrer" className="wa-btn">
-              <WhatsAppIcon size={18} />
-              {tFinal('cta')}
-            </a>
-          </div>
+      {/* The dusk photo sits full-bleed BEHIND the copy under a navy overlay —
+          it was generated dark with an empty centre for exactly this. */}
+      <section className="ew-sec ew-fcta">
+        <div className="ew-fcta__bg">
+          <Image src="/brand/final-cta.png" alt={tFinal('bgAlt')} fill sizes="100vw" />
+        </div>
+        <div className="ew-wrap ew-fcta__body">
+          <h3>{tFinal('heading')}</h3>
+          <p>{tFinal('subheading')}</p>
+          <a href={waHref} target="_blank" rel="noopener noreferrer" className="wa-btn">
+            <WhatsAppIcon size={18} />
+            {tFinal('cta')}
+          </a>
         </div>
       </section>
 
