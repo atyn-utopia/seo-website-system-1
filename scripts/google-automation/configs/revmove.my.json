@@ -9,5 +9,13 @@
       "eventName": "whatsapp_click"
     }
   ],
-  "createdAt": "2026-08-19T09:06:31.463Z"
+  "createdAt": "2026-08-19T09:06:31.463Z",
+  "ads": {
+    "customerId": "1933757591",
+    "ga4PropertyId": "550737214",
+    "conversionActionId": "7758862467",
+    "conversionActionName": "revmove.my (web) whatsapp_click",
+    "event": "whatsapp_click",
+    "importedAt": "2026-09-11T03:34:23.232Z"
+  }
 }
