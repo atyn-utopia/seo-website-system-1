@@ -1,4 +1,4 @@
-import { Inter } from 'next/font/google';
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -10,6 +10,15 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+});
+
+// Heading face. Inter stays for body copy; headings, prices and buttons take
+// this one via --font-heading in globals.css (CLAUDE.md: distinct heading face).
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['700', '800'],
+  display: 'swap',
+  variable: '--font-jakarta',
 });
 
 export default async function LocaleLayout({
@@ -28,7 +37,7 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={inter.variable}>
+    <html lang={locale} className={`${inter.variable} ${jakarta.variable}`}>
       <head>
         <meta
           name="google-site-verification"

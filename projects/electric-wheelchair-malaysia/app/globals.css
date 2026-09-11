@@ -969,11 +969,17 @@ a {
   --ink-muted: #4A5873;
   --hair: rgba(11, 32, 69, 0.13);
   --hair-strong: rgba(11, 32, 69, 0.22);
-  --font-heading: var(--font-inter), Inter, system-ui, sans-serif;
+  --font-heading: var(--font-jakarta), "Plus Jakarta Sans", var(--font-inter), Inter, system-ui, sans-serif;
 }
 
 /* CLAUDE.md, Text Spacing: headings tight, body comfortable. */
 h1, h2, h3, h4, h5, h6 { line-height: 1.2; }
+
+/* Two faces: Plus Jakarta Sans for display, Inter for reading. The hero h2 is
+   a subtitle rather than a title, so it stays in the body face; everything
+   else that behaves like a title — headings, prices, buttons — takes the
+   heading face. */
+h1, h3, h4, h5, h6, .ew-rate b, .wa-btn, .ghost-btn { font-family: var(--font-heading); }
 p, li, blockquote,
 .blog-content p, .blog-content li, .blog-content blockquote { line-height: 1.4; }
 
@@ -1137,6 +1143,13 @@ p, li, blockquote,
 .ew-specs dd { font-size: 15px; color: var(--brand-navy); margin: 0; }
 
 /* ── Delivery steps ──────────────────────────────────────────────────────── */
+/* The one section on the brand orange. Copy on it is navy, never the muted
+   grey: #4A5873 on #FF6613 is 2.9:1, navy is 4.9:1. Cards stay white so the
+   photos and their captions keep their own contrast. */
+.ew-steps { background: var(--brand-orange); }
+.ew-steps .ew-head p { color: rgba(11, 32, 69, 0.85); }
+.ew-steps .ew-steps__cta p { color: rgba(11, 32, 69, 0.85); }
+.ew-steps .ew-step { box-shadow: 0 10px 28px rgba(11, 32, 69, 0.16), 0 2px 6px rgba(11, 32, 69, 0.08); }
 .ew-steps__list { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
 .ew-step {
   background: #fff; border-radius: 20px; overflow: hidden;
