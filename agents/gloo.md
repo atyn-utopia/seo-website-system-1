@@ -15,8 +15,9 @@
 > `GET /api/public/phone-numbers?website=<candidate>` before writing; an empty
 > array means wrong key and the write will orphan silently.
 >
-> Yours: `PUT /api/website-settings { website, revalidate_url }` (auto-generates
-> the revalidate secret and returns it if the site has none),
+> Yours: re-run `PUT /api/website-settings { website, revalidate_url }` only if the
+> paid domain differs from the host Layla wired at deploy — Layla owns the first
+> registration (Step 14), because Gloo runs too late for it,
 > `POST /api/integrations/gsc/submit-sitemap { domain }` (site must already be
 > GSC-connected — OAuth consent stays in the admin UI), and
 > `POST /api/integrations/marketing/mark-key-event { domain, eventName }` (the

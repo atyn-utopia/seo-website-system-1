@@ -64,9 +64,9 @@ Product data on every website MUST be fetched dynamically from the Supabase `pro
 
 ## Rules
 1. Homepage and location pages query `products` WHERE `website = domain` AND `is_active = true` ORDER BY `sort_order`, joined with `product_photos`
-2. Use ISR with `revalidate = 3600` (1 hour) so DB changes propagate without redeploy
+2. Tag every webcore fetch (`webcore-products`, `webcore-phones`, `webcore-blog`, `webcore-seo`) and let webcore purge them through the site's `/api/revalidate` — a DB change lands within seconds, with no redeploy. No time-based `export const revalidate = N` (the wizard's `no-time-revalidate` check fails on it). Live revalidation is wired at deploy — Step 14.
 3. Grid layout must auto-adjust to any product count — use CSS grid auto-fill or responsive columns that handle 1, 6, or 20 products gracefully
-4. Adding a product in the database → it appears on the site automatically (within revalidate window)
+4. Adding a product in the database → it appears on the site automatically (as soon as webcore's revalidation ping purges the tag)
 5. Setting `is_active = false` or deleting → it disappears automatically
 6. `config/products.ts` may exist ONLY as a fallback if Supabase is unreachable — it is NOT the source of truth
 7. Product images come from `product_photos.url` — never hardcode image URLs in frontend code

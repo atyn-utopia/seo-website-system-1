@@ -211,6 +211,29 @@ node keyword-volume.mjs --ideas "pakej aqiqah" --lang ms
 Then edit `seo-plan.md` and re-run until the gate passes. Record the numbers in
 the plan so Nana, Kimmy and Hanabi inherit verified terms.
 
+**Then push the verified terms to webcore (MANDATORY — Sora).** The plan file is
+invisible to webcore; its keyword store is what webcore's SEO tooling, the wizard
+and every later session read. This step being optional is why 21 fleet sites had
+no keywords in webcore at all (audit, 2026-09-11).
+
+```bash
+# once per language webcore stores (ms, en) — --dry-run first to inspect the payload
+node keyword-volume.mjs --plan .../projects/{slug}/seo-plan.md --lang ms --only ms \
+  --website <registered-domain> --push --dry-run
+node keyword-volume.mjs --plan .../projects/{slug}/seo-plan.md --lang ms --only ms \
+  --website <registered-domain> --push
+node keyword-volume.mjs --plan .../projects/{slug}/seo-plan.md --lang en --only en \
+  --website <registered-domain> --push
+# verify — the public GET is CDN-cached for 300s, so bust it
+curl -s "$WEBCORE_BASE_URL/api/public/keywords?website=<registered-domain>&_cb=$RANDOM"
+```
+
+Head terms land in `primary_keywords`, the rest in `secondary_keywords`, and only
+terms at or above `--min` are pushed. Use the script, not a hand-written POST: a
+body that says `keywords` instead of `rows` returns `200` and stores nothing, and
+primary/secondary lists over 32 lose their tail silently (`docs/webcore-api.md`).
+webcore stores `en` and `ms` only.
+
 > Requires the head terms to sit under a heading Sora marks as primary (e.g.
 > `### 1.2 Primary money keywords`). If the script warns that no head-term
 > section was found, nothing can fail the gate — fix the plan's headings or pass
@@ -1083,7 +1106,7 @@ VALUES
 - Use `is_active = true` for products to display
 - `sort_order` controls display order
 - Product images go in `product_photos` table, NOT hardcoded in frontend
-- Use ISR with `revalidate = 3600` — products appear within 1 hour of DB change
+- No time-based ISR. Fetches are tagged `webcore-products` and webcore purges them through `/api/revalidate` within seconds of a DB change (wired at Step 14). Never add `export const revalidate = N` — the wizard's `no-time-revalidate` check fails on it.
 
 ### Verify
 - All product rows exist in Supabase
@@ -1229,7 +1252,11 @@ Spawn **Layla** (QA & Deployment Specialist) only after user confirms in Gate 2.
 5. Push code to GitHub
 6. Deploy to Vercel
 7. Add Supabase env vars to Vercel: `vercel env add`
-8. Report the live URL
+8. **Wire live revalidation (MANDATORY)** — register the site's revalidate URL in
+   webcore, set the secret as `WEBCORE_REVALIDATE_SECRET` in Vercel **Production**,
+   redeploy, and prove it (below). Without it every webcore edit waits for the
+   next rebuild; 18 fleet sites were in that state (audit, 2026-09-11).
+9. Report the live URL
 
 ### Vercel Environment Variables
 
@@ -1238,7 +1265,31 @@ Add these to Vercel for the project:
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://xzydvhzcngpxdbyniliy.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY={anon_key}
+WEBCORE_REVALIDATE_SECRET={from step 1 of Live revalidation below}
 ```
+
+### Live revalidation (MANDATORY)
+
+```bash
+set -a && . ./.env.local && set +a
+# 1. register — webcore generates a secret if the site has none and returns it
+#    (if the site already has one, read it from the webcore admin)
+curl -s -X PUT "$WEBCORE_BASE_URL/api/website-settings" \
+  -H "x-api-key: $WEBCORE_API_KEY" -H "Content-Type: application/json" \
+  -d '{ "website": "<d>", "revalidate_url": "https://<d>/api/revalidate" }'
+# 2. vercel env add WEBCORE_REVALIDATE_SECRET production     (paste the secret)
+# 3. redeploy — env changes only reach deployments made after them
+# 4. prove it
+curl -s -X POST "https://<d>/api/revalidate" -H "X-Webcore-Secret: <secret>" \
+  -H "Content-Type: application/json" -d '{"tags":["webcore-products"]}'
+```
+
+`200 {"revalidated":[...]}` = wired · `401` = secret mismatch (prod env never set,
+or not redeployed) · `500` = env var missing · `404` = no
+`app/api/revalidate/route.ts`. The route's allow-list must name all four tags —
+`webcore-products`, `webcore-phones`, `webcore-blog`, `webcore-seo` — because a
+tag missing from it is accepted with a `200` and silently dropped. Re-run step 1
+whenever the domain changes. Reference: `docs/webcore-api.md` → Live revalidation.
 
 ---
 
