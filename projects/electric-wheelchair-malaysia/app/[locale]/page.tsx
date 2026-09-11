@@ -73,6 +73,26 @@ function GoogleMark({ size = 22 }: { size?: number }) {
   );
 }
 
+/** One stroke-icon set for the USP bar and the spec list, so both read as
+ *  the same family. Feather-style, 1.8 stroke, currentColor. */
+const ICONS: Record<string, React.ReactNode> = {
+  shield: (<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M9 12l2 2 4-4" /></>),
+  award: (<><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></>),
+  truck: (<><rect x="1" y="3" width="15" height="13" /><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></>),
+  fold: (<><polyline points="4 14 10 14 10 20" /><polyline points="20 10 14 10 14 4" /><line x1="14" y1="10" x2="21" y2="3" /><line x1="3" y1="21" x2="10" y2="14" /></>),
+  recline: (<><path d="M4 20h13" /><path d="M6 20v-7" /><path d="M6 13l4-9" /><path d="M6 13h9l3 7" /></>),
+  joystick: (<><circle cx="12" cy="6" r="3" /><line x1="12" y1="9" x2="12" y2="15" /><rect x="4" y="15" width="16" height="5" rx="1.5" /></>),
+  wrench: (<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />),
+};
+
+function Icon({ name, size = 22 }: { name: keyof typeof ICONS; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {ICONS[name]}
+    </svg>
+  );
+}
+
 function WhatsAppIcon({ size = 20 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -145,10 +165,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         ];
 
   const callouts = [0, 1, 2, 3].map((i) => tHero(`callouts.${i}`));
+  const USP_ICONS = ['shield', 'award', 'truck'] as const;
   const uspItems = [0, 1, 2].map((i) => ({
     eyebrow: t(`usp.items.${i}.eyebrow`),
     label: t(`usp.items.${i}.label`),
+    icon: USP_ICONS[i],
   }));
+  const SPEC_ICONS = ['fold', 'recline', 'joystick', 'award', 'wrench'] as const;
   const steps = [0, 1, 2].map((i) => ({
     title: tSteps(`steps.${i}.title`),
     description: tSteps(`steps.${i}.description`),
@@ -250,6 +273,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <div className="ew-wrap ew-usp__grid">
           {uspItems.map((item) => (
             <div className="ew-usp__item" key={item.label}>
+              <span className="ew-usp__icon"><Icon name={item.icon} /></span>
               <span className="ew-mono">{item.eyebrow}</span>
               <b>{item.label}</b>
             </div>
@@ -291,7 +315,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <dl className="ew-specs">
                 {[0, 1, 2, 3, 4].map((i) => (
                   <div key={i}>
-                    <dt className="ew-mono">{tProducts(`specs.${i}.label`)}</dt>
+                    <dt>
+                      <span className="ew-specs__icon"><Icon name={SPEC_ICONS[i]} size={18} /></span>
+                      <span className="ew-mono">{tProducts(`specs.${i}.label`)}</span>
+                    </dt>
                     <dd>{tProducts(`specs.${i}.value`)}</dd>
                   </div>
                 ))}
