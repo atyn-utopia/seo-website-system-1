@@ -16,14 +16,14 @@ export default async function StepsSection({ locale, waHref }: { locale: string;
     description: t(`steps.${i}.description`),
     when: t(`steps.${i}.when`),
     imageAlt: t(`steps.${i}.imageAlt`),
-    src: `/brand/step-${i + 1}.png`,
+    src: `/brand/step-${i + 1}.webp`,
   }));
 
   return (
     <section className="ew-sec ew-steps" id="how-it-works">
       {/* The delivery photo under a heavy orange tint — texture, not a subject. */}
       <div className="ew-steps__bg" aria-hidden="true">
-        <Image src="/brand/step-3.png" alt="" fill sizes="100vw" />
+        <Image src="/brand/step-3.webp" alt="" fill sizes="100vw" />
       </div>
       <div className="ew-wrap">
         <div className="ew-head">

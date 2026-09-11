@@ -5,7 +5,7 @@ import { getTranslations } from 'next-intl/server';
 export default async function GallerySection({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'gallery' });
   const items = [0, 1, 2, 3, 4, 5].map((i) => ({
-    src: `/gallery/${i + 1}.png`,
+    src: `/gallery/${i + 1}.webp`,
     alt: t(`alts.${i}`),
     caption: t(`captions.${i}`),
   }));
